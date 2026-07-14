@@ -102,6 +102,7 @@ DB_PASSWORD=$DB_PASSWORD
 DATABASE_URL=mysql+pymysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
 EOF
 
+
 ########################################
 # Create systemd Service
 ########################################
@@ -123,7 +124,6 @@ RestartSec=5
 [Install]
 WantedBy=multi-user.target
 EOF
-
 ########################################
 # Start Backend
 ########################################
@@ -139,16 +139,12 @@ sleep 10
 systemctl status ems-backend --no-pager
 
 curl http://localhost:8000/ || true
+
 ########################################
 # Install CloudWatch Agent
 ########################################
 
 bash /opt/employee-management-system/platform/observability/cloudwatch/install-agent.sh
-
 echo "======================================"
 echo "Backend Bootstrap Completed"
 echo "======================================"
-
-
-
-
