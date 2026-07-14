@@ -139,6 +139,11 @@ sleep 10
 systemctl status ems-backend --no-pager
 
 curl http://localhost:8000/ || true
+########################################
+# Install CloudWatch Agent
+########################################
+
+bash /opt/employee-management-system/platform/observability/cloudwatch/install-agent.sh
 
 echo "======================================"
 echo "Backend Bootstrap Completed"
