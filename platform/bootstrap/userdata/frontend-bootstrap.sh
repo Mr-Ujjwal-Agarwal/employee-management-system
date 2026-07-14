@@ -85,7 +85,7 @@ systemctl status nginx --no-pager
 # Install CloudWatch Agent
 ########################################
 
-bash /opt/employee-management-system/platform/observability/cloudwatch/install-agent.sh~
+bash /opt/employee-management-system/platform/observability/cloudwatch/install-agent.sh
 
 echo "======================================"
 echo "Frontend Bootstrap Completed"
