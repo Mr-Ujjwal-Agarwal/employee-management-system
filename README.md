@@ -653,7 +653,7 @@ Verify monitoring pipeline.
 
 |Dashboard| 
 |-------|
-| ![](assets/screenshots/phase-1/02-dashboard.png) |
+| ![](assets/screenshots/phase-1/ems-dashboard.png) |
 
 ---
 
@@ -661,25 +661,25 @@ Verify monitoring pipeline.
 
 | Public ALB | Internal ALB |
 |------------|--------------|
-| ![](assets/screenshots/phase-1/10-public-alb.png) | ![](assets/screenshots/phase-1/11-internal-alb.png) |
+| ![](assets/screenshots/phase-1/public-lb.png) | ![](assets/screenshots/phase-1/internal-lb.png) |
 
 ---
 
 | Frontend ASG | Backend ASG |
 |--------------|-------------|
-| ![](assets/screenshots/phase-1/13-frontend-asg.png) | ![](assets/screenshots/phase-1/14-backend-asg.png) |
+| ![](assets/screenshots/phase-1/asg-frontend.png) | ![](assets/screenshots/phase-1/asg-backend.png) |
 
 ---
 
 | RDS | Parameter Store |
 |-----|-----------------|
-| ![](assets/screenshots/phase-1/17-rds.png) | ![](assets/screenshots/phase-1/18-parameter-store.png) |
+| ![](assets/screenshots/phase-1/rds.png) | ![](assets/screenshots/phase-1/parameter-store.png) |
 
 ---
 
 | CloudWatch Dashboard | CloudWatch Alarms |
 |----------------------|-------------------|
-| ![](assets/screenshots/phase-1/19-cloudwatch-dashboard.png) | ![](assets/screenshots/phase-1/20-cloudwatch-alarms.png) |
+| ![](assets/screenshots/phase-1/cloudwatch-dashboard.png) | ![](assets/screenshots/phase-1/alarms.png) |
 
 ---
 
