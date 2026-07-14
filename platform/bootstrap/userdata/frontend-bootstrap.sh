@@ -87,6 +87,13 @@ systemctl status nginx --no-pager
 
 bash /opt/employee-management-system/platform/observability/cloudwatch/install-agent.sh
 
+########################################
+# Install CodeDeploy Agent
+########################################
+
+bash /opt/employee-management-system/platform/bootstrap/scripts/install-codedeploy.sh
+
+
 echo "======================================"
 echo "Frontend Bootstrap Completed"
 echo "======================================"
