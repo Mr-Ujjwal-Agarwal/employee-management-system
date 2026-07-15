@@ -1,0 +1,44 @@
+version: 0.2
+
+env:
+  variables:
+    APP_NAME: "employee-management-system"
+    COMPONENT: "backend"
+    BUILD_ENV: "production"
+
+phases:
+
+  install:
+    runtime-versions:
+      python: 3.12
+    commands:
+      - echo "========== INSTALL PHASE =========="
+      - cd app/backend
+      - python --version
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
+
+  pre_build:
+    commands:
+      - echo "========== PRE-BUILD =========="
+      - test -f requirements.txt
+      - python -m compileall app
+
+  build:
+    commands:
+      - echo "========== BUILD =========="
+      - echo "Backend validation completed."
+
+  post_build:
+    commands:
+      - echo "========== POST BUILD =========="
+      - ls -la
+
+artifacts:
+  base-directory: app/backend
+  files:
+    - '**/*'
+
+cache:
+  paths:
+    - '/root/.cache/pip/**/*'
