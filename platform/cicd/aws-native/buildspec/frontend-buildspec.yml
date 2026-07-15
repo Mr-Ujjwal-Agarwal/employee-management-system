@@ -1,0 +1,47 @@
+version: 0.2
+
+env:
+  variables:
+    APP_NAME: "employee-management-system"
+    COMPONENT: "frontend"
+    BUILD_ENV: "production"
+
+phases:
+
+  install:
+    runtime-versions:
+      nodejs: 22
+    commands:
+      - echo "========== INSTALL PHASE =========="
+      - cd app/frontend
+      - echo "Installing project dependencies..."
+      - npm ci
+
+  pre_build:
+    commands:
+      - echo "========== PRE-BUILD =========="
+      - node --version
+      - npm --version
+      - echo "Validating package.json..."
+      - test -f package.json
+
+  build:
+    commands:
+      - echo "========== BUILD =========="
+      - npm run build
+
+  post_build:
+    commands:
+      - echo "========== POST BUILD =========="
+      - ls -la
+      - ls -la dist
+      - echo "Frontend build completed successfully."
+
+artifacts:
+  base-directory: app/frontend/dist
+  files:
+    - '**/*'
+
+cache:
+  paths:
+    - '/root/.npm/**/*'
