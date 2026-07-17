@@ -1,530 +1,292 @@
-# Production Runbook
+# 🚑 Operations Runbook
 
-## Employee Management System
+## 1. Purpose
 
-Version: v1.0.0-beta
+This runbook provides standard operating procedures for responding to common incidents within the Employee Management System (EMS) environment.
 
----
-
-# Purpose
-
-This runbook provides operational procedures for diagnosing and resolving common production incidents within the Employee Management System (EMS).
-
-The objective is to:
-
-- Restore services quickly
-- Reduce downtime
-- Maintain application availability
-- Provide standardized recovery procedures
+The objective is to reduce downtime by providing consistent troubleshooting and recovery steps for infrastructure, application, and CI-related issues.
 
 ---
 
-# Incident Severity Levels
+# 2. Incident Response Workflow
 
-| Severity | Description | Response Time |
-|----------|-------------|---------------|
-| P1 | Complete Service Outage | Immediate |
-| P2 | Partial Service Degradation | Within 30 Minutes |
-| P3 | Minor Functional Issue | Same Business Day |
-| P4 | Cosmetic / Low Impact | Planned Maintenance |
+Whenever an issue occurs:
 
----
-
-# Standard Investigation Workflow
-
-```
-Alert Received
-
-↓
-
-Identify Impact
-
-↓
-
-Identify Component
-
-↓
-
-Collect Logs
-
-↓
-
-Validate Health
-
-↓
-
-Apply Fix
-
-↓
-
-Verify Recovery
-
-↓
-
-Close Incident
-```
+1. Receive notification (CloudWatch Alarm / Amazon SNS)
+2. Identify the affected component
+3. Verify the issue using CloudWatch metrics and logs
+4. Apply the appropriate recovery procedure
+5. Confirm the service has returned to a healthy state
+6. Document the incident and corrective actions
 
 ---
 
-# Infrastructure Components
+# 3. CodePipeline Failure
 
-- Frontend Auto Scaling Group
-- Backend Auto Scaling Group
-- Public ALB
-- Internal ALB
-- Amazon RDS
-- CloudWatch
-- SNS
-- Parameter Store
+## Symptoms
 
----
+- Pipeline execution fails.
+- CloudWatch Alarm is triggered.
+- SNS email notification is received.
 
-# Useful AWS CLI Commands
+## Investigation
 
-## EC2
+- Open AWS CodePipeline.
+- Identify the failed stage.
+- Review execution history.
+- Inspect CloudWatch Logs.
 
-```bash
-aws ec2 describe-instances
-```
+## Resolution
 
----
-
-## Auto Scaling
-
-```bash
-aws autoscaling describe-auto-scaling-groups
-```
+- Fix the identified issue.
+- Commit the required changes.
+- Push to GitHub.
+- Verify the next pipeline execution completes successfully.
 
 ---
 
-## Target Groups
+# 4. Frontend CodeBuild Failure
 
-```bash
-aws elbv2 describe-target-health \
---target-group-arn <TARGET_GROUP_ARN>
-```
+## Symptoms
 
----
+- Frontend build stage fails.
+- CloudWatch Alarm enters ALARM state.
 
-## CloudWatch
+## Investigation
 
-```bash
-aws cloudwatch describe-alarms
-```
+Review:
 
----
+- Build logs
+- npm installation
+- Build errors
+- Missing dependencies
 
-## Parameter Store
+## Resolution
 
-```bash
-aws ssm describe-parameters
-```
+Correct the application code or build configuration and trigger a new pipeline execution.
 
 ---
 
-## RDS
+# 5. Backend CodeBuild Failure
 
-```bash
-aws rds describe-db-instances
-```
+## Symptoms
 
----
+- Backend build fails.
 
-# Common Incident 1
+## Investigation
 
-## Frontend Target Unhealthy
+Check:
 
-### Symptoms
+- Python dependencies
+- requirements.txt
+- FastAPI application
+- Build logs
 
-- Website unavailable
-- ALB reports unhealthy targets
-- HTTP 502 or 503 errors
+## Resolution
 
----
-
-### Investigation
-
-Check Target Group
-
-```bash
-aws elbv2 describe-target-health
-```
-
-SSH into instance
-
-```bash
-ssh ubuntu@<EC2-IP>
-```
-
-Check Nginx
-
-```bash
-sudo systemctl status nginx
-```
-
-Check frontend process
-
-```bash
-ps aux | grep node
-```
+Resolve the underlying issue and verify that the build completes successfully.
 
 ---
 
-### Resolution
+# 6. EC2 Instance Unhealthy
 
-- Restart Nginx
+## Symptoms
 
-```bash
-sudo systemctl restart nginx
-```
+- EC2 health checks fail.
+- Target Group reports unhealthy instances.
+- Auto Scaling replaces instances.
 
-- Verify health check endpoint
+## Investigation
 
-- Review bootstrap logs
+Check:
 
-```bash
-sudo less /var/log/cloud-init-output.log
-```
-
----
-
-### Validation
-
-Confirm target returns
-
-```
-Healthy
-```
-
----
-
-# Common Incident 2
-
-## Backend Service Down
-
-### Symptoms
-
-- API unavailable
-- Frontend cannot retrieve data
-- Internal ALB unhealthy
-
----
-
-### Investigation
-
-Backend service
-
-```bash
-sudo systemctl status ems-backend
-```
-
-Logs
-
-```bash
-journalctl -u ems-backend
-```
-
-API
-
-```bash
-curl http://localhost:8000/docs
-```
-
----
-
-### Resolution
-
-Restart service
-
-```bash
-sudo systemctl restart ems-backend
-```
-
-Review logs
-
-Fix configuration if required
-
----
-
-### Validation
-
-Swagger UI loads
-
-```
-http://localhost:8000/docs
-```
-
----
-# Common Incident 3
-
-## Database Connection Failure
-
-### Symptoms
-
-- API returns 500 errors
-- Backend logs contain database connection failures
-
----
-
-### Investigation
-
-Verify RDS
-
-```bash
-aws rds describe-db-instances
-```
-
-Verify Parameter Store
-
-```bash
-aws ssm get-parameter \
---name "/ems/prod/db/host"
-```
-
-Check IAM Role
-
-```bash
-aws sts get-caller-identity
-```
-
----
-
-### Resolution
-
-Verify:
-
+- EC2 Instance Status
+- System Logs
+- CloudWatch Metrics
 - Security Groups
-- RDS Status
-- IAM Permissions
-- Parameter Store values
 
-Restart backend
+## Resolution
 
-```bash
-sudo systemctl restart ems-backend
-```
+- Verify Launch Template configuration.
+- Confirm bootstrap scripts execute successfully.
+- Perform an Instance Refresh if required.
 
 ---
 
-# Common Incident 4
+# 7. Application Load Balancer Issues
 
-## Auto Scaling Not Replacing Instance
+## Symptoms
 
-### Symptoms
+- Application inaccessible.
+- Target Groups unhealthy.
+- Increased HTTP 5xx responses.
 
-- Desired Capacity not restored
-- Instance terminated
-- No replacement launched
-
----
-
-### Investigation
-
-```bash
-aws autoscaling describe-scaling-activities
-```
-
-Check Launch Template
-
-Review Activity History
-
----
-
-### Resolution
-
-- Verify Launch Template
-- Verify IAM Permissions
-- Verify User Data
-- Refresh Launch Template if necessary
-
----
-
-# Common Incident 5
-
-## CloudWatch Metrics Missing
-
-### Symptoms
-
-- Dashboard empty
-- Memory metrics unavailable
-- Disk metrics unavailable
-
----
-
-### Investigation
-
-```bash
-systemctl status amazon-cloudwatch-agent
-```
-
-Configuration
-
-```bash
-cat /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
-```
-
----
-
-### Resolution
-
-Restart Agent
-
-```bash
-sudo systemctl restart amazon-cloudwatch-agent
-```
-
-If missing
-
-Run installation script
-
-```bash
-bash platform/observability/cloudwatch/install-agent.sh
-```
-
----
-
-# Common Incident 6
-
-## SNS Notifications Not Received
-
-### Symptoms
-
-CloudWatch alarm triggered
-
-No email received
-
----
-
-### Investigation
+## Investigation
 
 Verify:
 
-- SNS Subscription
-- Email Confirmation
-- Alarm Actions
+- Target Group health
+- Listener configuration
+- Security Groups
+- Backend application status
+
+## Resolution
+
+Restore application health and verify that targets return to the Healthy state.
 
 ---
 
-### Resolution
+# 8. Amazon RDS Issues
 
-Confirm subscription
+## Symptoms
 
-Re-test alarm
+- Database connection failures.
+- High CPU alarms.
+- Increased response times.
 
-Verify topic ARN
+## Investigation
 
----
+Check:
 
-# Common Incident 7
+- Database status
+- Security Groups
+- Database connections
+- CloudWatch Metrics
 
-## Parameter Store Access Denied
+## Resolution
 
-### Symptoms
-
-Backend startup failure
-
-AccessDeniedException
-
----
-
-### Investigation
-
-```bash
-aws iam get-role \
---role-name <ROLE_NAME>
-```
-
-Verify policy
-
-```bash
-AmazonSSMReadOnlyAccess
-```
-
-or equivalent custom policy
+- Verify connectivity.
+- Review database performance.
+- Scale database resources if necessary.
+- Restore from backup if required.
 
 ---
 
-### Resolution
+# 9. CloudWatch Alarm Triggered
 
-Attach correct IAM policy
+## Investigation
 
-Restart backend
+Determine:
 
----
+- Which resource triggered the alarm.
+- Current metric values.
+- Recent operational changes.
 
-# Escalation Matrix
+## Resolution
 
-| Issue | Primary Owner |
-|--------|---------------|
-| EC2 | Platform Engineer |
-| Auto Scaling | Cloud Engineer |
-| RDS | Database Administrator |
-| IAM | Cloud Engineer |
-| Monitoring | DevOps Engineer |
-| SNS | DevOps Engineer |
+Investigate the root cause before clearing the alarm.
+
+Never suppress alarms without understanding why they were triggered.
 
 ---
 
-# Post-Incident Checklist
+# 10. SNS Notifications Not Received
 
-After resolving any incident:
+## Investigation
 
-- Verify application availability
-- Confirm healthy targets
-- Check CloudWatch dashboard
-- Review Auto Scaling status
-- Validate database connectivity
-- Update incident documentation
-- Identify root cause
-- Record preventive actions
+Verify:
 
----
+- SNS Topic
+- Email subscription status
+- CloudWatch Alarm configuration
 
-# Root Cause Analysis Template
+## Resolution
 
-## Incident
-
-Description:
+- Reconfirm email subscription.
+- Test SNS delivery.
+- Validate alarm actions.
 
 ---
 
-## Timeline
+# 11. High CPU Utilization
 
-Detection:
+## Symptoms
 
-Investigation:
+- EC2 CPU alarm triggered.
+- RDS CPU alarm triggered.
 
-Resolution:
+## Investigation
 
-Recovery:
+Check:
 
----
+- CloudWatch Dashboard
+- Running processes
+- Recent deployments
+- Traffic levels
 
-## Root Cause
+## Resolution
 
-Document the underlying cause.
-
----
-
-## Corrective Actions
-
-Immediate fix
-
----
-
-## Preventive Actions
-
-Long-term improvement
+- Allow Auto Scaling to respond if applicable.
+- Optimize the application.
+- Increase instance capacity if required.
 
 ---
 
-# Conclusion
+# 12. Parameter Store Issues
 
-This runbook provides standardized procedures for diagnosing and recovering from common production incidents.
+## Symptoms
 
-Following these procedures helps ensure:
+- Application cannot read configuration.
+- Authentication failures.
 
-- Faster recovery
-- Reduced downtime
-- Consistent operational practices
-- Improved system reliability
+## Investigation
+
+Verify:
+
+- Parameter names
+- IAM permissions
+- Parameter values
+
+## Resolution
+
+Update Parameter Store entries and restart the affected application if necessary.
+
+---
+
+# 13. General Troubleshooting Checklist
+
+Before escalating an issue, verify:
+
+- EC2 instance health
+- Auto Scaling Group health
+- Target Group health
+- Application Load Balancer
+- Amazon RDS
+- CloudWatch Dashboard
+- CloudWatch Logs
+- CodePipeline
+- CodeBuild
+- SNS Notifications
+
+---
+
+# 14. Recovery Validation
+
+After resolving an incident, confirm:
+
+- Application is accessible.
+- Backend API responds successfully.
+- Target Groups are healthy.
+- Auto Scaling Groups are healthy.
+- CodePipeline completes successfully.
+- CloudWatch alarms return to the OK state.
+
+---
+
+# 15. Escalation Guidelines
+
+Escalate incidents when:
+
+- Multiple services fail simultaneously.
+- Amazon RDS becomes unavailable.
+- Repeated pipeline failures occur.
+- Auto Scaling cannot recover unhealthy instances.
+- Security-related incidents are detected.
+
+---
+
+# 16. Conclusion
+
+This runbook provides standardized recovery procedures for the Employee Management System.
+
+Following these procedures helps minimize downtime, improve operational consistency, and ensure reliable system recovery during incidents.
