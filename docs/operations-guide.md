@@ -1,437 +1,253 @@
-# Operations Guide
+# 🛠️ Operations Guide
 
-## Employee Management System
+## 1. Overview
 
-Version: v1.0.0-beta
+This document describes the day-to-day operational procedures for the Employee Management System (EMS) running on AWS.
 
----
+The objective is to ensure that the application remains healthy, available, and easy to maintain.
 
-# Overview
+This guide covers:
 
-This document describes the operational procedures required to maintain, monitor, troubleshoot, and manage the Employee Management System (EMS) in a production environment.
-
-The guide covers:
-
-- Daily Operations
-- Infrastructure Monitoring
-- Health Validation
-- Auto Scaling
-- CloudWatch Monitoring
-- Incident Response
-- Maintenance
-- Operational Best Practices
+- Infrastructure monitoring
+- Continuous Integration monitoring
+- Application maintenance
+- Scaling operations
+- Backup considerations
+- Security best practices
 
 ---
 
-# Operational Responsibilities
+# 2. Operational Architecture
 
-Routine operations include:
+The production-inspired environment consists of:
 
-- Monitoring infrastructure health
-- Reviewing CloudWatch dashboards
-- Verifying Auto Scaling activity
-- Monitoring Load Balancer health
-- Validating database connectivity
-- Reviewing application logs
-- Responding to CloudWatch alarms
-- Ensuring backup procedures are functioning
-
----
-
-# Production Environment
-
-## Compute
-
-- Frontend Auto Scaling Group
-- Backend Auto Scaling Group
-- Launch Templates
-
----
-
-## Networking
-
-- Public Application Load Balancer
-- Internal Application Load Balancer
-- Amazon VPC
-- NAT Gateway
-
----
-
-## Database
-
-Amazon RDS MySQL
-
----
-
-## Monitoring
-
+- Amazon EC2
+- Auto Scaling Groups
+- Application Load Balancers
+- Amazon RDS
+- AWS Systems Manager Parameter Store
+- AWS CodePipeline
+- AWS CodeBuild
 - Amazon CloudWatch
-- CloudWatch Agent
-- CloudWatch Dashboard
-- CloudWatch Alarms
 - Amazon SNS
 
+These services work together to provide a reliable application platform.
+
 ---
 
-# Daily Operational Checklist
+# 3. Daily Operational Checklist
 
-Every production day should begin with the following checks.
+Perform the following checks regularly.
 
 ## Infrastructure
 
-Verify:
-
-- EC2 Instances Running
-- Auto Scaling Groups Healthy
-- Load Balancers Healthy
-- Target Groups Healthy
+- Verify EC2 instances are healthy.
+- Verify Auto Scaling Groups maintain desired capacity.
+- Confirm Application Load Balancer target groups are healthy.
+- Verify Amazon RDS is available.
 
 ---
 
-## Database
+## Continuous Integration
 
 Verify:
 
-- Amazon RDS Status = Available
-- Storage Utilization
-- Database Connections
+- CodePipeline executions complete successfully.
+- Frontend CodeBuild succeeds.
+- Backend CodeBuild succeeds.
+
+Investigate failed builds immediately.
 
 ---
 
 ## Monitoring
 
-Verify:
+Review:
 
 - CloudWatch Dashboard
-- CloudWatch Metrics
-- Memory Metrics
-- Disk Metrics
+- CloudWatch Alarms
+- CloudWatch Logs
+
+Ensure there are no active alarms requiring attention.
 
 ---
 
-## Notifications
+# 4. CloudWatch Dashboard
 
-Verify:
+The dashboard provides centralized visibility into the environment.
 
-- SNS Topic Active
-- Alarm Notifications Received
+Monitor:
 
----
+- Pipeline status
+- Frontend build status
+- Backend build status
+- Frontend CPU utilization
+- Backend CPU utilization
+- Amazon RDS CPU utilization
+- Application Load Balancer metrics
 
-# Health Check Procedures
-
-## EC2
-
-```bash
-aws ec2 describe-instances
-```
-
-Verify:
-
-- Running State
-- Correct IAM Role
-- Launch Template Version
+Review the dashboard regularly to identify abnormal behavior.
 
 ---
 
-## Auto Scaling
+# 5. CloudWatch Alarms
 
-```bash
-aws autoscaling describe-auto-scaling-groups
-```
+Configured alarms include:
 
-Verify:
+| Alarm | Purpose |
+|--------|---------|
+| Pipeline Failure | Detect failed pipeline executions |
+| Frontend Build Failure | Detect frontend build failures |
+| Backend Build Failure | Detect backend build failures |
+| Frontend EC2 High CPU | Detect high CPU utilization |
+| Backend EC2 High CPU | Detect high CPU utilization |
+| Amazon RDS High CPU | Detect excessive database utilization |
+
+Whenever an alarm enters the ALARM state, investigate immediately.
+
+---
+
+# 6. Amazon SNS Notifications
+
+CloudWatch Alarms publish notifications to Amazon SNS.
+
+Operational procedure:
+
+1. Receive notification email.
+2. Identify the affected resource.
+3. Review CloudWatch metrics.
+4. Inspect CloudWatch Logs (if applicable).
+5. Resolve the issue.
+6. Verify the alarm returns to the OK state.
+
+---
+
+# 7. Build Operations
+
+Every push to GitHub automatically starts the CI pipeline.
+
+Pipeline flow:
+
+Developer
+
+↓
+
+GitHub
+
+↓
+
+AWS CodePipeline
+
+↓
+
+Frontend CodeBuild
+
++
+
+Backend CodeBuild
+
+↓
+
+CloudWatch Logs
+
+↓
+
+CloudWatch Dashboard
+
+↓
+
+SNS Notifications
+
+No manual build execution is required under normal operation.
+
+---
+
+# 8. Auto Scaling Operations
+
+Auto Scaling Groups maintain the desired number of EC2 instances.
+
+Operational checks:
 
 - Desired Capacity
-- Current Capacity
-- Healthy Instances
-
----
-
-## Load Balancer
-
-```bash
-aws elbv2 describe-target-health \
---target-group-arn <TARGET_GROUP_ARN>
-```
-
-Verify:
-
-All targets should report
-
-```
-healthy
-```
-
----
-
-## Amazon RDS
-
-```bash
-aws rds describe-db-instances
-```
-
-Verify:
-
-```
-available
-```
-
----
-
-## Parameter Store
-
-```bash
-aws ssm describe-parameters
-```
-
-Verify all required parameters exist.
-
----
-
-## CloudWatch
-
-Verify:
-
-- Dashboard updated
-- Metrics arriving
-- No missing data
-
----
-
-## SNS
-
-Trigger a test alarm.
-
-Verify email delivery.
-
----
-
-# Monitoring Procedures
-
-## CloudWatch Dashboard
-
-Review:
-
-- CPU Utilization
-- Memory Usage
-- Disk Utilization
-- Network Traffic
-
-Dashboard should be reviewed daily.
-
----
-
-## CloudWatch Alarms
-
-Current alarms monitor:
-
-- Frontend CPU
-- Backend CPU
-- Frontend Memory
-- Backend Memory
-- Disk Usage
-
-Investigate alarms immediately after notification.
-
----
-
-## Log Monitoring
-
-Review:
-
-### Backend
-
-```
-journalctl -u ems-backend
-```
-
----
-
-### Nginx
-
-```
-/var/log/nginx/access.log
-
-/var/log/nginx/error.log
-```
-
----
-
-### CloudWatch Agent
-
-```
-systemctl status amazon-cloudwatch-agent
-```
-
----
-
-# Auto Scaling Operations
-
-Verify:
-
-```
-Desired Capacity
-
-Minimum Capacity
-
-Maximum Capacity
-```
-
-Review:
-
-- Scaling Activities
-- Instance Refresh
+- Minimum Capacity
+- Maximum Capacity
+- Instance Health
 - Launch Template Version
 
----
-
-# Maintenance Procedures
-
-Routine maintenance includes:
-
-- Updating operating system packages
-- Updating application dependencies
-- Rotating credentials
-- Reviewing IAM permissions
-- Reviewing CloudWatch alarms
-
-Maintenance should be performed during approved maintenance windows.
+If Launch Templates are updated, perform an Instance Refresh to replace existing instances.
 
 ---
 
-# Incident Response
+# 9. Amazon RDS Operations
 
-## Instance Failure
+Regularly monitor:
 
-Symptoms
-
-- Target becomes unhealthy
-- Auto Scaling launches replacement
-
-Response
-
-- Verify bootstrap logs
-- Verify health checks
-- Confirm replacement instance becomes healthy
-
----
-
-## Database Connectivity Failure
-
-Verify:
-
-- RDS Status
-- Security Groups
-- Parameter Store
-- IAM Role
-
----
-
-## CloudWatch Metrics Missing
-
-Verify:
-
-```
-systemctl status amazon-cloudwatch-agent
-```
-
----
-
-## SNS Notification Failure
-
-Verify:
-
-- Topic Subscription
-- Email Confirmation
-- Alarm Configuration
-
----
-
-# Operational Best Practices
-
-Always:
-
-- Use IAM Roles
-- Store secrets in Parameter Store
-- Monitor CloudWatch daily
-- Validate Auto Scaling activities
-- Keep Launch Templates updated
-- Test alarms regularly
-
-Never:
-
-- Store credentials inside source code
-- Modify production instances manually
-- Disable health checks
-- Expose Amazon RDS publicly
-
----
-
-# Maintenance Window Checklist
-
-Before maintenance:
-
-- Notify stakeholders
-- Verify backups
-- Review CloudWatch dashboard
-
-During maintenance:
-
-- Monitor alarms
-- Validate application health
-
-After maintenance:
-
-- Verify target health
-- Verify database connectivity
-- Review CloudWatch metrics
-- Confirm application availability
-
----
-
-# Escalation Procedure
-
-Level 1
-
-Application Issue
-
-↓
-
-Level 2
-
-Infrastructure Issue
-
-↓
-
-Level 3
-
-AWS Service Issue
-
-↓
-
-AWS Support (if required)
-
----
-
-# Operations Summary
-
-The Employee Management System is designed for reliable day-to-day operations using AWS managed services, infrastructure automation, and proactive monitoring.
-
-The operational model emphasizes:
-
-- Reliability
+- CPU Utilization
+- Database Connections
+- Storage Capacity
 - Availability
-- Observability
-- Security
-- Automation
-- Maintainability
 
-For disaster recovery procedures, refer to:
+Database backups should be verified periodically according to your backup strategy.
 
-- `docs/disaster-recovery.md`
+---
 
-For troubleshooting guidance, refer to:
+# 10. Parameter Store Operations
 
-- `docs/runbook.md`
+AWS Systems Manager Parameter Store stores application configuration.
 
+Best practices:
+
+- Never hardcode credentials.
+- Restrict IAM access using least privilege.
+- Rotate sensitive credentials periodically.
+- Update application configuration through Parameter Store when possible.
+
+---
+
+# 11. Security Operations
+
+Regularly review:
+
+- IAM Roles
+- Security Groups
+- EC2 Instance Status
+- RDS Security Groups
+- Parameter Store permissions
+
+Remove unused permissions and review access periodically.
+
+---
+
+# 12. Maintenance Activities
+
+Typical maintenance tasks include:
+
+- Reviewing CloudWatch metrics
+- Monitoring build history
+- Updating application code
+- Applying security patches
+- Updating Launch Templates
+- Performing Instance Refresh
+- Reviewing alarm thresholds
+
+---
+
+# 13. Operational Best Practices
+
+Recommended practices:
+
+- Monitor the CloudWatch Dashboard daily.
+- Investigate all alarms promptly.
+- Keep Launch Templates updated.
+- Use IAM roles instead of access keys.
+- Store secrets in Parameter Store.
+- Validate every pipeline execution.
+- Document operational changes.
+
+---
+
+# 14. Conclusion
+
+The operational model combines AWS monitoring, automated Continuous Integration, centralized logging, and proactive alerting to provide a reliable and production-inspired application environment.
+
+Following the procedures described in this guide helps maintain system availability, improve operational visibility, and simplify day-to-day management.
