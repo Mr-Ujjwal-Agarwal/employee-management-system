@@ -1,1050 +1,726 @@
-# 🚀 Employee Management System
+# 🚀 AWS Production-Inspired Employee Management System
 
 <div align="center">
 
-## Production-Ready AWS Cloud & DevOps Project
+![AWS](https://img.shields.io/badge/AWS-Cloud-orange?logo=amazonaws)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi)
+![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python)
+![CodePipeline](https://img.shields.io/badge/AWS-CodePipeline-FF9900?logo=amazonaws)
+![CodeBuild](https://img.shields.io/badge/AWS-CodeBuild-FF9900?logo=amazonaws)
+![CloudWatch](https://img.shields.io/badge/AWS-CloudWatch-FF4F8B?logo=amazonaws)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-*A highly available, production-grade Employee Management System deployed on AWS using modern DevOps practices, Infrastructure Automation, and Cloud-Native Architecture.*
-
-<p>
-
-![AWS](https://img.shields.io/badge/AWS-Cloud-orange?style=for-the-badge&logo=amazonaws)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?style=for-the-badge&logo=fastapi)
-![React](https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react)
-![Python](https://img.shields.io/badge/Python-3.13-blue?style=for-the-badge&logo=python)
-![Linux](https://img.shields.io/badge/Linux-Ubuntu-E95420?style=for-the-badge&logo=ubuntu)
-
-</p>
-
-<p>
-
-![GitHub last commit](https://img.shields.io/github/last-commit/Mr-Ujjwal-Agarwal/employee-management-system?style=flat-square)
-![GitHub repo size](https://img.shields.io/github/repo-size/Mr-Ujjwal-Agarwal/employee-management-system?style=flat-square)
-![GitHub License](https://img.shields.io/github/license/Mr-Ujjwal-Agarwal/employee-management-system?style=flat-square)
-
-</p>
+**Production-inspired Employee Management System demonstrating AWS High Availability, Auto Scaling, CloudWatch Monitoring, and AWS Native Continuous Integration using CodePipeline & CodeBuild.**
 
 </div>
 
 ---
 
-# 📑 Table of Contents
+## 📌 Project Status
 
-- [Project Overview](#-project-overview)
-- [Key Features](#-key-features)
-- [Technology Stack](#-technology-stack)
-- [AWS Services Used](#-aws-services-used)
-- [Architecture Overview](#-architecture-overview)
-- [Repository Structure](#-repository-structure)
-- [Deployment Workflow](#-deployment-workflow)
-- [Monitoring & Observability](#-monitoring--observability)
-- [Screenshots](#-screenshots)
-- [Getting Started](#-getting-started)
-- [Project Roadmap](#-project-roadmap)
-- [Known Limitations](#-known-limitations)
-- [Future Enhancements](#-future-enhancements)
-- [Learning Outcomes](#-learning-outcomes)
-- [Author](#-author)
-- [License](#-license)
+| Phase | Status |
+|--------|--------|
+| Phase 1 – AWS Infrastructure | ✅ Completed |
+| Phase 2 – AWS Native Continuous Integration | ✅ Completed |
+| Phase 3 – Jenkins CI/CD | 🚧 Planned |
+| Phase 4 – Infrastructure as Code (Terraform & Ansible) | 📅 Planned |
+| Phase 5 – Kubernetes & GitOps | 📅 Planned |
 
 ---
 
-# 📌 Project Overview
+## 🎯 Project Objective
 
-The **Employee Management System (EMS)** is a production-oriented cloud deployment project designed to demonstrate real-world AWS Infrastructure, DevOps automation, monitoring, and high availability practices.
+This project is designed to simulate a **real-world production deployment** of an Employee Management System on AWS while following DevOps best practices.
 
-Rather than focusing only on CRUD functionality, this project emphasizes the complete lifecycle of deploying, operating, monitoring, and scaling an application in a production-like AWS environment.
+Instead of focusing only on application development, the project demonstrates how a production application is:
 
-The application follows a **three-tier architecture** consisting of:
+- Designed for **High Availability**
+- Scaled automatically using **Auto Scaling Groups**
+- Exposed securely through **Application Load Balancers**
+- Connected to a managed **Amazon RDS** database
+- Integrated with **AWS Systems Manager Parameter Store**
+- Continuously built using **AWS CodePipeline** and **AWS CodeBuild**
+- Monitored using **Amazon CloudWatch Dashboards**
+- Protected with **CloudWatch Alarms** and **Amazon SNS Notifications**
 
-- **React Frontend**
-- **FastAPI Backend**
-- **Amazon RDS MySQL Database**
+The goal is to build the project incrementally across multiple phases, where each phase introduces new production-grade DevOps capabilities.
 
-The infrastructure is designed with scalability, fault tolerance, observability, and maintainability in mind.
+## 📚 Table of Contents
+
+- [📌 Project Status](#-project-status)
+- [🎯 Project Objective](#-project-objective)
+- [🏗️ System Architecture](#️-system-architecture)
+- [✨ Key Features](#-key-features)
+- [🛠️ Technology Stack](#️-technology-stack)
+- [☁️ AWS Services Used](#️-aws-services-used)
+- [📂 Repository Structure](#-repository-structure)
+- [🚀 Implementation Journey](#-implementation-journey)
+- [📊 Monitoring & Alerting](#-monitoring--alerting)
+- [📸 Project Screenshots](#-project-screenshots)
+- [⚙️ Getting Started](#️-getting-started)
+- [🗺️ Project Roadmap](#️-project-roadmap)
+- [📚 Documentation](#-documentation)
+- [🤝 Contributing](#-contributing)
+- [📜 License](#-license)
 
 ---
 
-# 🎯 Project Objectives
+# 🏗️ System Architecture
 
-The primary objectives of this project are:
+This project follows a **production-inspired AWS architecture** designed around High Availability, scalability, observability, and CI best practices.
 
-- Design a highly available AWS infrastructure
-- Deploy a scalable web application
-- Implement secure networking using public and private subnets
-- Automate EC2 provisioning with Launch Templates
-- Configure Auto Scaling for high availability
-- Secure database credentials using AWS Systems Manager Parameter Store
-- Monitor infrastructure using Amazon CloudWatch
-- Configure alerting with Amazon SNS
-- Build a production-ready repository following enterprise DevOps standards
+The architecture is divided into two major layers:
+
+## 🌐 Infrastructure Layer (Phase 1)
+
+- Multi-tier AWS deployment
+- Public and Private networking
+- Application Load Balancers
+- Auto Scaling Groups
+- Amazon RDS
+- AWS Systems Manager Parameter Store
+- CloudWatch Agent
+
+---
+
+## 🔄 Continuous Integration Layer (Phase 2)
+
+Every code push follows the automated workflow below:
+
+Developer
+
+↓
+
+GitHub Repository
+
+↓
+
+AWS CodePipeline
+
+↓
+
+Frontend CodeBuild
+
++
+
+Backend CodeBuild
+
+↓
+
+CloudWatch Logs
+
+↓
+
+CloudWatch Dashboard
+
+↓
+
+CloudWatch Alarms
+
+↓
+
+Amazon SNS Notifications
+
+---
+
+> 📌 **Architecture diagrams will be added after completing all project phases.**
 
 ---
 
 # ✨ Key Features
 
-## ☁️ Cloud Infrastructure
+The project is implemented in multiple phases, gradually evolving from a cloud-hosted application into a production-inspired DevOps platform.
 
-- Multi-AZ AWS Deployment
-- Public & Private Subnets
-- Internet Gateway
-- NAT Gateway
-- Route Tables
-- Security Groups
+## 🖥️ Application Features
 
----
-
-## 🚀 Compute Layer
-
-- Amazon EC2
-- Launch Templates
-- Auto Scaling Groups
-- Self-Healing Infrastructure
-- Automated Bootstrap Scripts
+- Employee management (Create, Read, Update, Delete)
+- Department management
+- Interactive dashboard with employee statistics
+- Responsive React-based user interface
+- RESTful API powered by FastAPI
+- Modular frontend and backend architecture
+- Real-time dashboard components
+- Clean and reusable component structure
 
 ---
 
-## 🌐 Networking
+## ☁️ AWS Infrastructure Features (Phase 1)
 
-- Public Application Load Balancer
-- Internal Application Load Balancer
-- Health Checks
-- Target Groups
+- Production-inspired VPC architecture
+- Public and Private Subnets across multiple Availability Zones
+- Internet Gateway and NAT Gateway
+- Public and Internal Application Load Balancers
+- Frontend and Backend Auto Scaling Groups
+- Launch Templates for immutable infrastructure
+- Amazon RDS for managed database services
+- AWS Systems Manager Parameter Store for secure configuration management
+- Security Groups implementing least-privilege access
+- CloudWatch Agent installed on EC2 instances
+- Highly Available application architecture
 
 ---
 
-## 🗄 Database
+## 🔄 Continuous Integration Features (Phase 2)
 
-- Amazon RDS MySQL
-- Private Database Deployment
-- Secure Parameter Store Integration
+- GitHub as the source code repository
+- AWS CodePipeline for automated CI workflow
+- Independent Frontend and Backend CodeBuild projects
+- Automatic build execution on every Git push
+- Build logs stored in Amazon CloudWatch Logs
+- Build artifact generation
+- Parallel frontend and backend build execution
+- Automated source integration and validation
 
 ---
 
-## 📊 Monitoring
+## 📊 Monitoring & Alerting
 
-- Amazon CloudWatch Agent
-- CPU Monitoring
-- Memory Monitoring
-- Disk Monitoring
-- CloudWatch Dashboard
+- Amazon CloudWatch Dashboard
+- CloudWatch Metrics collection
 - CloudWatch Alarms
-- SNS Email Notifications
+- Amazon SNS Email Notifications
+- Pipeline failure monitoring
+- Build failure monitoring
+- EC2 CPU utilization monitoring
+- Amazon RDS CPU monitoring
+- Centralized operational visibility
 
 ---
 
-## ⚙️ Automation
+## 🔒 Production Best Practices
 
-- Automated Frontend Bootstrap
-- Automated Backend Bootstrap
-- Parameter Store Integration
-- Systemd Service Configuration
-- CloudWatch Agent Installation
-
----
-
-## 📁 Repository
-
-- Enterprise Repository Structure
-- Infrastructure as Code Ready
-- Platform Engineering Layout
-- Documentation Driven Development
+- High Availability Architecture
+- Scalable Infrastructure
+- Infrastructure separated into logical layers
+- Secure parameter management
+- Operational monitoring
+- Automated Continuous Integration
+- Modular repository organization
+- Documentation-driven project structure
 
 ---
 
-# 📌 Current Project Status
+# 🛠️ Technology Stack
 
-| Phase | Status |
-|--------|--------|
-| AWS Infrastructure | ✅ Completed |
-| Monitoring | ✅ Completed |
-| Auto Scaling | ✅ Completed |
-| Parameter Store | ✅ Completed |
-| CloudWatch Dashboard | ✅ Completed |
-| CloudWatch Alarms | ✅ Completed |
-| SNS Notifications | ✅ Completed |
-| Bootstrap Automation | ✅ Completed |
-| CodeDeploy | 🚧 Planned (OS compatibility pending) |
-| HTTPS | 🚧 Planned (Domain pending) |
+The project combines modern frontend and backend technologies with AWS cloud services and DevOps tools to simulate a production-ready environment.
 
-Current Release
-
-```
-v1.0.0-beta
-```
-
----# 💻 Technology Stack
-
-## Frontend
-
-| Technology | Purpose |
-|------------|---------|
-| React.js | User Interface |
-| Vite | Frontend Build Tool |
-| Axios | API Communication |
-| HTML5 | Markup |
-| CSS3 | Styling |
-| JavaScript (ES6+) | Client-side Logic |
-
----
-
-## Backend
-
-| Technology | Purpose |
-|------------|---------|
-| FastAPI | REST API |
-| Python | Backend Language |
-| SQLAlchemy | ORM |
-| Uvicorn | ASGI Server |
-| Pydantic | Data Validation |
-| PyMySQL | MySQL Driver |
-
----
-
-## Database
-
-| Technology | Purpose |
-|------------|---------|
-| Amazon RDS MySQL | Relational Database |
-
----
-
-## Cloud Platform
-
-| Service | Purpose |
-|----------|---------|
-| Amazon EC2 | Application Hosting |
-| Amazon VPC | Network Isolation |
-| Application Load Balancer | Traffic Distribution |
-| Auto Scaling Groups | High Availability |
-| Launch Templates | Automated EC2 Provisioning |
-| IAM | Identity & Access Management |
-| Systems Manager Parameter Store | Secure Configuration |
-| CloudWatch | Monitoring |
-| SNS | Notifications |
-
----
-
-## DevOps & Platform Engineering
-
-| Tool | Purpose |
-|------|---------|
-| Linux (Ubuntu) | Operating System |
-| Bash | Automation Scripts |
-| Git | Version Control |
-| GitHub | Source Code Management |
-| Nginx | Reverse Proxy |
-| Systemd | Service Management |
+| Category | Technologies |
+|----------|--------------|
+| **Frontend** | React 19, Vite, JavaScript (ES6+), HTML5, CSS3 |
+| **Backend** | FastAPI, Python 3.12, Uvicorn |
+| **Database** | MySQL (Amazon RDS) |
+| **Cloud Platform** | Amazon Web Services (AWS) |
+| **Networking** | VPC, Public & Private Subnets, Internet Gateway, NAT Gateway |
+| **Compute** | Amazon EC2, Auto Scaling Groups, Launch Templates |
+| **Load Balancing** | Application Load Balancer (Public & Internal) |
+| **CI/CD** | AWS CodePipeline, AWS CodeBuild |
+| **Configuration Management** | AWS Systems Manager Parameter Store |
+| **Monitoring** | Amazon CloudWatch, CloudWatch Dashboard, CloudWatch Alarms |
+| **Notifications** | Amazon SNS |
+| **Operating System** | Ubuntu Server 24.04 LTS |
+| **Version Control** | Git, GitHub |
+| **Development Tools** | VS Code, AWS CLI, Git CLI |
 
 ---
 
 # ☁️ AWS Services Used
 
-| AWS Service | Usage |
-|-------------|-------|
-| Amazon EC2 | Frontend & Backend Compute |
-| Amazon VPC | Private Networking |
-| Public Subnets | Load Balancer Layer |
-| Private Subnets | Backend & Database |
-| Internet Gateway | Internet Access |
-| NAT Gateway | Outbound Internet for Private Subnets |
-| Route Tables | Traffic Routing |
-| Security Groups | Firewall Rules |
-| Auto Scaling | Self-Healing Infrastructure |
-| Launch Templates | Standardized EC2 Deployment |
-| Application Load Balancer | HTTP Load Balancing |
-| Amazon RDS | MySQL Database |
-| Systems Manager Parameter Store | Database Credentials |
-| IAM | Secure Permissions |
-| CloudWatch | Monitoring & Logging |
-| SNS | Email Notifications |
+This project leverages multiple AWS services to build a scalable, highly available, and production-inspired cloud environment.
+
+| Service | Purpose |
+|----------|---------|
+| **Amazon EC2** | Hosts the frontend and backend application servers |
+| **Amazon VPC** | Provides secure network isolation |
+| **Application Load Balancer (ALB)** | Distributes incoming traffic across multiple EC2 instances |
+| **Auto Scaling Groups** | Automatically maintain and scale EC2 instances |
+| **Launch Templates** | Standardize EC2 instance configuration |
+| **Amazon RDS** | Managed relational database service |
+| **AWS Systems Manager Parameter Store** | Secure storage of application configuration and secrets |
+| **AWS CodePipeline** | Automates Continuous Integration workflow |
+| **AWS CodeBuild** | Builds frontend and backend applications automatically |
+| **Amazon CloudWatch** | Collects metrics, logs, and dashboards |
+| **CloudWatch Alarms** | Detects failures and resource threshold breaches |
+| **Amazon SNS** | Sends email notifications for critical events |
+| **IAM** | Secure access management for AWS resources |
 
 ---
 
-# 🏗️ Architecture Overview
+## 📊 Project Statistics
 
-The application follows a highly available three-tier architecture.
-
-```text
-                        Internet
-                            │
-                            ▼
-               Public Application Load Balancer
-                            │
-             ┌──────────────┴──────────────┐
-             │                             │
-             ▼                             ▼
-      Frontend EC2                  Frontend EC2
-      Auto Scaling Group            Auto Scaling Group
-             │                             │
-             └──────────────┬──────────────┘
-                            │
-                     Internal Load Balancer
-                            │
-             ┌──────────────┴──────────────┐
-             │                             │
-             ▼                             ▼
-       Backend EC2                  Backend EC2
-       Auto Scaling Group           Auto Scaling Group
-             │                             │
-             └──────────────┬──────────────┘
-                            │
-                            ▼
-                    Amazon RDS MySQL
-```
-
----
-
-# 🛡️ High Availability Design
-
-The infrastructure is designed with production availability in mind.
-
-### Frontend Layer
-
-- Public Application Load Balancer
-- Multiple EC2 instances
-- Auto Scaling Group
-- Health Checks
-- Automatic Instance Replacement
-
----
-
-### Backend Layer
-
-- Internal Application Load Balancer
-- Multiple Backend Servers
-- Auto Scaling Group
-- Private Networking
-
----
-
-### Database Layer
-
-- Amazon RDS
-- Private Subnets
-- Security Group Isolation
-- Parameter Store Integration
-
----
-
-### Monitoring Layer
-
-- Amazon CloudWatch
-- CloudWatch Agent
-- CloudWatch Dashboard
-- CloudWatch Alarms
-- Amazon SNS
-
----
-
-# 🔄 Request Flow
-
-```text
-User
-
-↓
-
-Public Application Load Balancer
-
-↓
-
-Frontend Auto Scaling Group
-
-↓
-
-Internal Load Balancer
-
-↓
-
-Backend Auto Scaling Group
-
-↓
-
-Amazon RDS MySQL
-```
+| Metric | Value |
+|---------|------:|
+| **Application Architecture** | Full Stack |
+| **Frontend Framework** | React + Vite |
+| **Backend Framework** | FastAPI |
+| **Cloud Provider** | AWS |
+| **Availability Zones** | Multi-AZ |
+| **Application Load Balancers** | 2 |
+| **Auto Scaling Groups** | 2 |
+| **CodeBuild Projects** | 2 |
+| **CodePipeline Pipelines** | 1 |
+| **CloudWatch Dashboard** | 1 |
+| **SNS Topics** | 1 |
+| **CloudWatch Alarms** | 6+ |
+| **Project Phases Completed** | 2 | 
 
 ---
 
 # 📂 Repository Structure
 
+The repository is organized into modular directories to separate application code, infrastructure configuration, monitoring assets, and documentation. This structure follows a clean and scalable layout inspired by real-world DevOps projects.
+
 ```text
 employee-management-system/
-
-├── app/
-│   ├── backend/
-│   └── frontend/
 │
-├── platform/
-│   ├── bootstrap/
-│   ├── cicd/
-│   ├── gitops/
-│   ├── iac/
-│   ├── observability/
-│   ├── security/
-│   ├── templates/
-│   └── ai-platform/
-│
-├── aws/
+├── app/                     # Frontend and Backend application source code
+│   ├── backend/             # FastAPI backend application
+│   └── frontend/            # React frontend application
 │
 ├── assets/
+│   ├── diagrams/            # Architecture diagrams
+│   └── screenshots/         # Project screenshots
+│       ├── phase-1/
+│       └── phase-2/
 │
-├── diagrams/
+├── docs/                    # Technical documentation
 │
-├── docs/
+├── platform/
+│   ├── bootstrap/           # EC2 bootstrap scripts
+│   ├── cicd/                # AWS CodePipeline & CodeBuild configuration
+│   └── observability/       # CloudWatch monitoring configuration
 │
-├── tests/
+├── tests/                   # Future test suites
 │
 ├── README.md
-├── CHANGELOG.md
+├── LICENSE
 ├── CONTRIBUTING.md
-└── LICENSE
+└── CHANGELOG.md
 ```
 
 ---
 
-# 📁 Repository Explanation
+## 📁 Directory Overview
 
 | Directory | Description |
-|------------|-------------|
-| `app/` | Frontend & Backend Application Source Code |
-| `platform/bootstrap/` | User Data, Systemd Services & Bootstrap Scripts |
-| `platform/iac/` | Terraform & Ansible Infrastructure |
-| `platform/cicd/` | Jenkins, GitHub Actions & AWS Native CI/CD |
-| `platform/gitops/` | Kubernetes, Helm & ArgoCD |
-| `platform/observability/` | CloudWatch, Prometheus, Grafana & Loki |
-| `platform/security/` | Security Scanning & Compliance |
-| `docs/` | Project Documentation |
-| `diagrams/` | Architecture Diagrams |
-| `assets/` | Images & Screenshots |
-| `tests/` | Backend, Frontend & Infrastructure Tests |
+|-----------|-------------|
+| **app/backend** | FastAPI backend source code including API routes, database models, services, and business logic. |
+| **app/frontend** | React application with reusable components, pages, API services, and frontend utilities. |
+| **assets/diagrams** | AWS architecture diagrams, CI workflow diagrams, and project illustrations. |
+| **assets/screenshots** | Screenshots collected during each implementation phase for documentation purposes. |
+| **docs** | Detailed project documentation including architecture, setup guide, operations guide, and runbook. |
+| **platform/bootstrap** | EC2 bootstrap scripts used during infrastructure provisioning and server initialization. |
+| **platform/cicd** | AWS CodeBuild buildspec files and deployment automation scripts. |
+| **platform/observability** | CloudWatch Agent configuration and monitoring scripts. |
+| **tests** | Reserved for backend, frontend, and infrastructure testing. |
 
 ---
 
-# 🏛️ Infrastructure Components
+# 🚀 Implementation Journey
 
-## Compute
+The project is being developed incrementally across multiple phases, with each phase introducing additional cloud-native and DevOps capabilities.
 
-- Frontend Auto Scaling Group
-- Backend Auto Scaling Group
-- Launch Templates
-
----
-
-## Networking
-
-- VPC
-- Public Subnets
-- Private Subnets
-- Internet Gateway
-- NAT Gateway
-- Route Tables
+| Phase | Focus Area | Status |
+|--------|------------|--------|
+| **Phase 1** | AWS Infrastructure & High Availability | ✅ Completed |
+| **Phase 2** | AWS Native Continuous Integration & Monitoring | ✅ Completed |
+| **Phase 3** | Jenkins-based Continuous Deployment | 🚧 Planned |
+| **Phase 4** | Infrastructure as Code (Terraform & Ansible) | 📅 Planned |
+| **Phase 5** | Kubernetes, GitOps & Observability | 📅 Planned |
 
 ---
 
-## Load Balancing
+## ✅ Phase 1 Highlights
 
-- Public ALB
-- Internal ALB
-- Target Groups
-- Health Checks
-
----
-
-## Database
-
-- Amazon RDS MySQL
-
----
-
-## Monitoring
-
-- CloudWatch Dashboard
-- CloudWatch Alarms
-- SNS Notifications
-- CloudWatch Agent
+- Designed a production-inspired AWS network architecture.
+- Configured public and private subnets across multiple Availability Zones.
+- Implemented Internet Gateway and NAT Gateway.
+- Deployed Public and Internal Application Load Balancers.
+- Configured Frontend and Backend Auto Scaling Groups.
+- Created Launch Templates for immutable infrastructure.
+- Integrated Amazon RDS for persistent data storage.
+- Managed application configuration using AWS Systems Manager Parameter Store.
+- Installed CloudWatch Agent for instance-level monitoring.
 
 ---
 
-## Security
+## ✅ Phase 2 Highlights
 
-- IAM Roles
-- Security Groups
-- Systems Manager Parameter Store
-
----
-# 🚀 Deployment Workflow
-
-The Employee Management System follows a production-inspired deployment workflow that automates infrastructure provisioning, application deployment, monitoring, and recovery.
-
-```text
-                Developer
-                    │
-                    ▼
-            GitHub Repository
-                    │
-                    ▼
-          Launch Templates
-                    │
-                    ▼
-         Auto Scaling Groups
-                    │
-                    ▼
-       EC2 Bootstrap Automation
-                    │
-         ┌──────────┴──────────┐
-         │                     │
-         ▼                     ▼
- Frontend Service       Backend Service
-         │                     │
-         └──────────┬──────────┘
-                    ▼
-              Amazon RDS
-                    │
-                    ▼
-          CloudWatch Monitoring
-                    │
-                    ▼
-            Amazon SNS Alerts
-```
+- Integrated GitHub with AWS CodePipeline.
+- Configured independent Frontend and Backend AWS CodeBuild projects.
+- Automated build execution on every Git push.
+- Centralized build logs using Amazon CloudWatch Logs.
+- Built a CloudWatch Dashboard for operational visibility.
+- Configured CloudWatch Alarms for infrastructure and pipeline monitoring.
+- Integrated Amazon SNS for automated email notifications.
+- Refactored the repository into a clean and production-inspired structure.
 
 ---
 
-# ⚙️ Infrastructure Automation
+# 📊 Monitoring & Alerting
 
-The EC2 instances are fully automated using Launch Templates and bootstrap scripts.
+A key objective of this project is to demonstrate operational visibility and proactive monitoring in a production-inspired AWS environment.
 
-During instance provisioning, the bootstrap process automatically:
-
-- Updates the operating system
-- Installs required packages
-- Configures Nginx
-- Installs Python dependencies
-- Installs Node.js (Frontend)
-- Retrieves database configuration from AWS Systems Manager Parameter Store
-- Starts backend services
-- Builds and deploys the frontend
-- Configures CloudWatch Agent
-- Registers the instance with the Load Balancer
-
-This allows newly launched instances to become operational without manual intervention.
+The monitoring stack was implemented using **Amazon CloudWatch** and **Amazon SNS** to provide centralized dashboards, real-time metrics, automated alarms, and email notifications.
 
 ---
 
-# 📈 Monitoring & Observability
+## 📈 CloudWatch Dashboard
 
-The project includes infrastructure monitoring using Amazon CloudWatch.
+A centralized CloudWatch Dashboard provides real-time visibility into the health and performance of the application infrastructure and CI pipeline.
 
-## Metrics Collected
+### Dashboard Widgets
 
-| Category | Metrics |
-|-----------|---------|
-| Compute | CPU Utilization |
-| Memory | Memory Usage |
-| Storage | Disk Utilization |
-| Networking | Network In / Network Out |
-| Application | Healthy Host Count |
-| Load Balancer | Target Health |
-| Infrastructure | EC2 Status |
+| Widget | Purpose |
+|----------|---------|
+| 🔄 CodePipeline Status | Monitor pipeline execution failures |
+| 🏗️ Frontend CodeBuild | Track frontend build success and failures |
+| 🏗️ Backend CodeBuild | Track backend build success and failures |
+| 💻 Frontend EC2 CPU | Monitor frontend instance utilization |
+| 💻 Backend EC2 CPU | Monitor backend instance utilization |
+| ⚖️ Application Load Balancer | Observe request count, healthy hosts, and traffic |
+| 🗄️ Amazon RDS | Monitor CPU utilization and database connections |
 
----
+> **Dashboard Screenshot**
 
-## Monitoring Components
-
-- Amazon CloudWatch Agent
-- CloudWatch Dashboard
-- CloudWatch Alarms
-- Amazon SNS Email Notifications
+<p align="center">
+<img src="assets/screenshots/phase-2/04-cloudwatch-dashboard.png" width="100%">
+</p>
 
 ---
 
-## Current CloudWatch Alarms
+# 🚨 CloudWatch Alarms
 
-| Alarm | Description |
-|---------|------------|
-| Frontend CPU High | Alerts when CPU exceeds threshold |
-| Backend CPU High | Alerts when CPU exceeds threshold |
-| Frontend Memory High | Memory utilization monitoring |
-| Backend Memory High | Memory utilization monitoring |
-| Disk Utilization | Storage monitoring |
+CloudWatch Alarms continuously monitor critical AWS resources and automatically trigger notifications whenever predefined thresholds are exceeded.
 
----
+The following alarms have been configured:
 
-# 🧪 High Availability Validation
+| Alarm | Purpose |
+|---------|---------|
+| Pipeline Failure | Detect failed CodePipeline executions |
+| Frontend Build Failure | Detect failed frontend builds |
+| Backend Build Failure | Detect failed backend builds |
+| Frontend EC2 High CPU | Alert when frontend CPU exceeds threshold |
+| Backend EC2 High CPU | Alert when backend CPU exceeds threshold |
+| Amazon RDS High CPU | Alert when database CPU exceeds threshold |
 
-The infrastructure has been validated using failure simulation tests.
+> **CloudWatch Alarms**
 
-## Test 1 — Frontend Auto Recovery
-
-**Objective**
-
-Terminate a frontend EC2 instance.
-
-**Expected Result**
-
-- Auto Scaling launches a replacement instance
-- Bootstrap executes successfully
-- Target becomes healthy
-- Application remains accessible
-
-**Status**
-
-✅ Passed
+<p align="center">
+<img src="assets/screenshots/phase-2/05-cloudwatch-alarms.png" width="100%">
+</p>
 
 ---
 
-## Test 2 — Backend Auto Recovery
+# 📧 Amazon SNS Notifications
 
-**Objective**
+Amazon SNS is integrated with CloudWatch Alarms to send email notifications whenever critical events occur.
 
-Terminate a backend EC2 instance.
+Typical alert scenarios include:
 
-**Expected Result**
+- ❌ CodePipeline execution failure
+- ❌ Frontend build failure
+- ❌ Backend build failure
+- ⚠️ High CPU utilization on EC2 instances
+- ⚠️ High CPU utilization on Amazon RDS
 
-- Backend ASG launches a new instance
-- Backend registers with Internal Load Balancer
-- Database connectivity restored automatically
+This enables proactive monitoring and faster incident response.
 
-**Status**
+> **SNS Topic**
 
-✅ Passed
-
----
-
-## Test 3 — Parameter Store Integration
-
-**Objective**
-
-Verify secure retrieval of database credentials.
-
-**Validation**
-
-- IAM Role attached
-- Parameters retrieved successfully
-- Backend connected to Amazon RDS
-
-**Status**
-
-✅ Passed
+<p align="center">
+<img src="assets/screenshots/phase-2/06-sns-topic.png" width="100%">
+</p>
 
 ---
 
-## Test 4 — Monitoring Validation
+# 📜 CloudWatch Logs
 
-**Objective**
+AWS CodeBuild automatically publishes build logs to Amazon CloudWatch Logs.
 
-Verify monitoring pipeline.
+This provides:
 
-**Validation**
+- Centralized build logging
+- Build troubleshooting
+- Error diagnostics
+- Historical build records
 
-- CloudWatch Agent installed
-- Metrics published
-- Dashboard updated
-- SNS notification received
+Both frontend and backend build projects generate independent log streams for easier debugging.
 
-**Status**
+> **CloudWatch Logs**
 
-✅ Passed
-
----
-
-# 📸 Project Screenshots
-
-## Application
-
-|Dashboard| 
-|-------|
-| ![](assets/screenshots/phase-1/ems-dashboard.png) |
+<p align="center">
+<img src="assets/screenshots/phase-2/07-cloudwatch-logs.png" width="100%">
+</p>
 
 ---
 
-## AWS Infrastructure
+# 📊 Operational Benefits
 
-| Public ALB | Internal ALB |
-|------------|--------------|
-| ![](assets/screenshots/phase-1/public-lb.png) | ![](assets/screenshots/phase-1/internal-lb.png) |
+The monitoring implementation provides several production-oriented capabilities:
 
----
-
-| Frontend ASG | Backend ASG |
-|--------------|-------------|
-| ![](assets/screenshots/phase-1/asg-frontend.png) | ![](assets/screenshots/phase-1/asg-backend.png) |
-
----
-
-| RDS | Parameter Store |
-|-----|-----------------|
-| ![](assets/screenshots/phase-1/rds.png) | ![](assets/screenshots/phase-1/parameter-store.png) |
+- ✅ Centralized operational dashboard
+- ✅ Continuous infrastructure monitoring
+- ✅ Automated pipeline health monitoring
+- ✅ Build failure detection
+- ✅ Resource utilization tracking
+- ✅ Email-based incident notifications
+- ✅ Faster troubleshooting through CloudWatch Logs
+- ✅ Improved operational visibility
 
 ---
 
-| CloudWatch Dashboard | CloudWatch Alarms |
-|----------------------|-------------------|
-| ![](assets/screenshots/phase-1/cloudwatch-dashboard.png) | ![](assets/screenshots/phase-1/alarms.png) |
+# ⚙️ Getting Started
+
+This section explains how to set up and run the Employee Management System locally. For the complete AWS deployment process, refer to the documentation in the [`docs/`](docs/) directory.
+
+## 📋 Prerequisites
+
+Ensure the following software is installed before running the project:
+
+| Software | Version |
+|----------|---------|
+| Git | Latest |
+| Python | 3.12+ |
+| Node.js | 20+ |
+| npm | 10+ |
+| MySQL | 8.0+ (or Amazon RDS) |
+| AWS CLI | v2 |
+| Ubuntu | 24.04 LTS (Recommended) |
 
 ---
 
-# 🛠️ Getting Started
-
-## Clone the Repository
+## 📥 Clone the Repository
 
 ```bash
-git clone https://github.com/Mr-Ujjwal-Agarwal/employee-management-system.git
+git clone https://github.com/<your-github-username>/employee-management-system.git
 
 cd employee-management-system
 ```
 
 ---
 
-## Backend Setup
+# 🐍 Backend Setup
+
+Navigate to the backend directory.
 
 ```bash
 cd app/backend
+```
 
+Create a virtual environment.
+
+```bash
 python3 -m venv venv
+```
 
+Activate the virtual environment.
+
+```bash
 source venv/bin/activate
+```
 
+Install dependencies.
+
+```bash
 pip install -r requirements.txt
+```
 
-uvicorn app.main:app --reload
+Configure your environment variables or AWS Systems Manager Parameter Store values.
+
+Start the FastAPI server.
+
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+Backend API
+
+```
+http://localhost:8000
+```
+
+Swagger Documentation
+
+```
+http://localhost:8000/docs
 ```
 
 ---
 
-## Frontend Setup
+# ⚛️ Frontend Setup
+
+Navigate to the frontend directory.
 
 ```bash
 cd app/frontend
+```
 
+Install dependencies.
+
+```bash
 npm install
+```
 
+Start the development server.
+
+```bash
 npm run dev
+```
+
+Frontend
+
+```
+http://localhost:5173
 ```
 
 ---
 
-## Production Deployment
+# ☁️ AWS Deployment
 
-Infrastructure deployment includes:
+The AWS infrastructure and deployment environment include:
 
-- Launch Templates
+- Amazon VPC
+- Public & Private Subnets
+- Internet Gateway
+- NAT Gateway
+- Application Load Balancers
 - Auto Scaling Groups
-- Public & Internal Load Balancers
-- Amazon RDS
-- Parameter Store
-- CloudWatch
-- SNS
-
-Bootstrap scripts automatically configure each EC2 instance during launch.
-
----
-
-# 🧰 Operations Overview
-
-Routine operational tasks include:
-
-- Monitoring CloudWatch dashboards
-- Reviewing CloudWatch alarms
-- Checking Auto Scaling activity
-- Monitoring target health
-- Reviewing EC2 bootstrap logs
-- Verifying Parameter Store access
-- Inspecting RDS connectivity
-- Validating SNS notifications
-
----
-
-# 🔍 Troubleshooting
-
-| Issue | Resolution |
-|--------|------------|
-| Target Unhealthy | Review EC2 bootstrap logs and health check configuration |
-| Backend Connection Failure | Verify Parameter Store values and IAM permissions |
-| CloudWatch Metrics Missing | Confirm CloudWatch Agent is installed and running |
-| Database Connection Failure | Check RDS Security Groups and credentials |
-| Auto Scaling Failure | Review Launch Template and ASG activity history |
-
----
-# 🛣️ Project Roadmap
-
-The project is being developed in multiple phases to progressively build a production-ready cloud platform.
-
-| Phase | Description | Status |
-|-------|-------------|--------|
-| Phase 1 | AWS Infrastructure, High Availability, Monitoring | ✅ Completed |
-| Phase 2 | AWS Native CI/CD (CodeDeploy, CodePipeline, GitHub Actions) | 🚧 Planned |
-| Phase 3 | HTTPS, Route53, ACM, CloudFront | ⏳ Planned |
-| Phase 4 | Docker, Kubernetes, Helm, ArgoCD, GitOps | ⏳ Planned |
-| Phase 5 | Agentic DevOps, AI Automation, Advanced Observability & Security | ⏳ Planned |
-
----
-
-# 📌 Phase 1 Deliverables
-
-## Infrastructure
-
-- ✅ Multi-AZ VPC
-- ✅ Public & Private Subnets
-- ✅ Internet Gateway
-- ✅ NAT Gateway
-- ✅ Route Tables
-- ✅ Security Groups
-
----
-
-## Compute
-
-- ✅ Frontend Auto Scaling Group
-- ✅ Backend Auto Scaling Group
-- ✅ Launch Templates
-- ✅ Automated EC2 Bootstrap
-- ✅ Self-Healing Infrastructure
-
----
-
-## Networking
-
-- ✅ Public Application Load Balancer
-- ✅ Internal Application Load Balancer
-- ✅ Target Groups
-- ✅ Health Checks
-
----
-
-## Database
-
-- ✅ Amazon RDS MySQL
-- ✅ Secure Private Networking
-- ✅ Systems Manager Parameter Store
-
----
-
-## Monitoring
-
-- ✅ CloudWatch Dashboard
-- ✅ CloudWatch Agent
-- ✅ CloudWatch Alarms
-- ✅ SNS Email Notifications
-
----
-
-## Repository
-
-- ✅ Enterprise Repository Structure
-- ✅ Documentation Framework
-- ✅ Platform Engineering Layout
-
----
-
-# ⚠️ Known Limitations
-
-The following items are intentionally deferred to future phases.
-
-### CodeDeploy
-
-AWS CodeDeploy Agent currently does not support Ubuntu 26.04 LTS used in this project.
-
-The deployment automation architecture is already prepared and will be completed after migrating to a supported operating system (Ubuntu 24.04 LTS or Amazon Linux 2023).
-
----
-
-### HTTPS
-
-HTTPS is pending because a custom domain has not yet been registered.
-
-Planned implementation:
-
-- Amazon Route53
-- AWS Certificate Manager (ACM)
-- HTTPS Listener
-- HTTP → HTTPS Redirect
-- Optional CloudFront Integration
-
----
-
-# 🚀 Future Enhancements
-
-## Phase 2
-
-- AWS CodeDeploy
-- AWS CodePipeline
-- GitHub Actions
-- Blue/Green Deployment
-- Rolling Updates
-
----
-
-## Phase 3
-
-- Route53
-- ACM SSL Certificate
-- HTTPS
-- CloudFront
-- Custom Domain
-
----
-
-## Phase 4
-
-- Docker
-- Docker Compose
-- Amazon ECR
-- Kubernetes
-- Helm
-- ArgoCD
-- GitOps
-
----
-
-## Phase 5
-
-### Observability
-
-- Prometheus
-- Grafana
-- Loki
-- Alertmanager
-- Distributed Tracing
-
-### Security
-
-- Trivy
-- Checkov
-- tfsec
-- SonarQube
-- Dependency Check
-
-### AI Platform
-
-- Deployment Agent
-- Monitoring Agent
-- Rollback Agent
-- Documentation Agent
-- Security Agent
-
----
-
-# 🎓 Learning Outcomes
-
-This project demonstrates hands-on experience with:
-
-## Cloud Engineering
-
-- AWS Networking
-- Amazon EC2
-- Auto Scaling
 - Launch Templates
-- Application Load Balancer
 - Amazon RDS
-- IAM
-- Systems Manager Parameter Store
+- AWS Systems Manager Parameter Store
+- Amazon CloudWatch
+- Amazon SNS
+- AWS CodePipeline
+- AWS CodeBuild
+
+Detailed deployment instructions are available in:
+
+- 📄 `docs/setup-guide.md`
+- 📄 `docs/architecture.md`
+- 📄 `docs/operations-guide.md`
+- 📄 `docs/runbook.md`
 
 ---
 
-## DevOps
+# 🔄 Continuous Integration Workflow
 
-- Linux Administration
-- Shell Scripting
-- Infrastructure Automation
-- Reverse Proxy Configuration
-- Monitoring & Alerting
-- High Availability Design
-- Production Troubleshooting
+Every code push follows the workflow below.
 
----
+```
+Developer
+      │
+      ▼
+Git Push
+      │
+      ▼
+GitHub Repository
+      │
+      ▼
+AWS CodePipeline
+      │
+ ┌────┴────┐
+ ▼         ▼
+Frontend  Backend
+CodeBuild CodeBuild
+      │
+      ▼
+CloudWatch Logs
+      │
+      ▼
+CloudWatch Dashboard
+      │
+      ▼
+CloudWatch Alarms
+      │
+      ▼
+Amazon SNS
+```
 
-## Software Engineering
-
-- Repository Design
-- Documentation
-- Platform Engineering
-- Production Architecture
-- Operational Excellence
-
----
-
-# 💼 Resume Highlights
-
-This project showcases practical experience in:
-
-- AWS Cloud Infrastructure
-- Production Deployment
-- High Availability Architecture
-- Infrastructure Automation
-- Cloud Monitoring
-- Auto Scaling
-- Linux Administration
-- Platform Engineering
-- DevOps Best Practices
-
----
-
-# 📊 Project Statistics
-
-| Category | Details |
-|----------|---------|
-| Cloud Provider | Amazon Web Services (AWS) |
-| Architecture | Three-Tier |
-| Availability | High Availability |
-| Load Balancers | 2 |
-| Auto Scaling Groups | 2 |
-| Database | Amazon RDS MySQL |
-| Monitoring | Amazon CloudWatch |
-| Notifications | Amazon SNS |
-| Configuration Management | Systems Manager Parameter Store |
-| Deployment Strategy | Launch Templates + Bootstrap |
+This workflow ensures that every code change is automatically validated, monitored, and reported.
 
 ---
 
-# 🤝 Contributing
+# 🧪 Validation Checklist
 
-Contributions, suggestions, and improvements are welcome.
+After deployment, verify the following:
 
-Please read the `CONTRIBUTING.md` guide before opening an issue or submitting a pull request.
-
----
-
-# 📄 License
-
-This project is licensed under the MIT License.
-
-See the `LICENSE` file for more information.
-
----
-
-# 👨‍💻 Author
-
-## Ujjwal Agarwal
-
-**Aspiring Cloud & DevOps Engineer**
-
-### Connect with me
-
-- GitHub: https://github.com/Mr-Ujjwal-Agarwal
-- LinkedIn: https://www.linkedin.com/in/ujjwal-agarwal16
-- Email: iamujjwalagarwal99@gmail.com
+- ✅ Frontend application is accessible
+- ✅ Backend API is responding
+- ✅ Application Load Balancer is healthy
+- ✅ Target Groups report healthy targets
+- ✅ Amazon RDS is available
+- ✅ CodePipeline completes successfully
+- ✅ Frontend CodeBuild succeeds
+- ✅ Backend CodeBuild succeeds
+- ✅ CloudWatch Dashboard displays metrics
+- ✅ SNS notifications are delivered when alarms are triggered
 
 ---
 
-# 🙏 Acknowledgements
+# 📸 Project Screenshots
 
-Special thanks to:
+The following screenshots showcase the infrastructure, Continuous Integration pipeline, monitoring, and the application interface built throughout the project.
 
-- AWS Documentation
-- FastAPI Documentation
-- React Documentation
-- Linux Community
-- Open Source Contributors
+## ☁️ AWS Infrastructure (Phase 1)
+
+| Component | Screenshot |
+|-----------|------------|
+| Amazon VPC | ![](assets/screenshots/phase-1/01-vpc.png) |
+| Public & Private Subnets | ![](assets/screenshots/phase-1/02-subnets.png) |
+| Route Tables | ![](assets/screenshots/phase-1/03-route-tables.png) |
+| Amazon RDS | ![](assets/screenshots/phase-1/05-rds.png) |
+| Parameter Store | ![](assets/screenshots/phase-1/04-parameter-store.png) |
+| Launch Template | ![](assets/screenshots/phase-1/06-launch-template.png) |
+| Auto Scaling Groups | ![](assets/screenshots/phase-1/07-auto-scaling-overview.png) |
+| Public Application Load Balancer | ![](assets/screenshots/phase-1/10-public-alb.png) |
+| Internal Application Load Balancer | ![](assets/screenshots/phase-1/11-internal-alb.png) |
+| Frontend Target Group | ![](assets/screenshots/phase-1/12-frontend-target-group.png) |
+| Backend Target Group | ![](assets/screenshots/phase-1/13-backend-target-group.png) |
 
 ---
 
-<div align="center">
+## 🔄 Continuous Integration (Phase 2)
 
-## ⭐ If you found this project useful, consider giving it a Star!
+| Component | Screenshot |
+|-----------|------------|
+| AWS CodePipeline | ![](assets/screenshots/phase-2/01-codepipeline-success.png) |
+| Frontend CodeBuild | ![](assets/screenshots/phase-2/02-frontend-codebuild-success.png) |
+| Backend CodeBuild | ![](assets/screenshots/phase-2/03-backend-codebuild-success.png) |
 
-Building production-ready cloud infrastructure one project at a time.
+---
 
-Made  by **Ujjwal Agarwal**
+## 📊 Monitoring & Alerting
 
-</div>
+| Component | Screenshot |
+|-----------|------------|
+| CloudWatch Dashboard | ![](assets/screenshots/phase-2/04-cloudwatch-dashboard.png) |
+| CloudWatch Alarms | ![](assets/screenshots/phase-2/05-cloudwatch-alarms.png) |
+| Amazon SNS | ![](assets/screenshots/phase-2/06-sns-topic.png) |
+| CloudWatch Logs | ![](assets/screenshots/phase-2/07-cloudwatch-logs.png) |
 
+---
+
+## 💻 Application
+
+| Page | Screenshot |
+|------|------------|
+| Dashboard | ![](assets/screenshots/phase-1/18-application-dashboard.png) |
+
+---
+
+# 📚 Documentation
+
+Detailed project documentation is available in the `docs/` directory.
+
+| Document | Description |
+|----------|-------------|
+| 📖 `architecture.md` | Detailed AWS architecture and infrastructure design. |
+| ⚙️ `setup-guide.md` | Local development environment setup and AWS deployment instructions. |
+| 🛠️ `operations-guide.md` | Operational procedures, monitoring workflow, and maintenance tasks. |
+| 🚑 `runbook.md` | Troubleshooting guide, recovery procedures, and common operational issues. |
+
+These documents provide deeper technical details beyond the overview presented in this README.
+
+
+  
