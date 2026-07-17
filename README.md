@@ -84,6 +84,14 @@ The architecture is divided into two major layers:
 
 ---
 
+> **Architecture**
+
+<p align="center">
+<img src="assets/diagrams/Phase-1.png" width="100%">
+</p>
+
+---
+
 ## 🔄 Continuous Integration Layer (Phase 2)
 
 Every code push follows the automated workflow below:
@@ -124,7 +132,11 @@ Amazon SNS Notifications
 
 ---
 
-> 📌 **Architecture diagrams will be added after completing all project phases.**
+> **Dashboard Screenshot**
+
+<p align="center">
+<img src="assets/diagrams/Phase-2.png" width="100%">
+</p>
 
 ---
 
@@ -450,7 +462,7 @@ Both frontend and backend build projects generate independent log streams for ea
 > **CloudWatch Logs**
 
 <p align="center">
-<img src="assets/screenshots/phase-2/07-cloudwatch-logs.png" width="100%">
+<img src="assets/screenshots/phase-2/07-codebuild-logs.png" width="100%">
 </p>
 
 ---
@@ -666,17 +678,17 @@ The following screenshots showcase the infrastructure, Continuous Integration pi
 
 | Component | Screenshot |
 |-----------|------------|
-| Amazon VPC | ![](assets/screenshots/phase-1/01-vpc.png) |
-| Public & Private Subnets | ![](assets/screenshots/phase-1/02-subnets.png) |
-| Route Tables | ![](assets/screenshots/phase-1/03-route-tables.png) |
-| Amazon RDS | ![](assets/screenshots/phase-1/05-rds.png) |
-| Parameter Store | ![](assets/screenshots/phase-1/04-parameter-store.png) |
-| Launch Template | ![](assets/screenshots/phase-1/06-launch-template.png) |
-| Auto Scaling Groups | ![](assets/screenshots/phase-1/07-auto-scaling-overview.png) |
-| Public Application Load Balancer | ![](assets/screenshots/phase-1/10-public-alb.png) |
-| Internal Application Load Balancer | ![](assets/screenshots/phase-1/11-internal-alb.png) |
-| Frontend Target Group | ![](assets/screenshots/phase-1/12-frontend-target-group.png) |
-| Backend Target Group | ![](assets/screenshots/phase-1/13-backend-target-group.png) |
+| Amazon VPC | ![](assets/screenshots/phase-1/vpc.png) |
+| Public & Private Subnets | ![](assets/screenshots/phase-1/subnets.png) |
+| Route Tables | ![](assets/screenshots/phase-1/route-table.png) |
+| Amazon RDS | ![](assets/screenshots/phase-1/rds.png) |
+| Parameter Store | ![](assets/screenshots/phase-1/parameter-store.png) |
+| Launch Template | ![](assets/screenshots/phase-1/launch-template.png) |
+| Auto Scaling Groups | ![](assets/screenshots/phase-1/asg.png) |
+| Public Application Load Balancer | ![](assets/screenshots/phase-1/public-lb.png) |
+| Internal Application Load Balancer | ![](assets/screenshots/phase-1/internal-lb.png) |
+| Frontend Target Group | ![](assets/screenshots/phase-1/tg-frontend.png) |
+| Backend Target Group | ![](assets/screenshots/phase-1/tg-backend.png) |
 
 ---
 
@@ -697,7 +709,7 @@ The following screenshots showcase the infrastructure, Continuous Integration pi
 | CloudWatch Dashboard | ![](assets/screenshots/phase-2/04-cloudwatch-dashboard.png) |
 | CloudWatch Alarms | ![](assets/screenshots/phase-2/05-cloudwatch-alarms.png) |
 | Amazon SNS | ![](assets/screenshots/phase-2/06-sns-topic.png) |
-| CloudWatch Logs | ![](assets/screenshots/phase-2/07-cloudwatch-logs.png) |
+| CloudWatch Logs | ![](assets/screenshots/phase-2/07-codebuild-logs.png) |
 
 ---
 
@@ -705,7 +717,7 @@ The following screenshots showcase the infrastructure, Continuous Integration pi
 
 | Page | Screenshot |
 |------|------------|
-| Dashboard | ![](assets/screenshots/phase-1/18-application-dashboard.png) |
+| Dashboard | ![](assets/screenshots/phase-1/ems-dashboard.png) |
 
 ---
 
