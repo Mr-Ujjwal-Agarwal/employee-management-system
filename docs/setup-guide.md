@@ -1,168 +1,81 @@
-# Setup Guide
+# ⚙️ Setup Guide
 
-## Employee Management System
+## 1. Overview
 
-Version: v1.0.0-beta
+This document provides a step-by-step guide for setting up the **Employee Management System (EMS)** from scratch.
 
----
+It covers:
 
-# Overview
+- Local development environment
+- AWS infrastructure prerequisites
+- Backend deployment
+- Frontend deployment
+- Database configuration
+- Continuous Integration setup
+- Monitoring configuration
+- Verification procedures
 
-This guide explains how to set up, deploy, and validate the Employee Management System.
-
-The project consists of:
-
-- React Frontend
-- FastAPI Backend
-- Amazon RDS MySQL
-- AWS Infrastructure
-- Auto Scaling
-- Load Balancers
-- CloudWatch Monitoring
-
-The guide covers both local development and AWS deployment.
+This guide assumes the project is being deployed on **Amazon Web Services (AWS)** following the Phase 2 architecture.
 
 ---
 
-# Prerequisites
+# 2. Prerequisites
 
-## AWS
+Before starting, ensure the following tools and services are available.
 
-Before deployment, ensure the following services are available.
+## Development Tools
 
-- AWS Account
-- IAM User or IAM Role
-- AWS CLI
-- Amazon VPC
-- EC2
-- Auto Scaling
-- Launch Templates
-- Application Load Balancer
-- Amazon RDS
-- Systems Manager Parameter Store
-- Amazon CloudWatch
-- Amazon SNS
-
----
-
-## Local Development
-
-Install the following software.
-
-### Operating System
-
-Recommended
-
-- Ubuntu 24.04 LTS or later
-- macOS
-- Windows with WSL2
-
----
-
-### Required Software
-
-| Software | Version |
-|----------|---------|
+| Tool | Version |
+|--------|---------|
 | Git | Latest |
 | Python | 3.12+ |
 | Node.js | 20+ |
-| npm | Latest |
-| AWS CLI | v2 |
-| MySQL Client | Latest |
+| npm | 10+ |
+| AWS CLI | Version 2 |
+| VS Code | Recommended |
 
 ---
 
-# Repository Setup
+## AWS Services
+
+The following AWS services are required.
+
+- Amazon VPC
+- Amazon EC2
+- Amazon RDS
+- Application Load Balancer
+- Auto Scaling Groups
+- Launch Templates
+- Systems Manager Parameter Store
+- CodePipeline
+- CodeBuild
+- CloudWatch
+- SNS
+- IAM
+
+---
+
+# 3. Clone Repository
 
 Clone the repository.
 
 ```bash
-git clone https://github.com/Mr-Ujjwal-Agarwal/employee-management-system.git
+git clone https://github.com/<your-username>/employee-management-system.git
 
 cd employee-management-system
 ```
 
-Verify the repository.
-
-```bash
-tree -L 2
-```
-
-Expected output
-
-```text
-app/
-aws/
-assets/
-diagrams/
-docs/
-platform/
-tests/
-README.md
-```
-
 ---
 
-# AWS CLI Configuration
+# 4. Backend Setup
 
-Configure AWS credentials.
-
-```bash
-aws configure
-```
-
-Provide:
-
-```
-AWS Access Key ID
-
-AWS Secret Access Key
-
-Region
-
-Output Format
-```
-
-Verify configuration.
-
-```bash
-aws sts get-caller-identity
-```
-
-Expected
-
-```json
-{
-    "UserId": "...",
-    "Account": "...",
-    "Arn": "..."
-}
-```
-
----
-
-# Project Structure
-
-```
-app/
-platform/
-docs/
-assets/
-diagrams/
-tests/
-```
-
----
-
-# Backend Setup
-
-Navigate to the backend directory.
+Move into the backend directory.
 
 ```bash
 cd app/backend
 ```
 
-Create a virtual environment.
+Create a Python virtual environment.
 
 ```bash
 python3 -m venv venv
@@ -183,353 +96,278 @@ pip install -r requirements.txt
 Run the backend.
 
 ```bash
-uvicorn app.main:app --reload
+uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
-Default endpoint
+Backend URL
 
 ```
 http://localhost:8000
 ```
 
-Verify
+Swagger UI
 
 ```
 http://localhost:8000/docs
 ```
 
-FastAPI Swagger UI should load successfully.
-
 ---
 
-# Frontend Setup
+# 5. Frontend Setup
 
-Navigate to the frontend.
+Move into the frontend directory.
 
 ```bash
 cd app/frontend
 ```
 
-Install packages.
+Install dependencies.
 
 ```bash
 npm install
 ```
 
-Run the application.
+Start the application.
 
 ```bash
 npm run dev
 ```
 
-Default URL
+Frontend URL
 
 ```
 http://localhost:5173
 ```
 
-Verify
+---
 
-The login page should be displayed.
+# 6. AWS Infrastructure Deployment
+
+The project infrastructure is built using native AWS services.
+
+## Networking
+
+Create:
+
+- Custom VPC
+- Public Subnets
+- Private Subnets
+- Internet Gateway
+- NAT Gateway
+- Route Tables
 
 ---
 
-# Database Setup
+## Compute
 
-The production environment uses Amazon RDS MySQL.
+Provision:
 
-Connection details are retrieved automatically from AWS Systems Manager Parameter Store.
+- Frontend Launch Template
+- Backend Launch Template
 
-Required Parameters
+Create:
 
-```
-/ems/prod/db/host
+- Frontend Auto Scaling Group
+- Backend Auto Scaling Group
 
-/ems/prod/db/name
+Attach:
 
-/ems/prod/db/user
-
-/ems/prod/db/password
-
-/ems/prod/db/port
-```
-
-Never hardcode credentials inside the application.
-
----
-
-# Environment Configuration
-
-The application expects configuration from AWS Systems Manager Parameter Store.
-
-Required IAM Permissions
-
-- ssm:GetParameter
-- ssm:GetParameters
-
-Verify access.
-
-```bash
-aws ssm describe-parameters --region ap-south-1
-```
-
----
-
-# Build Verification
-
-Backend
-
-```bash
-curl http://localhost:8000/docs
-```
-
-Frontend
-
-Open
-
-```
-http://localhost:5173
-```
-# AWS Deployment
-
-The production deployment uses:
-
-- Launch Templates
-- Auto Scaling Groups
-- Application Load Balancers
-- Bootstrap Scripts
-
-Deployment Flow
-
-```
-Launch Template
-
-↓
-
-EC2 Instance
-
-↓
-
-User Data Script
-
-↓
-
-Install Packages
-
-↓
-
-Retrieve Parameters
-
-↓
-
-Configure Nginx
-
-↓
-
-Start Application
-
-↓
-
-CloudWatch Agent
-
-↓
-
-Health Check
-
-↓
-
-Target Group
-```
-
----
-
-# Validation Checklist
-
-After deployment, verify:
-
-## EC2
-
-- Instances are running
-- IAM Role attached
-- Bootstrap completed
-
----
-
-## Auto Scaling
-
-Verify:
-
-- Desired Capacity
-- Healthy Instances
-- Instance Refresh
-
----
-
-## Load Balancer
-
-Verify:
-
-- Healthy Targets
-- Listener Configuration
-- Health Checks
+- Public ALB
+- Internal ALB
 
 ---
 
 ## Database
 
-Verify:
+Provision an Amazon RDS instance.
 
-- RDS Available
-- Backend Connected
-- Queries Successful
+Configure:
+
+- Database Name
+- Username
+- Password
+
+Restrict database access using Security Groups.
 
 ---
 
-## Parameter Store
+# 7. Systems Manager Parameter Store
 
-Verify:
+Store application configuration securely.
 
-```bash
-aws ssm get-parameter \
---name "/ems/prod/db/host"
+Recommended parameters include:
+
+- Database Host
+- Database Port
+- Database Username
+- Database Password
+- Database Name
+
+The backend application retrieves these parameters during runtime.
+
+---
+
+# 8. Continuous Integration Setup
+
+The project uses AWS-native Continuous Integration.
+
+## Step 1
+
+Create a GitHub connection.
+
+---
+
+## Step 2
+
+Create two CodeBuild projects.
+
+- Frontend Build
+- Backend Build
+
+Each project uses its corresponding buildspec file.
+
+```
+platform/cicd/aws-native/buildspec/
 ```
 
 ---
 
-## CloudWatch
+## Step 3
 
-Verify:
+Create an AWS CodePipeline.
 
-- Dashboard
-- Memory Metrics
-- Disk Metrics
-- CPU Metrics
+Pipeline stages:
 
----
+Source
 
-## SNS
+↓
 
-Trigger a test alarm.
+Frontend Build
 
-Confirm email notification is received.
++
 
----
-
-# Troubleshooting
-
-## Target Unhealthy
-
-Possible causes
-
-- Bootstrap failure
-- Incorrect Nginx configuration
-- Application not started
-- Wrong Health Check Path
+Backend Build
 
 ---
 
-## Backend Cannot Reach Database
+# 9. Monitoring Setup
 
-Verify
+Configure monitoring using Amazon CloudWatch.
 
-- Security Groups
-- Parameter Store
-- IAM Role
-- RDS Status
+Create:
 
----
-
-## CloudWatch Metrics Missing
-
-Verify
-
-```bash
-systemctl status amazon-cloudwatch-agent
-```
-
----
-
-## Auto Scaling Failure
-
-Verify
-
-- Launch Template
-- User Data
-- Activity History
-
----
-
-# Cleanup
-
-To remove the infrastructure.
-
-Delete:
-
-- Auto Scaling Groups
-- Launch Templates
-- Load Balancers
-- Target Groups
-- RDS
+- CloudWatch Dashboard
 - CloudWatch Alarms
-- SNS Topics
 
-Finally
+Monitor:
 
-Delete:
-
-- VPC
-- NAT Gateway
-- Internet Gateway
-- Security Groups
+- Pipeline
+- CodeBuild
+- EC2
+- Amazon RDS
 
 ---
 
-# Known Issues
+# 10. SNS Notifications
 
-## CodeDeploy
+Create an SNS Topic.
 
-AWS CodeDeploy Agent is currently incompatible with Ubuntu 26.04 LTS.
+Subscribe your email.
 
-Planned Resolution
+Attach the topic to CloudWatch Alarms.
 
-Migration to Ubuntu 24.04 LTS or Amazon Linux 2023.
-
----
-
-## HTTPS
-
-Pending:
-
-- Domain Registration
-- Route53
-- AWS Certificate Manager
+This enables automatic notifications whenever alarms are triggered.
 
 ---
 
-# Best Practices
+# 11. Validation Checklist
 
-- Use IAM Roles instead of Access Keys.
-- Store secrets in Parameter Store.
-- Enable CloudWatch monitoring.
-- Keep bootstrap scripts idempotent.
-- Never expose the database publicly.
-- Validate infrastructure after every deployment.
+Verify the following after deployment.
+
+Infrastructure
+
+- VPC created
+- Subnets configured
+- Route Tables configured
+- Security Groups configured
+- ALBs healthy
+- Auto Scaling Groups healthy
+- Amazon RDS available
+
+Application
+
+- Backend responding
+- Frontend responding
+
+CI
+
+- CodePipeline successful
+- Frontend CodeBuild successful
+- Backend CodeBuild successful
+
+Monitoring
+
+- Dashboard available
+- Alarms active
+- SNS notifications working
 
 ---
 
-# Setup Complete
+# 12. Common Issues
 
-The Employee Management System is now ready for development and production deployment.
+## Backend not starting
 
-For operational procedures, continue with:
+Check:
 
-- `docs/operations-guide.md`
-- `docs/runbook.md`
-- `docs/disaster-recovery.md`
-
-
-
-
-Both should respond successfully.
+- Python environment
+- Dependencies
+- Parameter Store configuration
 
 ---
+
+## Frontend build fails
+
+Check:
+
+- Node version
+- npm packages
+- Build logs
+
+---
+
+## Pipeline failure
+
+Check:
+
+- GitHub connection
+- IAM permissions
+- CodeBuild logs
+
+---
+
+## SNS email not received
+
+Check:
+
+- Email subscription status
+- Alarm configuration
+
+---
+
+# 13. Next Steps
+
+After completing this guide, the environment will provide:
+
+- High Availability
+- Automatic Scaling
+- Continuous Integration
+- Centralized Monitoring
+- Operational Alerting
+
+Future phases will introduce:
+
+- Jenkins
+- Terraform
+- Ansible
+- Kubernetes
+- GitOps
