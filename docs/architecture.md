@@ -1,659 +1,381 @@
-# System Architecture
+# 🏗️ System Architecture
 
-## Employee Management System
+## 1. Introduction
 
-Version: v1.0.0-beta
+The **Employee Management System (EMS)** is a production-inspired, cloud-native application designed to demonstrate modern AWS infrastructure, high availability, continuous integration, monitoring, and operational best practices.
+
+Rather than focusing solely on application development, this project showcases how a full-stack application can be deployed, monitored, and maintained using native AWS services.
+
+The project is implemented in multiple phases, with **Phase 2** representing the completion of the cloud infrastructure, AWS-native Continuous Integration (CI), and monitoring stack.
 
 ---
 
-# Overview
+# 2. Architecture Goals
 
-The Employee Management System (EMS) is designed as a production-inspired three-tier web application deployed on Amazon Web Services (AWS).
-
-The architecture emphasizes:
+The architecture was designed with the following objectives:
 
 - High Availability
 - Fault Tolerance
-- Scalability
-- Security
-- Automation
-- Observability
-- Maintainability
-
-Unlike a traditional student project, this repository focuses on deploying and operating a production-ready cloud infrastructure around the application.
-
----
-
-# Architecture Goals
-
-The architecture was designed to achieve the following objectives.
-
-## High Availability
-
-- Eliminate single points of failure.
-- Automatically recover from instance failures.
-- Distribute traffic across multiple EC2 instances.
+- Horizontal Scalability
+- Secure Configuration Management
+- Automated Continuous Integration
+- Centralized Monitoring
+- Operational Visibility
+- Modular Repository Structure
+- Easy Future Expansion
 
 ---
 
-## Scalability
+# 3. High-Level Architecture
 
-Automatically scale compute resources based on demand.
+The project consists of five major layers:
 
-Frontend and backend servers are independently scalable using Auto Scaling Groups.
+```
+                    Users
+                       │
+                       ▼
+              Application Load Balancer
+                       │
+         ┌─────────────┴─────────────┐
+         ▼                           ▼
+ Frontend Auto Scaling        Backend Auto Scaling
+         │                           │
+         └─────────────┬─────────────┘
+                       ▼
+                  Amazon RDS
+
+────────────────────────────────────────
+
+Developer
+
+↓
+
+GitHub
+
+↓
+
+AWS CodePipeline
+
+↓
+
+Frontend CodeBuild
+
++
+
+Backend CodeBuild
+
+↓
+
+CloudWatch
+
+↓
+
+SNS
+```
+
+> **Note:** A professional AWS architecture diagram will be added in a future revision.
 
 ---
 
-## Security
+# 4. Architecture Overview
 
-Protect internal services using private networking.
+The solution is divided into multiple logical layers.
 
-Sensitive information such as database credentials is stored in AWS Systems Manager Parameter Store instead of application code.
-
----
-
-## Automation
-
-Automate server provisioning using:
-
-- Launch Templates
-- EC2 User Data
-- Bootstrap Scripts
-
-Every new instance automatically configures itself without manual intervention.
+| Layer | Responsibility |
+|--------|----------------|
+| Presentation Layer | React frontend served through an Application Load Balancer |
+| Application Layer | FastAPI backend hosted on Amazon EC2 |
+| Database Layer | Amazon RDS |
+| Networking Layer | Amazon VPC with public and private subnets |
+| CI Layer | AWS CodePipeline and AWS CodeBuild |
+| Monitoring Layer | Amazon CloudWatch and Amazon SNS |
 
 ---
 
-## Monitoring
+# 5. AWS Networking Architecture
 
-Monitor infrastructure health using:
+The application is deployed inside a custom Amazon Virtual Private Cloud (VPC).
 
-- Amazon CloudWatch
-- CloudWatch Agent
+The networking layer consists of:
+
+- Custom VPC
+- Public Subnets
+- Private Subnets
+- Internet Gateway
+- NAT Gateway
+- Route Tables
+- Security Groups
+
+This architecture isolates backend services and the database while exposing only the required entry points through the Application Load Balancer.
+
+---
+
+# 6. Compute Layer
+
+The compute layer is responsible for hosting both frontend and backend services.
+
+## Frontend
+
+- Amazon EC2
+- Auto Scaling Group
+- Launch Template
+- Public Application Load Balancer
+
+## Backend
+
+- Amazon EC2
+- Auto Scaling Group
+- Launch Template
+- Internal communication with the frontend
+- FastAPI application
+
+Using Auto Scaling Groups ensures that failed instances are automatically replaced and allows the application to scale horizontally based on demand.
+
+---
+
+# 7. Database Layer
+
+The project uses **Amazon RDS** as the managed relational database service.
+
+Benefits include:
+
+- Managed backups
+- High availability support
+- Simplified maintenance
+- Secure networking
+- Centralized storage
+
+The backend communicates directly with Amazon RDS using credentials stored securely in AWS Systems Manager Parameter Store.
+
+---
+
+# 8. Configuration Management
+
+Application configuration is managed using **AWS Systems Manager Parameter Store**.
+
+Sensitive values such as database credentials and application configuration are stored outside the application code.
+
+Benefits include:
+
+- Secure secret storage
+- Centralized configuration
+- Easier environment management
+- Reduced hardcoded credentials
+
+---
+
+# 9. Continuous Integration Architecture
+
+The project implements an AWS-native Continuous Integration workflow.
+
+## Workflow
+
+Developer
+
+↓
+
+Git Push
+
+↓
+
+GitHub Repository
+
+↓
+
+AWS CodePipeline
+
+↓
+
+Frontend CodeBuild
+
++
+
+Backend CodeBuild
+
+↓
+
+Build Validation
+
+↓
+
+CloudWatch Logs
+
+Every commit automatically triggers the pipeline, ensuring that both frontend and backend components are built and validated.
+
+---
+
+# 10. Monitoring & Alerting
+
+Monitoring is implemented using Amazon CloudWatch.
+
+The monitoring stack includes:
+
 - CloudWatch Dashboard
+- CloudWatch Metrics
+- CloudWatch Logs
 - CloudWatch Alarms
 - Amazon SNS
 
----
-
-# Architecture Overview
-
-The application follows a classic three-tier architecture.
-
-```text
-                    Internet
-                        │
-                        ▼
-         Public Application Load Balancer
-                        │
-        ┌───────────────┴───────────────┐
-        │                               │
-        ▼                               ▼
- Frontend EC2                    Frontend EC2
- Auto Scaling                    Auto Scaling
-        │                               │
-        └───────────────┬───────────────┘
-                        │
-                Internal Load Balancer
-                        │
-        ┌───────────────┴───────────────┐
-        │                               │
-        ▼                               ▼
- Backend EC2                     Backend EC2
- Auto Scaling                    Auto Scaling
-        │                               │
-        └───────────────┬───────────────┘
-                        │
-                        ▼
-                 Amazon RDS MySQL
-```
+CloudWatch provides centralized operational visibility while Amazon SNS delivers email notifications whenever critical alarms are triggered.
 
 ---
 
-# Infrastructure Components
+# 11. Security Design
 
-The infrastructure consists of multiple AWS managed services.
+The project follows several AWS security best practices.
 
-| Layer | AWS Service |
-|--------|-------------|
-| Compute | Amazon EC2 |
-| Scaling | Auto Scaling Groups |
-| Networking | Amazon VPC |
-| Load Balancing | Application Load Balancer |
-| Database | Amazon RDS MySQL |
-| Monitoring | Amazon CloudWatch |
-| Notifications | Amazon SNS |
-| Secrets | Systems Manager Parameter Store |
-| Security | IAM |
+## Identity
 
----
-
-# Availability Strategy
-
-High availability is achieved through multiple mechanisms.
-
-## Compute
-
-Two Auto Scaling Groups are used.
-
-- Frontend Auto Scaling Group
-- Backend Auto Scaling Group
-
-Each group automatically replaces unhealthy instances.
-
----
+- IAM Roles
+- Least Privilege Principle
 
 ## Networking
 
-Application Load Balancers distribute traffic across healthy instances.
+- Security Groups
+- Private Subnets
+- Internal Communication
 
-Health checks continuously monitor instance availability.
+## Secrets
 
----
+- AWS Systems Manager Parameter Store
 
-## Database
+## Monitoring
 
-Amazon RDS provides a managed relational database deployed within private networking.
-
----
-
-## Failure Recovery
-
-If an EC2 instance becomes unhealthy:
-
-1. Health check fails.
-2. Auto Scaling terminates the instance.
-3. Launch Template creates a replacement.
-4. Bootstrap script configures the new server.
-5. Instance registers with the Load Balancer.
-6. Traffic resumes automatically.
-
-No manual intervention is required.
+- CloudWatch
+- SNS Notifications
 
 ---
 
-# Design Principles
+# 12. Request Flow
 
-The architecture follows several cloud design principles.
-
-## Loose Coupling
-
-Frontend and backend are deployed independently.
-
-Each layer can be updated without affecting the other.
-
----
-
-## Least Privilege
-
-IAM Roles are used instead of embedding AWS credentials.
-
-Instances receive only the permissions they require.
-
----
-
-## Infrastructure Automation
-
-Manual server configuration has been minimized.
-
-Bootstrap scripts automatically:
-
-- Install packages
-- Configure services
-- Retrieve secrets
-- Start applications
-- Register monitoring
-
----
-
-## Observability
-
-Operational visibility is provided through:
-
-- CloudWatch Metrics
-- CloudWatch Dashboard
-- CloudWatch Alarms
-- SNS Email Notifications
-
----
-
-# Current Architecture Status
-
-| Component | Status |
-|-----------|--------|
-| VPC | ✅ |
-| Public ALB | ✅ |
-| Internal ALB | ✅ |
-| Auto Scaling | ✅ |
-| Launch Templates | ✅ |
-| Bootstrap Automation | ✅ |
-| Amazon RDS | ✅ |
-| Parameter Store | ✅ |
-| CloudWatch | ✅ |
-| SNS | ✅ |
-| CodeDeploy | 🚧 Planned |
-| HTTPS | 🚧 Planned |
-
----
-# Network Topology
-
-The infrastructure is deployed inside a dedicated Amazon Virtual Private Cloud (VPC) that separates public-facing components from internal application services.
-
-## Public Layer
-
-The public layer contains resources that require internet access.
-
-Components:
-
-- Public Application Load Balancer
-- NAT Gateway
-- Public Route Table
-- Internet Gateway
-
-Responsibilities:
-
-- Accept incoming client requests
-- Distribute traffic to frontend servers
-- Provide outbound internet access for private resources
-
----
-
-## Private Application Layer
-
-The application layer contains the backend compute resources.
-
-Components:
-
-- Frontend Auto Scaling Group
-- Backend Auto Scaling Group
-- Internal Application Load Balancer
-
-Responsibilities:
-
-- Serve application traffic
-- Process API requests
-- Communicate securely with the database
-- Remain inaccessible directly from the internet
-
----
-
-## Database Layer
-
-The database resides in private subnets.
-
-Components:
-
-- Amazon RDS MySQL
-
-Responsibilities:
-
-- Store application data
-- Accept connections only from backend servers
-- Remain isolated from public access
-
----
-
-# Network Request Flow
-
-The following sequence describes how a client request travels through the infrastructure.
+The application processes requests using the following flow.
 
 ```
-User Browser
-      │
-      ▼
-Public Application Load Balancer
-      │
-      ▼
-Frontend EC2 Instance
-      │
-      ▼
-Internal Application Load Balancer
-      │
-      ▼
-Backend EC2 Instance
-      │
-      ▼
-Amazon RDS MySQL
+User
+
+↓
+
+Application Load Balancer
+
+↓
+
+Frontend EC2
+
+↓
+
+Backend EC2
+
+↓
+
+Amazon RDS
+
+↓
+
+Response
 ```
 
-No component communicates directly with the database except the backend.
-
 ---
 
-# Security Architecture
+# 13. Build Flow
 
-Security is implemented using multiple layers.
-
-## Network Isolation
-
-- Public Subnets expose only the public ALB.
-- Backend servers remain in private networking.
-- Amazon RDS is not publicly accessible.
-
----
-
-## Security Groups
-
-Security Groups provide instance-level firewall protection.
-
-### Public ALB
-
-Inbound
-
-- HTTP (80)
-- HTTPS (443) *(Planned)*
-
-Outbound
-
-- Frontend Auto Scaling Group
-
----
-
-### Frontend EC2
-
-Inbound
-
-- Public ALB only
-
-Outbound
-
-- Internal Load Balancer
-
----
-
-### Internal ALB
-
-Inbound
-
-- Frontend Security Group
-
-Outbound
-
-- Backend Security Group
-
----
-
-### Backend EC2
-
-Inbound
-
-- Internal ALB only
-
-Outbound
-
-- Amazon RDS
-
----
-
-### Amazon RDS
-
-Inbound
-
-- Backend Security Group only
-
-Outbound
-
-- None
-
----
-
-# IAM Strategy
-
-No AWS Access Keys are stored on EC2 instances.
-
-Instead, IAM Roles provide temporary credentials for:
-
-- Systems Manager Parameter Store
-- CloudWatch Agent
-- Future CodeDeploy integration
-
-This follows the AWS Security Best Practice of using IAM Roles instead of static credentials.
-
----
-
-# Configuration Management
-
-Application configuration is separated from source code.
-
-Database configuration is stored in:
-
-AWS Systems Manager Parameter Store
-
-Example:
+Continuous Integration follows this sequence.
 
 ```
-/ems/prod/db/host
+Developer
 
-/ems/prod/db/name
+↓
 
-/ems/prod/db/user
+GitHub
 
-/ems/prod/db/password
+↓
 
-/ems/prod/db/port
+AWS CodePipeline
+
+↓
+
+Frontend CodeBuild
+
+↓
+
+Backend CodeBuild
+
+↓
+
+CloudWatch Logs
+
+↓
+
+CloudWatch Dashboard
+
+↓
+
+SNS Alerts
 ```
 
-Benefits:
+---
 
-- No secrets inside Git
-- Centralized configuration
-- Easy rotation of credentials
-- IAM controlled access
+# 14. Design Decisions
+
+Several architectural decisions were made during development.
+
+| Decision | Reason |
+|----------|--------|
+| Auto Scaling Groups | High availability |
+| Application Load Balancer | Traffic distribution |
+| Amazon RDS | Managed database |
+| Parameter Store | Secure configuration |
+| AWS CodePipeline | Native CI workflow |
+| AWS CodeBuild | Automated builds |
+| CloudWatch | Centralized monitoring |
+| SNS | Alert notifications |
 
 ---
 
-# Bootstrap Lifecycle
+# 15. Current Limitations
 
-Every EC2 instance follows the same lifecycle.
+The current implementation intentionally excludes:
 
-```
-Launch Template
+- Continuous Deployment
+- Kubernetes
+- Infrastructure as Code
+- GitOps
+- Container Orchestration
 
-↓
-
-EC2 Created
-
-↓
-
-User Data Executed
-
-↓
-
-Operating System Updated
-
-↓
-
-Packages Installed
-
-↓
-
-Application Downloaded
-
-↓
-
-Dependencies Installed
-
-↓
-
-Parameter Store Read
-
-↓
-
-Nginx Configured
-
-↓
-
-CloudWatch Agent Installed
-
-↓
-
-Application Started
-
-↓
-
-Health Check Passed
-
-↓
-
-Registered in Target Group
-```
-
-The entire provisioning process is automated.
+These capabilities are planned for future project phases.
 
 ---
 
-# Monitoring Architecture
+# 16. Future Enhancements
 
-Infrastructure monitoring is handled through Amazon CloudWatch.
-
-Metrics Collected:
-
-- CPU Utilization
-- Memory Utilization
-- Disk Usage
-- Network Traffic
-- Target Health
-
-Alerts:
-
-- CPU High
-- Memory High
-- Disk Usage High
-
-Notifications:
-
-Amazon SNS sends email alerts whenever an alarm enters the ALARM state.
-
----
-
-# Design Decisions (Architecture Decision Records)
-
-## ADR-001
-
-Decision
-
-Use separate Auto Scaling Groups for frontend and backend.
-
-Reason
-
-Frontend and backend have different scaling characteristics.
-
----
-
-## ADR-002
-
-Decision
-
-Use an Internal Application Load Balancer.
-
-Reason
-
-Backend services should never be publicly accessible.
-
----
-
-## ADR-003
-
-Decision
-
-Store secrets in Systems Manager Parameter Store.
-
-Reason
-
-Avoid hardcoding credentials inside the application.
-
----
-
-## ADR-004
-
-Decision
-
-Use EC2 User Data for provisioning.
-
-Reason
-
-Every new instance should become production-ready automatically.
-
----
-
-## ADR-005
-
-Decision
-
-Monitor infrastructure using Amazon CloudWatch.
-
-Reason
-
-Provides native AWS monitoring with minimal operational overhead.
-
----
-
-# Architecture Evolution
-
-The project roadmap extends the current architecture.
-
-## Phase 2
-
-- AWS CodeDeploy
-- AWS CodePipeline
-- GitHub Actions
-
----
+The project roadmap includes:
 
 ## Phase 3
 
-- Route53
-- ACM
-- HTTPS
-- CloudFront
-
----
+- Jenkins
+- Continuous Deployment
+- Automated Application Deployment
+- Health Checks
 
 ## Phase 4
 
-Container Platform
-
-- Docker
-- Kubernetes
-- Helm
-- ArgoCD
-
----
+- Terraform
+- Ansible
+- Infrastructure as Code
 
 ## Phase 5
 
-Observability
-
+- Docker
+- Amazon EKS
+- Helm
+- Argo CD
 - Prometheus
 - Grafana
-- Loki
-
-Security
-
-- Trivy
-- Checkov
-- SonarQube
-
-AI Platform
-
-- Deployment Agent
-- Monitoring Agent
-- Rollback Agent
-- Documentation Agent
 
 ---
 
 # Conclusion
 
-The current architecture provides a production-oriented deployment model built around AWS managed services.
+The Employee Management System demonstrates a production-inspired AWS architecture that combines modern application development with cloud infrastructure, Continuous Integration, monitoring, and operational best practices.
 
-The design prioritizes:
+The architecture has been intentionally designed to evolve across multiple phases, allowing additional DevOps capabilities to be introduced without requiring major architectural changes.
 
-- High Availability
-- Security
-- Automation
-- Scalability
-- Operational Simplicity
-- Cloud-Native Best Practices
-
-Future phases will extend the platform with CI/CD, container orchestration, GitOps, advanced observability, and AI-assisted platform operations while preserving the core architectural principles established in Phase 1.
