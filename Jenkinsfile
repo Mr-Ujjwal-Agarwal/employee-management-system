@@ -37,6 +37,11 @@ stage('Build Images') {
         sh './platform/cicd/scripts/build.sh'
     }
 }
+stage('Push Images') {
+    steps {
+        sh './platform/cicd/scripts/push.sh'
+    }
+}
 
 stage('Deploy') {
     steps {
