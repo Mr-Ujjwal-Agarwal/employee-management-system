@@ -1,738 +1,838 @@
-# 🚀 AWS Production-Inspired Employee Management System
-
 <div align="center">
 
-![AWS](https://img.shields.io/badge/AWS-Cloud-orange?logo=amazonaws)
-![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi)
-![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python)
-![CodePipeline](https://img.shields.io/badge/AWS-CodePipeline-FF9900?logo=amazonaws)
-![CodeBuild](https://img.shields.io/badge/AWS-CodeBuild-FF9900?logo=amazonaws)
-![CloudWatch](https://img.shields.io/badge/AWS-CloudWatch-FF4F8B?logo=amazonaws)
-![License](https://img.shields.io/badge/License-MIT-green)
+# 🚀 Enterprise Employee Management System
 
-**Production-inspired Employee Management System demonstrating AWS High Availability, Auto Scaling, CloudWatch Monitoring, and AWS Native Continuous Integration using CodePipeline & CodeBuild.**
+### *A Production-Style DevOps Portfolio Project*
+
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3500&pause=1000&color=3B82F6&center=true&vCenter=true&repeat=true&width=750&lines=Building+Production-Grade+DevOps+Skills...;Automating+CI%2FCD+Pipelines...;Containerizing+Applications+with+Docker...;Deploying+on+AWS+Cloud...;Infrastructure+as+Code+Coming+Next...;Kubernetes+%7C+GitOps+%7C+Monitoring+%7C+DevSecOps..." alt="Typing SVG" />
+
+---
+
+![AWS](https://img.shields.io/badge/AWS-Cloud-orange?style=for-the-badge&logo=amazonaws)
+![Docker](https://img.shields.io/badge/Docker-Containerization-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Jenkins](https://img.shields.io/badge/Jenkins-CI/CD-D24939?style=for-the-badge&logo=jenkins&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?style=for-the-badge&logo=fastapi)
+![React](https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react)
+![Nginx](https://img.shields.io/badge/Nginx-Reverse%20Proxy-009639?style=for-the-badge&logo=nginx)
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python)
+![License](https://img.shields.io/badge/License-MIT-success?style=for-the-badge)
+
+---
+
+![GitHub last commit](https://img.shields.io/github/last-commit/Mr-Ujjwal-Agarwal/employee-management-system?style=flat-square)
+![GitHub repo size](https://img.shields.io/github/repo-size/Mr-Ujjwal-Agarwal/employee-management-system?style=flat-square)
+![GitHub stars](https://img.shields.io/github/stars/Mr-Ujjwal-Agarwal/employee-management-system?style=flat-square)
+![GitHub forks](https://img.shields.io/github/forks/Mr-Ujjwal-Agarwal/employee-management-system?style=flat-square)
 
 </div>
 
 ---
 
-## 📌 Project Status
+# 🌟 Project Overview
 
-| Phase | Status |
-|--------|--------|
-| Phase 1 – AWS Infrastructure | ✅ Completed |
-| Phase 2 – AWS Native Continuous Integration | ✅ Completed |
-| Phase 3 – Jenkins CI/CD | 🚧 Planned |
-| Phase 4 – Infrastructure as Code (Terraform & Ansible) | 📅 Planned |
-| Phase 5 – Kubernetes & GitOps | 📅 Planned |
+The **Enterprise Employee Management System (EMS)** is a comprehensive **DevOps portfolio project** designed to demonstrate how modern applications are built, containerized, automated, deployed, and managed using industry-standard tools and best practices.
+
+Rather than being a simple CRUD application, this repository documents the **complete software delivery lifecycle**, progressing through multiple phases—from local development to cloud deployment, Infrastructure as Code, Kubernetes orchestration, monitoring, GitOps, and DevSecOps.
+
+The project follows an **incremental engineering approach**, where every completed milestone builds upon the previous one without redesigning the overall architecture.
 
 ---
 
-## 🎯 Project Objective
+# 🎯 Project Vision
 
-This project is designed to simulate a **real-world production deployment** of an Employee Management System on AWS while following DevOps best practices.
+The objective of this repository is to simulate how an enterprise application evolves in a real-world DevOps environment.
 
-Instead of focusing only on application development, the project demonstrates how a production application is:
+Instead of showcasing only the final outcome, this repository captures the **engineering journey** through:
 
-- Designed for **High Availability**
-- Scaled automatically using **Auto Scaling Groups**
-- Exposed securely through **Application Load Balancers**
-- Connected to a managed **Amazon RDS** database
-- Integrated with **AWS Systems Manager Parameter Store**
-- Continuously built using **AWS CodePipeline** and **AWS CodeBuild**
-- Monitored using **Amazon CloudWatch Dashboards**
-- Protected with **CloudWatch Alarms** and **Amazon SNS Notifications**
-
-The goal is to build the project incrementally across multiple phases, where each phase introduces new production-grade DevOps capabilities.
-
-## 📚 Table of Contents
-
-- [📌 Project Status](#-project-status)
-- [🎯 Project Objective](#-project-objective)
-- [🏗️ System Architecture](#️-system-architecture)
-- [✨ Key Features](#-key-features)
-- [🛠️ Technology Stack](#️-technology-stack)
-- [☁️ AWS Services Used](#️-aws-services-used)
-- [📂 Repository Structure](#-repository-structure)
-- [🚀 Implementation Journey](#-implementation-journey)
-- [📊 Monitoring & Alerting](#-monitoring--alerting)
-- [📸 Project Screenshots](#-project-screenshots)
-- [⚙️ Getting Started](#️-getting-started)
-- [🗺️ Project Roadmap](#️-project-roadmap)
-- [📚 Documentation](#-documentation)
-- [🤝 Contributing](#-contributing)
-- [📜 License](#-license)
+- 🐳 Application Containerization
+- ☁️ AWS Cloud Deployment
+- ⚙️ Enterprise CI/CD Automation
+- 📦 Private Container Registry
+- 🏗 Infrastructure as Code *(Upcoming)*
+- ☸️ Kubernetes Orchestration *(Upcoming)*
+- 🔄 GitOps Workflows *(Upcoming)*
+- 📊 Monitoring & Observability *(Upcoming)*
+- 🔐 DevSecOps & Security Automation *(Upcoming)*
 
 ---
 
-# 🏗️ System Architecture
-
-This project follows a **production-inspired AWS architecture** designed around High Availability, scalability, observability, and CI best practices.
-
-The architecture is divided into two major layers:
-
-## 🌐 Infrastructure Layer (Phase 1)
-
-- Multi-tier AWS deployment
-- Public and Private networking
-- Application Load Balancers
-- Auto Scaling Groups
-- Amazon RDS
-- AWS Systems Manager Parameter Store
-- CloudWatch Agent
+> **💡 Philosophy**
+>
+> This repository is intentionally designed as a long-term engineering portfolio.
+> Each phase extends the existing architecture rather than replacing it, allowing the project to evolve into a production-style DevOps platform over time.
 
 ---
 
-> **Architecture**
+# ✨ Project Highlights
 
-<p align="center">
-<img src="assets/diagrams/Phase-1.png" width="100%">
-</p>
+<table>
+<tr>
+<td width="50%">
+
+## 🚀 Enterprise DevOps Implementation
+
+- ✅ Multi-Service Application
+- ✅ Production-Ready Docker Images
+- ✅ Automated CI/CD Pipeline
+- ✅ Amazon ECR Integration
+- ✅ Docker Compose Deployment
+- ✅ Automated Health Verification
+- ✅ Cloud-Native Architecture
+- ✅ Modular Documentation
+
+</td>
+
+<td width="50%">
+
+## 🎯 Upcoming Enterprise Features
+
+- ⏳ Infrastructure as Code (Terraform)
+- ⏳ Configuration Management (Ansible)
+- ⏳ Kubernetes Orchestration
+- ⏳ GitOps with Argo CD
+- ⏳ Monitoring with Prometheus
+- ⏳ Visualization with Grafana
+- ⏳ Centralized Logging
+- ⏳ DevSecOps Automation
+
+</td>
+</tr>
+</table>
 
 ---
 
-## 🔄 Continuous Integration Layer (Phase 2)
+# 🏗️ What Makes This Repository Different?
 
-Every code push follows the automated workflow below:
+Unlike traditional portfolio projects that focus only on application development, this repository emphasizes the **complete software delivery lifecycle**.
 
+It demonstrates how modern organizations build, automate, deploy, and progressively scale applications using industry-standard DevOps practices.
+
+The project is intentionally developed in **incremental milestones**, allowing each completed phase to become the foundation for the next without disrupting the overall architecture.
+
+As the repository evolves, it will transition from a Docker-based deployment into a fully automated cloud-native platform powered by Infrastructure as Code, Kubernetes, GitOps, Monitoring, and DevSecOps.
+
+---
+
+# 🚀 Current Development Status
+
+| Phase | Module | Status |
+|:------:|---------|:------:|
+| ✅ | Linux & Docker Fundamentals | Completed |
+| ✅ | AWS Cloud Deployment | Completed |
+| ✅ | Enterprise CI/CD with Jenkins | Completed |
+| ⏳ | Infrastructure as Code (Terraform) | In Progress |
+| ⏳ | Configuration Management (Ansible) | Planned |
+| ⏳ | Kubernetes Orchestration | Planned |
+| ⏳ | Monitoring & Observability | Planned |
+| ⏳ | GitOps Implementation | Planned |
+| ⏳ | DevSecOps Automation | Planned |
+
+---
+
+# ⚡ Current Enterprise Capabilities
+
+### 🐳 Containerization
+
+- Multi-container architecture
+- Backend and Frontend isolated into separate services
+- Production-ready Docker images
+- Multi-stage Docker builds
+- Docker Compose orchestration
+
+---
+
+### ☁ AWS Cloud
+
+- Amazon EC2 Deployment
+- Amazon Elastic Container Registry (ECR)
+- Secure AWS Authentication
+- Cloud-hosted production environment
+
+---
+
+### ⚙ Continuous Integration & Continuous Deployment
+
+The application supports an automated deployment workflow that includes:
+
+- Source Code Checkout
+- Docker Image Build
+- Amazon ECR Authentication
+- Image Push
+- Automated Deployment
+- Post-Deployment Health Verification
+
+---
+
+### 🔐 Security
+
+Current implementation includes:
+
+- Private Amazon ECR repositories
+- Jenkins Credentials Management
+- Environment Variable Injection
+- Secure Docker Image Distribution
+
+Future phases will introduce:
+
+- Secret Management
+- Image Scanning
+- Infrastructure Security
+- Kubernetes RBAC
+- Policy Enforcement
+
+---
+
+# 🎯 Learning Objectives
+
+This project is designed to gain practical experience with enterprise DevOps workflows, including:
+
+- Designing scalable application architectures
+- Containerizing production applications
+- Building automated CI/CD pipelines
+- Deploying workloads on AWS
+- Managing infrastructure using code
+- Orchestrating applications with Kubernetes
+- Implementing GitOps deployment strategies
+- Monitoring distributed systems
+- Applying DevSecOps best practices
+
+---
+
+# 📊 Project Progress
+
+```text
+████████████████████░░░░░░░░░░░░░░
+
+Overall Completion : ~40%
+
+✅ Linux
+✅ Docker
+✅ AWS
+✅ Enterprise CI/CD
+
+⏳ Terraform
+⏳ Ansible
+⏳ Kubernetes
+⏳ Monitoring
+⏳ GitOps
+⏳ DevSecOps
+```
+
+---
+
+# 🌍 Long-Term Vision
+
+The long-term goal is to transform this repository into a **production-inspired DevOps platform** that demonstrates how modern software systems are built, deployed, managed, monitored, and secured using industry-standard tools.
+
+Rather than treating each technology as an isolated topic, every phase contributes to a unified architecture that evolves throughout the project lifecycle.
+
+# 🏛️ Enterprise Architecture
+
+The Employee Management System follows a modular architecture that separates application development, containerization, continuous delivery, cloud infrastructure, and future platform automation.
+
+As the project evolves, additional enterprise components such as Infrastructure as Code, Kubernetes, Monitoring, GitOps, and DevSecOps will be integrated **without redesigning the existing architecture**.
+
+---
+
+## 🌐 High-Level Architecture
+
+```mermaid
+flowchart LR
+
+    A[👨‍💻 Developer]
+    B[GitHub Repository]
+    C[Jenkins CI/CD]
+    D[Docker Build]
+    E[Amazon ECR]
+    F[AWS EC2]
+    G[Docker Compose]
+    H[Employee Management System]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> G
+    G --> F
+    F --> H
+```
+
+---
+
+## 🚀 Future Enterprise Architecture
+
+```mermaid
+flowchart LR
+
+    A[Developer]
+
+    B[GitHub]
+
+    C[Jenkins]
+
+    D[Docker]
+
+    E[Amazon ECR]
+
+    F[Terraform]
+
+    G[Amazon EKS]
+
+    H[Argo CD]
+
+    I[Prometheus]
+
+    J[Grafana]
+
+    K[Employee Management System]
+
+    A --> B
+
+    B --> C
+
+    C --> D
+
+    D --> E
+
+    E --> F
+
+    F --> G
+
+    G --> H
+
+    H --> K
+
+    K --> I
+
+    I --> J
+```
+
+> **📌 Note**
+>
+> Components from **Terraform onward** represent the planned evolution of the platform and will be introduced during future development phases.
+
+---
+
+# ⚙️ Technology Stack
+
+## 💻 Application Layer
+
+| Component | Technology |
+|------------|------------|
+| Frontend | React |
+| Backend | FastAPI |
+| Web Server | Nginx |
+| Runtime | Python 3.12 |
+
+---
+
+## 🐳 Container Platform
+
+| Component | Technology |
+|------------|------------|
+| Containerization | Docker |
+| Multi-Container Deployment | Docker Compose |
+| Image Registry | Amazon ECR |
+
+---
+
+## ☁️ Cloud Platform
+
+| Component | Technology |
+|------------|------------|
+| Cloud Provider | AWS |
+| Compute | Amazon EC2 |
+| Registry | Amazon ECR |
+
+---
+
+## ⚙️ DevOps Stack
+
+| Category | Tool |
+|----------|------|
+| Version Control | Git & GitHub |
+| Continuous Integration | Jenkins |
+| Continuous Deployment | Jenkins Pipeline |
+| Shell Automation | Bash |
+
+---
+
+## 🚀 Upcoming Platform Stack
+
+| Category | Planned Technology |
+|----------|--------------------|
+| Infrastructure as Code | Terraform |
+| Configuration Management | Ansible |
+| Container Orchestration | Kubernetes |
+| GitOps | Argo CD |
+| Monitoring | Prometheus |
+| Visualization | Grafana |
+| Security | DevSecOps Toolchain |
+
+---
+
+# 🔄 Enterprise CI/CD Workflow
+
+The project currently implements an automated deployment pipeline that builds, publishes, deploys, and validates every application release.
+
+```text
 Developer
 
-↓
+      │
+
+      ▼
+
+Git Push
+
+      │
+
+      ▼
 
 GitHub Repository
 
-↓
+      │
 
-AWS CodePipeline
+      ▼
 
-↓
+Jenkins Pipeline
 
-Frontend CodeBuild
+      │
 
-+
+      ├──────────────► Source Checkout
 
-Backend CodeBuild
+      ├──────────────► Docker Image Build
 
-↓
+      ├──────────────► Amazon ECR Login
 
-CloudWatch Logs
+      ├──────────────► Push Docker Images
 
-↓
+      ├──────────────► Docker Compose Deployment
 
-CloudWatch Dashboard
+      └──────────────► Automated Health Check
 
-↓
+                             │
 
-CloudWatch Alarms
+                             ▼
 
-↓
-
-Amazon SNS Notifications
+                  Employee Management System
+```
 
 ---
 
-> **Dashboard Screenshot**
+# 📦 Deployment Workflow
+
+```mermaid
+sequenceDiagram
+
+    participant Developer
+
+    participant GitHub
+
+    participant Jenkins
+
+    participant Docker
+
+    participant Amazon ECR
+
+    participant AWS EC2
+
+    Developer->>GitHub: Push Code
+
+    GitHub->>Jenkins: Trigger Pipeline
+
+    Jenkins->>Docker: Build Images
+
+    Docker->>Amazon ECR: Push Images
+
+    Jenkins->>AWS EC2: Deploy Application
+
+    AWS EC2-->>Jenkins: Health Check
+
+    Jenkins-->>Developer: Pipeline Success
+```
+
+---
+
+# 🎯 Architectural Principles
+
+The platform follows several engineering principles that enable long-term scalability.
+
+### ✅ Modular Design
+
+Each technology layer is introduced independently without affecting existing functionality.
+
+---
+
+### ✅ Incremental Development
+
+Every completed phase becomes the foundation for the next phase.
+
+---
+
+### ✅ Cloud-Native Mindset
+
+The project evolves toward cloud-native deployment using Infrastructure as Code, Kubernetes, GitOps, and Observability.
+
+---
+
+### ✅ Automation First
+
+Wherever possible, manual deployment steps are replaced with automated pipelines and repeatable workflows.
+
+---
+
+### ✅ Production-Oriented Learning
+
+The objective is not only to build an application but also to simulate how software is delivered, operated, and maintained in modern engineering organizations.
+
+---
+
+# 📸 Project Showcase
+
+The following screenshots demonstrate the current state of the project after successfully completing the **Enterprise CI/CD** milestone.
+
+> **📌 Note**
+>
+> Screenshots will continue to grow as the platform evolves through Terraform, Kubernetes, Monitoring, GitOps, and DevSecOps.
+
+---
+
+## 🖥️ Employee Management Dashboard
 
 <p align="center">
-<img src="assets/diagrams/Phase-2.png" width="100%">
+
+<img src="./docs/assets/dashboard.png" width="95%">
+
 </p>
 
----
-
-# ✨ Key Features
-
-The project is implemented in multiple phases, gradually evolving from a cloud-hosted application into a production-inspired DevOps platform.
-
-## 🖥️ Application Features
-
-- Employee management (Create, Read, Update, Delete)
-- Department management
-- Interactive dashboard with employee statistics
-- Responsive React-based user interface
-- RESTful API powered by FastAPI
-- Modular frontend and backend architecture
-- Real-time dashboard components
-- Clean and reusable component structure
+> Modern Employee Management Dashboard running successfully on AWS EC2 after automated deployment.
 
 ---
 
-## ☁️ AWS Infrastructure Features (Phase 1)
+## ⚙️ Jenkins Pipeline
 
-- Production-inspired VPC architecture
-- Public and Private Subnets across multiple Availability Zones
-- Internet Gateway and NAT Gateway
-- Public and Internal Application Load Balancers
-- Frontend and Backend Auto Scaling Groups
-- Launch Templates for immutable infrastructure
-- Amazon RDS for managed database services
-- AWS Systems Manager Parameter Store for secure configuration management
-- Security Groups implementing least-privilege access
-- CloudWatch Agent installed on EC2 instances
-- Highly Available application architecture
+<p align="center">
+
+<img src="./docs/assets/pipeline.png" width="95%">
+
+</p>
+
+> Enterprise Jenkins Pipeline successfully executing the complete CI/CD workflow.
 
 ---
 
-## 🔄 Continuous Integration Features (Phase 2)
+## 🚀 Jenkins Blue Ocean
 
-- GitHub as the source code repository
-- AWS CodePipeline for automated CI workflow
-- Independent Frontend and Backend CodeBuild projects
-- Automatic build execution on every Git push
-- Build logs stored in Amazon CloudWatch Logs
-- Build artifact generation
-- Parallel frontend and backend build execution
-- Automated source integration and validation
+<p align="center">
 
----
+<img src="./docs/assets/blueocean.png" width="95%">
 
-## 📊 Monitoring & Alerting
+</p>
 
-- Amazon CloudWatch Dashboard
-- CloudWatch Metrics collection
-- CloudWatch Alarms
-- Amazon SNS Email Notifications
-- Pipeline failure monitoring
-- Build failure monitoring
-- EC2 CPU utilization monitoring
-- Amazon RDS CPU monitoring
-- Centralized operational visibility
+> Visual representation of the automated deployment pipeline.
 
 ---
 
-## 🔒 Production Best Practices
+## ☁️ Amazon Elastic Container Registry (ECR)
 
-- High Availability Architecture
-- Scalable Infrastructure
-- Infrastructure separated into logical layers
-- Secure parameter management
-- Operational monitoring
-- Automated Continuous Integration
-- Modular repository organization
-- Documentation-driven project structure
+<p align="center">
 
----
+<img src="./docs/assets/ecr.png" width="95%">
 
-# 🛠️ Technology Stack
+</p>
 
-The project combines modern frontend and backend technologies with AWS cloud services and DevOps tools to simulate a production-ready environment.
-
-| Category | Technologies |
-|----------|--------------|
-| **Frontend** | React 19, Vite, JavaScript (ES6+), HTML5, CSS3 |
-| **Backend** | FastAPI, Python 3.12, Uvicorn |
-| **Database** | MySQL (Amazon RDS) |
-| **Cloud Platform** | Amazon Web Services (AWS) |
-| **Networking** | VPC, Public & Private Subnets, Internet Gateway, NAT Gateway |
-| **Compute** | Amazon EC2, Auto Scaling Groups, Launch Templates |
-| **Load Balancing** | Application Load Balancer (Public & Internal) |
-| **CI/CD** | AWS CodePipeline, AWS CodeBuild |
-| **Configuration Management** | AWS Systems Manager Parameter Store |
-| **Monitoring** | Amazon CloudWatch, CloudWatch Dashboard, CloudWatch Alarms |
-| **Notifications** | Amazon SNS |
-| **Operating System** | Ubuntu Server 24.04 LTS |
-| **Version Control** | Git, GitHub |
-| **Development Tools** | VS Code, AWS CLI, Git CLI |
+> Successfully published backend and frontend container images to Amazon ECR.
 
 ---
 
-# ☁️ AWS Services Used
+# 📚 Documentation Hub
 
-This project leverages multiple AWS services to build a scalable, highly available, and production-inspired cloud environment.
+The repository is intentionally organized into modular documentation so that every technology has its own dedicated guide.
 
-| Service | Purpose |
-|----------|---------|
-| **Amazon EC2** | Hosts the frontend and backend application servers |
-| **Amazon VPC** | Provides secure network isolation |
-| **Application Load Balancer (ALB)** | Distributes incoming traffic across multiple EC2 instances |
-| **Auto Scaling Groups** | Automatically maintain and scale EC2 instances |
-| **Launch Templates** | Standardize EC2 instance configuration |
-| **Amazon RDS** | Managed relational database service |
-| **AWS Systems Manager Parameter Store** | Secure storage of application configuration and secrets |
-| **AWS CodePipeline** | Automates Continuous Integration workflow |
-| **AWS CodeBuild** | Builds frontend and backend applications automatically |
-| **Amazon CloudWatch** | Collects metrics, logs, and dashboards |
-| **CloudWatch Alarms** | Detects failures and resource threshold breaches |
-| **Amazon SNS** | Sends email notifications for critical events |
-| **IAM** | Secure access management for AWS resources |
-
----
-
-## 📊 Project Statistics
-
-| Metric | Value |
-|---------|------:|
-| **Application Architecture** | Full Stack |
-| **Frontend Framework** | React + Vite |
-| **Backend Framework** | FastAPI |
-| **Cloud Provider** | AWS |
-| **Availability Zones** | Multi-AZ |
-| **Application Load Balancers** | 2 |
-| **Auto Scaling Groups** | 2 |
-| **CodeBuild Projects** | 2 |
-| **CodePipeline Pipelines** | 1 |
-| **CloudWatch Dashboard** | 1 |
-| **SNS Topics** | 1 |
-| **CloudWatch Alarms** | 6+ |
-| **Project Phases Completed** | 2 | 
+| 📖 Documentation | Description |
+|------------------|-------------|
+| 📐 architecture.md | System architecture and design decisions |
+| ⚙️ cicd.md | Jenkins pipeline, Docker build and deployment |
+| 🚀 deployment.md | Docker Compose deployment guide |
+| 🏗️ terraform.md | Infrastructure as Code (Upcoming) |
+| ☸️ kubernetes.md | Kubernetes deployment (Upcoming) |
+| 📊 monitoring.md | Prometheus & Grafana (Upcoming) |
+| 🔐 security.md | DevSecOps implementation (Upcoming) |
+| 🛠️ troubleshooting.md | Common issues and solutions |
+| 🗺️ roadmap.md | Project development roadmap |
 
 ---
 
 # 📂 Repository Structure
 
-The repository is organized into modular directories to separate application code, infrastructure configuration, monitoring assets, and documentation. This structure follows a clean and scalable layout inspired by real-world DevOps projects.
+```text
+employee-management-system
+│
+├── 📁 app
+│   ├── backend
+│   └── frontend
+│
+├── 📁 platform
+│   ├── cicd
+│   ├── docker
+│   ├── monitoring
+│   ├── scripts
+│   └── terraform
+│
+├── 📁 docs
+│
+├── 📁 tests
+│
+├── 📄 README.md
+├── 📄 CHANGELOG.md
+├── 📄 CONTRIBUTING.md
+└── 📄 LICENSE
+```
+
+---
+
+# 📦 Key Repository Components
+
+## 🖥️ Application
+
+Contains the complete Employee Management System.
+
+- React Frontend
+- FastAPI Backend
+- Nginx Configuration
+
+---
+
+## 🐳 Platform
+
+Contains all infrastructure-related resources.
+
+- Docker
+- CI/CD
+- Deployment
+- Monitoring
+- Infrastructure
+
+---
+
+## 📖 Documentation
+
+Centralized project documentation.
+
+Each technology has its own dedicated guide.
+
+---
+
+## 🧪 Testing
+
+Reserved for automated testing and validation.
+
+---
+
+# 🚀 Current Project Achievements
+
+✔ Production-ready Docker Images
+
+✔ Multi-Service Architecture
+
+✔ AWS Cloud Deployment
+
+✔ Amazon ECR Integration
+
+✔ Automated Jenkins Pipeline
+
+✔ Continuous Deployment
+
+✔ Automated Health Verification
+
+✔ Modular Documentation
+
+---
+
+# 🎯 Why This Project Matters
+
+This repository demonstrates far more than application development.
+
+It showcases practical implementation of modern DevOps engineering practices including:
+
+- Cloud deployment on AWS
+- Docker containerization
+- CI/CD automation
+- Container registry management
+- Automated deployments
+- Infrastructure planning
+- Scalable architecture
+- Engineering documentation
+
+Rather than presenting isolated tutorials, the repository documents the complete evolution of an enterprise-style software delivery platform.
+
+---
+
+# ⭐ Highlights
+
+| Feature | Status |
+|----------|--------|
+| Dockerized Application | ✅ |
+| Multi-Container Deployment | ✅ |
+| AWS Cloud Deployment | ✅ |
+| Jenkins CI/CD | ✅ |
+| Amazon ECR | ✅ |
+| Health Checks | ✅ |
+| Infrastructure as Code | ⏳ |
+| Kubernetes | ⏳ |
+| Monitoring | ⏳ |
+| GitOps | ⏳ |
+| DevSecOps | ⏳ |
+
+---
+
+# 🗺️ Development Roadmap
+
+The Employee Management System is being developed incrementally to simulate the evolution of a modern enterprise DevOps platform.
+
+Every completed milestone serves as the foundation for the next stage without redesigning the overall architecture.
+
+| Phase | Description | Status |
+|:------:|-------------|:------:|
+| Phase 1 | Linux, Git & Docker Fundamentals | ✅ Completed |
+| Phase 2 | AWS Cloud Deployment | ✅ Completed |
+| Phase 3 | Enterprise CI/CD with Jenkins & Amazon ECR | ✅ Completed |
+| Phase 4 | Infrastructure as Code (Terraform) | ⏳ Next |
+| Phase 5 | Configuration Management (Ansible) | ⏳ Planned |
+| Phase 6 | Kubernetes Orchestration | ⏳ Planned |
+| Phase 7 | GitOps with Argo CD | ⏳ Planned |
+| Phase 8 | Monitoring (Prometheus & Grafana) | ⏳ Planned |
+| Phase 9 | DevSecOps & Security Automation | ⏳ Planned |
+
+---
+
+# 🎯 Upcoming Milestones
+
+The repository will continue evolving with the following enterprise technologies:
+
+- 🏗️ Terraform Infrastructure Provisioning
+- ⚙️ Ansible Configuration Management
+- ☸️ Kubernetes Deployment
+- 🚀 Amazon EKS
+- 🔄 GitOps using Argo CD
+- 📊 Prometheus Monitoring
+- 📈 Grafana Dashboards
+- 📦 Helm Charts
+- 🔐 DevSecOps
+- 🧪 Automated Testing
+- 🚀 Production Deployment Strategies
+
+---
+
+# 📈 Repository Evolution
 
 ```text
-employee-management-system/
+Foundation
 │
-├── app/                     # Frontend and Backend application source code
-│   ├── backend/             # FastAPI backend application
-│   └── frontend/            # React frontend application
+├── ✅ Linux
+├── ✅ Git
+├── ✅ Docker
+├── ✅ AWS
+├── ✅ Enterprise CI/CD
 │
-├── assets/
-│   ├── diagrams/            # Architecture diagrams
-│   └── screenshots/         # Project screenshots
-│       ├── phase-1/
-│       └── phase-2/
-│
-├── docs/                    # Technical documentation
-│
-├── platform/
-│   ├── bootstrap/           # EC2 bootstrap scripts
-│   ├── cicd/                # AWS CodePipeline & CodeBuild configuration
-│   └── observability/       # CloudWatch monitoring configuration
-│
-├── tests/                   # Future test suites
-│
-├── README.md
-├── LICENSE
-├── CONTRIBUTING.md
-└── CHANGELOG.md
+├── ⏳ Terraform
+├── ⏳ Ansible
+├── ⏳ Kubernetes
+├── ⏳ GitOps
+├── ⏳ Monitoring
+└── ⏳ DevSecOps
 ```
 
 ---
 
-## 📁 Directory Overview
+# 🤝 Contributing
 
-| Directory | Description |
-|-----------|-------------|
-| **app/backend** | FastAPI backend source code including API routes, database models, services, and business logic. |
-| **app/frontend** | React application with reusable components, pages, API services, and frontend utilities. |
-| **assets/diagrams** | AWS architecture diagrams, CI workflow diagrams, and project illustrations. |
-| **assets/screenshots** | Screenshots collected during each implementation phase for documentation purposes. |
-| **docs** | Detailed project documentation including architecture, setup guide, operations guide, and runbook. |
-| **platform/bootstrap** | EC2 bootstrap scripts used during infrastructure provisioning and server initialization. |
-| **platform/cicd** | AWS CodeBuild buildspec files and deployment automation scripts. |
-| **platform/observability** | CloudWatch Agent configuration and monitoring scripts. |
-| **tests** | Reserved for backend, frontend, and infrastructure testing. |
+Contributions, suggestions, and improvements are always welcome.
 
----
+If you discover a bug or have an idea that could improve the project:
 
-# 🚀 Implementation Journey
+1. Fork the repository.
+2. Create a feature branch.
+3. Commit your changes.
+4. Open a Pull Request.
 
-The project is being developed incrementally across multiple phases, with each phase introducing additional cloud-native and DevOps capabilities.
-
-| Phase | Focus Area | Status |
-|--------|------------|--------|
-| **Phase 1** | AWS Infrastructure & High Availability | ✅ Completed |
-| **Phase 2** | AWS Native Continuous Integration & Monitoring | ✅ Completed |
-| **Phase 3** | Jenkins-based Continuous Deployment | 🚧 Planned |
-| **Phase 4** | Infrastructure as Code (Terraform & Ansible) | 📅 Planned |
-| **Phase 5** | Kubernetes, GitOps & Observability | 📅 Planned |
+Please read the **CONTRIBUTING.md** guide before submitting changes.
 
 ---
 
-## ✅ Phase 1 Highlights
+# 📖 Additional Documentation
 
-- Designed a production-inspired AWS network architecture.
-- Configured public and private subnets across multiple Availability Zones.
-- Implemented Internet Gateway and NAT Gateway.
-- Deployed Public and Internal Application Load Balancers.
-- Configured Frontend and Backend Auto Scaling Groups.
-- Created Launch Templates for immutable infrastructure.
-- Integrated Amazon RDS for persistent data storage.
-- Managed application configuration using AWS Systems Manager Parameter Store.
-- Installed CloudWatch Agent for instance-level monitoring.
+| Guide | Purpose |
+|--------|---------|
+| 📐 Architecture | Complete system architecture |
+| 🚀 Deployment | Docker deployment guide |
+| ⚙️ CI/CD | Jenkins pipeline documentation |
+| 🛠️ Troubleshooting | Common issues & fixes |
+| 🗺️ Roadmap | Future project milestones |
 
 ---
 
-## ✅ Phase 2 Highlights
+# 💼 About the Author
 
-- Integrated GitHub with AWS CodePipeline.
-- Configured independent Frontend and Backend AWS CodeBuild projects.
-- Automated build execution on every Git push.
-- Centralized build logs using Amazon CloudWatch Logs.
-- Built a CloudWatch Dashboard for operational visibility.
-- Configured CloudWatch Alarms for infrastructure and pipeline monitoring.
-- Integrated Amazon SNS for automated email notifications.
-- Refactored the repository into a clean and production-inspired structure.
+## Ujjwal Agarwal
+
+**Cloud & DevOps Engineering Enthusiast**
+
+Passionate about designing scalable cloud infrastructure, automating software delivery pipelines, and building production-inspired DevOps platforms using AWS and modern cloud-native technologies.
+
+Currently focused on:
+
+- AWS Cloud
+- Docker
+- Jenkins
+- Terraform
+- Kubernetes
+- GitOps
+- Monitoring
+- DevSecOps
 
 ---
 
-# 📊 Monitoring & Alerting
-
-A key objective of this project is to demonstrate operational visibility and proactive monitoring in a production-inspired AWS environment.
-
-The monitoring stack was implemented using **Amazon CloudWatch** and **Amazon SNS** to provide centralized dashboards, real-time metrics, automated alarms, and email notifications.
-
----
-
-## 📈 CloudWatch Dashboard
-
-A centralized CloudWatch Dashboard provides real-time visibility into the health and performance of the application infrastructure and CI pipeline.
-
-### Dashboard Widgets
-
-| Widget | Purpose |
-|----------|---------|
-| 🔄 CodePipeline Status | Monitor pipeline execution failures |
-| 🏗️ Frontend CodeBuild | Track frontend build success and failures |
-| 🏗️ Backend CodeBuild | Track backend build success and failures |
-| 💻 Frontend EC2 CPU | Monitor frontend instance utilization |
-| 💻 Backend EC2 CPU | Monitor backend instance utilization |
-| ⚖️ Application Load Balancer | Observe request count, healthy hosts, and traffic |
-| 🗄️ Amazon RDS | Monitor CPU utilization and database connections |
-
-> **Dashboard Screenshot**
+## 🌐 Connect With Me
 
 <p align="center">
-<img src="assets/screenshots/phase-2/04-cloudwatch-dashboard.png" width="100%">
+
+<a href="YOUR_LINKEDIN_URL">
+<img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"/>
+</a>
+
+<a href="https://github.com/Mr-Ujjwal-Agarwal">
+<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github"/>
+</a>
+
+<a href="YOUR_PORTFOLIO_URL">
+<img src="https://img.shields.io/badge/Portfolio-3B82F6?style=for-the-badge"/>
+</a>
+
 </p>
 
 ---
 
-# 🚨 CloudWatch Alarms
+# ⭐ Support the Project
 
-CloudWatch Alarms continuously monitor critical AWS resources and automatically trigger notifications whenever predefined thresholds are exceeded.
+If you found this repository useful or inspiring,
 
-The following alarms have been configured:
+please consider giving it a ⭐.
 
-| Alarm | Purpose |
-|---------|---------|
-| Pipeline Failure | Detect failed CodePipeline executions |
-| Frontend Build Failure | Detect failed frontend builds |
-| Backend Build Failure | Detect failed backend builds |
-| Frontend EC2 High CPU | Alert when frontend CPU exceeds threshold |
-| Backend EC2 High CPU | Alert when backend CPU exceeds threshold |
-| Amazon RDS High CPU | Alert when database CPU exceeds threshold |
-
-> **CloudWatch Alarms**
-
-<p align="center">
-<img src="assets/screenshots/phase-2/05-cloudwatch-alarms.png" width="100%">
-</p>
+It helps increase the visibility of the project and motivates continued development.
 
 ---
 
-# 📧 Amazon SNS Notifications
+<div align="center">
 
-Amazon SNS is integrated with CloudWatch Alarms to send email notifications whenever critical events occur.
+# 🚀 Thank You for Visiting
 
-Typical alert scenarios include:
+### Building Today • Automating Tomorrow • Scaling for the Future
 
-- ❌ CodePipeline execution failure
-- ❌ Frontend build failure
-- ❌ Backend build failure
-- ⚠️ High CPU utilization on EC2 instances
-- ⚠️ High CPU utilization on Amazon RDS
-
-This enables proactive monitoring and faster incident response.
-
-> **SNS Topic**
-
-<p align="center">
-<img src="assets/screenshots/phase-2/06-sns-topic.png" width="100%">
-</p>
+**Enterprise DevOps Journey — One Phase at a Time**
 
 ---
 
-# 📜 CloudWatch Logs
+Made  by **Ujjwal Agarwal**
 
-AWS CodeBuild automatically publishes build logs to Amazon CloudWatch Logs.
-
-This provides:
-
-- Centralized build logging
-- Build troubleshooting
-- Error diagnostics
-- Historical build records
-
-Both frontend and backend build projects generate independent log streams for easier debugging.
-
-> **CloudWatch Logs**
-
-<p align="center">
-<img src="assets/screenshots/phase-2/07-codebuild-logs.png" width="100%">
-</p>
-
----
-
-# 📊 Operational Benefits
-
-The monitoring implementation provides several production-oriented capabilities:
-
-- ✅ Centralized operational dashboard
-- ✅ Continuous infrastructure monitoring
-- ✅ Automated pipeline health monitoring
-- ✅ Build failure detection
-- ✅ Resource utilization tracking
-- ✅ Email-based incident notifications
-- ✅ Faster troubleshooting through CloudWatch Logs
-- ✅ Improved operational visibility
-
----
-
-# ⚙️ Getting Started
-
-This section explains how to set up and run the Employee Management System locally. For the complete AWS deployment process, refer to the documentation in the [`docs/`](docs/) directory.
-
-## 📋 Prerequisites
-
-Ensure the following software is installed before running the project:
-
-| Software | Version |
-|----------|---------|
-| Git | Latest |
-| Python | 3.12+ |
-| Node.js | 20+ |
-| npm | 10+ |
-| MySQL | 8.0+ (or Amazon RDS) |
-| AWS CLI | v2 |
-| Ubuntu | 24.04 LTS (Recommended) |
-
----
-
-## 📥 Clone the Repository
-
-```bash
-git clone https://github.com/<your-github-username>/employee-management-system.git
-
-cd employee-management-system
-```
-
----
-
-# 🐍 Backend Setup
-
-Navigate to the backend directory.
-
-```bash
-cd app/backend
-```
-
-Create a virtual environment.
-
-```bash
-python3 -m venv venv
-```
-
-Activate the virtual environment.
-
-```bash
-source venv/bin/activate
-```
-
-Install dependencies.
-
-```bash
-pip install -r requirements.txt
-```
-
-Configure your environment variables or AWS Systems Manager Parameter Store values.
-
-Start the FastAPI server.
-
-```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000
-```
-
-Backend API
-
-```
-http://localhost:8000
-```
-
-Swagger Documentation
-
-```
-http://localhost:8000/docs
-```
-
----
-
-# ⚛️ Frontend Setup
-
-Navigate to the frontend directory.
-
-```bash
-cd app/frontend
-```
-
-Install dependencies.
-
-```bash
-npm install
-```
-
-Start the development server.
-
-```bash
-npm run dev
-```
-
-Frontend
-
-```
-http://localhost:5173
-```
-
----
-
-# ☁️ AWS Deployment
-
-The AWS infrastructure and deployment environment include:
-
-- Amazon VPC
-- Public & Private Subnets
-- Internet Gateway
-- NAT Gateway
-- Application Load Balancers
-- Auto Scaling Groups
-- Launch Templates
-- Amazon RDS
-- AWS Systems Manager Parameter Store
-- Amazon CloudWatch
-- Amazon SNS
-- AWS CodePipeline
-- AWS CodeBuild
-
-Detailed deployment instructions are available in:
-
-- 📄 `docs/setup-guide.md`
-- 📄 `docs/architecture.md`
-- 📄 `docs/operations-guide.md`
-- 📄 `docs/runbook.md`
-
----
-
-# 🔄 Continuous Integration Workflow
-
-Every code push follows the workflow below.
-
-```
-Developer
-      │
-      ▼
-Git Push
-      │
-      ▼
-GitHub Repository
-      │
-      ▼
-AWS CodePipeline
-      │
- ┌────┴────┐
- ▼         ▼
-Frontend  Backend
-CodeBuild CodeBuild
-      │
-      ▼
-CloudWatch Logs
-      │
-      ▼
-CloudWatch Dashboard
-      │
-      ▼
-CloudWatch Alarms
-      │
-      ▼
-Amazon SNS
-```
-
-This workflow ensures that every code change is automatically validated, monitored, and reported.
-
----
-
-# 🧪 Validation Checklist
-
-After deployment, verify the following:
-
-- ✅ Frontend application is accessible
-- ✅ Backend API is responding
-- ✅ Application Load Balancer is healthy
-- ✅ Target Groups report healthy targets
-- ✅ Amazon RDS is available
-- ✅ CodePipeline completes successfully
-- ✅ Frontend CodeBuild succeeds
-- ✅ Backend CodeBuild succeeds
-- ✅ CloudWatch Dashboard displays metrics
-- ✅ SNS notifications are delivered when alarms are triggered
-
----
-
-# 📸 Project Screenshots
-
-The following screenshots showcase the infrastructure, Continuous Integration pipeline, monitoring, and the application interface built throughout the project.
-
-## ☁️ AWS Infrastructure (Phase 1)
-
-| Component | Screenshot |
-|-----------|------------|
-| Amazon VPC | ![](assets/screenshots/phase-1/vpc.png) |
-| Public & Private Subnets | ![](assets/screenshots/phase-1/subnets.png) |
-| Route Tables | ![](assets/screenshots/phase-1/route-table.png) |
-| Amazon RDS | ![](assets/screenshots/phase-1/rds.png) |
-| Parameter Store | ![](assets/screenshots/phase-1/parameter-store.png) |
-| Launch Template | ![](assets/screenshots/phase-1/launch-template.png) |
-| Auto Scaling Groups | ![](assets/screenshots/phase-1/asg.png) |
-| Public Application Load Balancer | ![](assets/screenshots/phase-1/public-lb.png) |
-| Internal Application Load Balancer | ![](assets/screenshots/phase-1/internal-lb.png) |
-| Frontend Target Group | ![](assets/screenshots/phase-1/tg-frontend.png) |
-| Backend Target Group | ![](assets/screenshots/phase-1/tg-backend.png) |
-
----
-
-## 🔄 Continuous Integration (Phase 2)
-
-| Component | Screenshot |
-|-----------|------------|
-| AWS CodePipeline | ![](assets/screenshots/phase-2/01-codepipeline-success.png) |
-| Frontend CodeBuild | ![](assets/screenshots/phase-2/02-frontend-codebuild-success.png) |
-| Backend CodeBuild | ![](assets/screenshots/phase-2/03-backend-codebuild-success.png) |
-
----
-
-## 📊 Monitoring & Alerting
-
-| Component | Screenshot |
-|-----------|------------|
-| CloudWatch Dashboard | ![](assets/screenshots/phase-2/04-cloudwatch-dashboard.png) |
-| CloudWatch Alarms | ![](assets/screenshots/phase-2/05-cloudwatch-alarms.png) |
-| Amazon SNS | ![](assets/screenshots/phase-2/06-sns-topic.png) |
-| CloudWatch Logs | ![](assets/screenshots/phase-2/07-codebuild-logs.png) |
-
----
-
-## 💻 Application
-
-| Page | Screenshot |
-|------|------------|
-| Dashboard | ![](assets/screenshots/phase-1/ems-dashboard.png) |
-
----
-
-# 📚 Documentation
-
-Detailed project documentation is available in the `docs/` directory.
-
-| Document | Description |
-|----------|-------------|
-| 📖 `architecture.md` | Detailed AWS architecture and infrastructure design. |
-| ⚙️ `setup-guide.md` | Local development environment setup and AWS deployment instructions. |
-| 🛠️ `operations-guide.md` | Operational procedures, monitoring workflow, and maintenance tasks. |
-| 🚑 `runbook.md` | Troubleshooting guide, recovery procedures, and common operational issues. |
-
-These documents provide deeper technical details beyond the overview presented in this README.
-
-
-  
+</div>
