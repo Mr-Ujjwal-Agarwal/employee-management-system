@@ -2,15 +2,21 @@ FROM jenkins/jenkins:lts-jdk21
 
 USER root
 
+# ----------------------------------------------------
+# Install required packages
+# ----------------------------------------------------
 RUN apt-get update && apt-get install -y \
     git \
     curl \
     unzip \
     ca-certificates \
     gnupg \
-    lsb-release && \
-    rm -rf /var/lib/apt/lists/*
+    lsb-release \
+    && rm -rf /var/lib/apt/lists/*
 
+# ----------------------------------------------------
+# Install Docker CLI
+# ----------------------------------------------------
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | \
     gpg --dearmor -o /usr/share/keyrings/docker.gpg
 
@@ -23,6 +29,18 @@ $(. /etc/os-release && echo $VERSION_CODENAME) stable" \
 RUN apt-get update && \
     apt-get install -y docker-ce-cli
 
+# ----------------------------------------------------
+# Install AWS CLI v2
+# ----------------------------------------------------
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
+    -o "awscliv2.zip" && \
+    unzip awscliv2.zip && \
+    ./aws/install && \
+    rm -rf aws awscliv2.zip
+
+# ----------------------------------------------------
+# Jenkins Plugins
+# ----------------------------------------------------
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 
 RUN jenkins-plugin-cli \
