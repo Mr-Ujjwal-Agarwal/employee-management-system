@@ -1,63 +1,112 @@
 # ⚙️ Setup Guide
 
-## 1. Overview
-
-This document provides a step-by-step guide for setting up the **Employee Management System (EMS)** from scratch.
-
-It covers:
-
-- Local development environment
-- AWS infrastructure prerequisites
-- Backend deployment
-- Frontend deployment
-- Database configuration
-- Continuous Integration setup
-- Monitoring configuration
-- Verification procedures
-
-This guide assumes the project is being deployed on **Amazon Web Services (AWS)** following the Phase 2 architecture.
+> **Document Version:** Phase 3 – Enterprise CI/CD  
+> **Project:** Enterprise Employee Management System  
+> **Audience:** Developers, DevOps Engineers, Contributors  
+> **Last Updated:** July 2026
 
 ---
 
-# 2. Prerequisites
+# 1. Overview
 
-Before starting, ensure the following tools and services are available.
+This guide provides step-by-step instructions for setting up the **Enterprise Employee Management System (EMS)** for both local development and AWS deployment.
 
-## Development Tools
+It is intended for developers and DevOps engineers who want to contribute to the project or deploy the application in a cloud environment.
 
-| Tool | Version |
-|--------|---------|
-| Git | Latest |
+At the end of this guide, you will have:
+
+- A fully configured local development environment
+- Running frontend and backend services
+- Dockerized application
+- Jenkins configured for CI/CD
+- Amazon ECR integration
+- AWS EC2 deployment
+- Verified application health
+
+---
+
+# 2. Project Architecture
+
+The current deployment architecture is shown below.
+
+```
+Developer
+     │
+     ▼
+GitHub Repository
+     │
+     ▼
+Jenkins Pipeline
+     │
+     ▼
+Docker Image Build
+     │
+     ▼
+Amazon ECR
+     │
+     ▼
+AWS EC2
+     │
+     ▼
+Docker Compose
+     │
+     ▼
+Employee Management System
+```
+
+This setup guide follows the same workflow used throughout the project.
+
+---
+
+# 3. System Requirements
+
+Ensure the following software is installed before starting.
+
+| Software | Recommended Version |
+|-----------|--------------------|
+| Git | Latest Stable |
+| Docker Engine | 24+ |
+| Docker Compose | v2 |
 | Python | 3.12+ |
 | Node.js | 20+ |
 | npm | 10+ |
 | AWS CLI | Version 2 |
+| Jenkins | LTS |
 | VS Code | Recommended |
 
 ---
 
-## AWS Services
+# 4. Repository Structure
 
-The following AWS services are required.
+The repository is organized into multiple components.
 
-- Amazon VPC
-- Amazon EC2
-- Amazon RDS
-- Application Load Balancer
-- Auto Scaling Groups
-- Launch Templates
-- Systems Manager Parameter Store
-- CodePipeline
-- CodeBuild
-- CloudWatch
-- SNS
-- IAM
+```text
+employee-management-system/
+
+├── app/
+│   ├── backend/
+│   └── frontend/
+│
+├── docker/
+│
+├── docs/
+│
+├── jenkins/
+│
+├── scripts/
+│
+├── README.md
+│
+└── docker-compose.yml
+```
+
+> **Note:** The exact structure may evolve as additional project phases are completed.
 
 ---
 
-# 3. Clone Repository
+# 5. Clone the Repository
 
-Clone the repository.
+Clone the repository using Git.
 
 ```bash
 git clone https://github.com/<your-username>/employee-management-system.git
@@ -65,17 +114,31 @@ git clone https://github.com/<your-username>/employee-management-system.git
 cd employee-management-system
 ```
 
+Verify the repository.
+
+```bash
+git status
+```
+
+Expected output:
+
+```text
+On branch main
+nothing to commit
+working tree clean
+```
+
 ---
 
-# 4. Backend Setup
+# 6. Backend Setup
 
-Move into the backend directory.
+Navigate to the backend directory.
 
 ```bash
 cd app/backend
 ```
 
-Create a Python virtual environment.
+Create a virtual environment.
 
 ```bash
 python3 -m venv venv
@@ -83,8 +146,16 @@ python3 -m venv venv
 
 Activate it.
 
+Linux/macOS
+
 ```bash
 source venv/bin/activate
+```
+
+Windows
+
+```powershell
+venv\Scripts\activate
 ```
 
 Install dependencies.
@@ -93,19 +164,19 @@ Install dependencies.
 pip install -r requirements.txt
 ```
 
-Run the backend.
+Start the backend.
 
 ```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000
+uvicorn app.main:app --reload
 ```
 
-Backend URL
+Verify the backend.
 
 ```
 http://localhost:8000
 ```
 
-Swagger UI
+Swagger Documentation
 
 ```
 http://localhost:8000/docs
@@ -113,9 +184,9 @@ http://localhost:8000/docs
 
 ---
 
-# 5. Frontend Setup
+# 7. Frontend Setup
 
-Move into the frontend directory.
+Navigate to the frontend directory.
 
 ```bash
 cd app/frontend
@@ -127,13 +198,13 @@ Install dependencies.
 npm install
 ```
 
-Start the application.
+Start the development server.
 
 ```bash
 npm run dev
 ```
 
-Frontend URL
+Verify the application.
 
 ```
 http://localhost:5173
@@ -141,233 +212,242 @@ http://localhost:5173
 
 ---
 
-# 6. AWS Infrastructure Deployment
+# 8. Docker Setup
 
-The project infrastructure is built using native AWS services.
+Verify Docker installation.
 
-## Networking
+```bash
+docker --version
+```
 
-Create:
+Verify Docker Compose.
 
-- Custom VPC
-- Public Subnets
-- Private Subnets
-- Internet Gateway
-- NAT Gateway
-- Route Tables
+```bash
+docker compose version
+```
+
+Build the project.
+
+```bash
+docker compose build
+```
+
+Start all services.
+
+```bash
+docker compose up -d
+```
+
+Verify running containers.
+
+```bash
+docker ps
+```
+
+Expected services should include:
+
+- Frontend
+- Backend
 
 ---
 
-## Compute
+# 9. Environment Configuration
 
-Provision:
+Create the required environment files before deployment.
 
-- Frontend Launch Template
-- Backend Launch Template
+Typical variables include:
 
-Create:
+```text
+APP_ENV
 
-- Frontend Auto Scaling Group
-- Backend Auto Scaling Group
+API_BASE_URL
 
-Attach:
+DATABASE_URL
 
-- Public ALB
-- Internal ALB
+AWS_REGION
+
+AWS_ACCOUNT_ID
+
+ECR_REPOSITORY
+
+SECRET_KEY
+```
+
+> Sensitive information should never be committed to the repository.
 
 ---
 
-## Database
+# 10. Jenkins Setup
 
-Provision an Amazon RDS instance.
+Install Jenkins (LTS version).
+
+Required plugins include:
+
+- Git
+- Pipeline
+- Docker
+- Docker Pipeline
+- Credentials Binding
+- Blue Ocean (Optional)
 
 Configure:
 
-- Database Name
-- Username
-- Password
+- Git executable
+- Docker access
+- AWS credentials
+- GitHub credentials
 
-Restrict database access using Security Groups.
+Create a Pipeline job that references the project's `Jenkinsfile`.
 
----
-
-# 7. Systems Manager Parameter Store
-
-Store application configuration securely.
-
-Recommended parameters include:
-
-- Database Host
-- Database Port
-- Database Username
-- Database Password
-- Database Name
-
-The backend application retrieves these parameters during runtime.
+> Detailed pipeline configuration is documented separately.
 
 ---
 
-# 8. Continuous Integration Setup
+# 11. Amazon ECR Configuration
 
-The project uses AWS-native Continuous Integration.
+Authenticate Docker with Amazon ECR.
 
-## Step 1
-
-Create a GitHub connection.
-
----
-
-## Step 2
-
-Create two CodeBuild projects.
-
-- Frontend Build
-- Backend Build
-
-Each project uses its corresponding buildspec file.
-
-```
-platform/cicd/aws-native/buildspec/
+```bash
+aws configure
 ```
 
----
+Login to ECR.
 
-## Step 3
+```bash
+aws ecr get-login-password \
+| docker login \
+--username AWS \
+--password-stdin <account-id>.dkr.ecr.<region>.amazonaws.com
+```
 
-Create an AWS CodePipeline.
+Push Docker images.
 
-Pipeline stages:
+```bash
+docker push <image-name>
+```
 
-Source
-
-↓
-
-Frontend Build
-
-+
-
-Backend Build
-
----
-
-# 9. Monitoring Setup
-
-Configure monitoring using Amazon CloudWatch.
-
-Create:
-
-- CloudWatch Dashboard
-- CloudWatch Alarms
-
-Monitor:
-
-- Pipeline
-- CodeBuild
-- EC2
-- Amazon RDS
+Verify the repository in Amazon ECR.
 
 ---
 
-# 10. SNS Notifications
+# 12. AWS EC2 Deployment
 
-Create an SNS Topic.
+Launch an EC2 instance with Docker installed.
 
-Subscribe your email.
+Clone the repository.
 
-Attach the topic to CloudWatch Alarms.
+```bash
+git clone <repository-url>
+```
 
-This enables automatic notifications whenever alarms are triggered.
+Navigate to the project.
 
----
+```bash
+cd employee-management-system
+```
 
-# 11. Validation Checklist
+Deploy the application.
 
-Verify the following after deployment.
+```bash
+docker compose up -d
+```
 
-Infrastructure
+Verify deployment.
 
-- VPC created
-- Subnets configured
-- Route Tables configured
-- Security Groups configured
-- ALBs healthy
-- Auto Scaling Groups healthy
-- Amazon RDS available
-
-Application
-
-- Backend responding
-- Frontend responding
-
-CI
-
-- CodePipeline successful
-- Frontend CodeBuild successful
-- Backend CodeBuild successful
-
-Monitoring
-
-- Dashboard available
-- Alarms active
-- SNS notifications working
+```bash
+docker ps
+```
 
 ---
 
-# 12. Common Issues
+# 13. Deployment Verification
 
-## Backend not starting
+Verify the following after setup.
 
-Check:
+## Local Verification
 
-- Python environment
-- Dependencies
-- Parameter Store configuration
-
----
-
-## Frontend build fails
-
-Check:
-
-- Node version
-- npm packages
-- Build logs
+- Backend is accessible
+- Frontend is accessible
+- Docker containers are healthy
+- API communication is successful
 
 ---
 
-## Pipeline failure
+## Jenkins Verification
 
-Check:
-
-- GitHub connection
-- IAM permissions
-- CodeBuild logs
+- Pipeline executes successfully
+- Docker images build correctly
+- Images are pushed to Amazon ECR
 
 ---
 
-## SNS email not received
+## AWS Verification
 
-Check:
-
-- Email subscription status
-- Alarm configuration
+- EC2 instance is running
+- Containers are healthy
+- Application is accessible
+- Logs contain no critical errors
 
 ---
 
-# 13. Next Steps
+# 14. Common Setup Mistakes
 
-After completing this guide, the environment will provide:
+During setup, verify the following:
 
-- High Availability
-- Automatic Scaling
-- Continuous Integration
-- Centralized Monitoring
-- Operational Alerting
+- Docker daemon is running
+- AWS CLI is configured correctly
+- Docker has permission to execute
+- Required environment variables exist
+- Required ports are available
+- Jenkins has Docker access
+- AWS credentials are valid
 
-Future phases will introduce:
+> A complete list of real project incidents is documented in the **Engineering Incident Log & Troubleshooting Guide**.
 
-- Jenkins
+---
+
+# 15. Best Practices
+
+Follow these recommendations during development.
+
+- Use Docker for consistency.
+- Keep dependencies updated.
+- Never commit secrets or credentials.
+- Use feature branches for development.
+- Verify changes locally before pushing.
+- Monitor container logs after deployment.
+- Keep documentation synchronized with implementation.
+
+---
+
+# 16. Related Documentation
+
+- README.md
+- architecture.md
+- operations-guide.md
+- runbook.md
+- roadmap.md
+- troubleshooting.md
+
+---
+
+# 17. Conclusion
+
+You have successfully completed the project setup.
+
+The environment is now ready for:
+
+- Local development
+- Containerized execution
+- Continuous Integration using Jenkins
+- Docker image management with Amazon ECR
+- AWS EC2 deployment
+
+Future phases of the project will extend this setup with:
+
 - Terraform
 - Ansible
 - Kubernetes
 - GitOps
+- Monitoring
+- DevSecOps
