@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    options {
+        timestamps()
+    }
+
     stages {
 
         stage('Checkout') {
@@ -9,45 +13,71 @@ pipeline {
             }
         }
 
-        stage('Docker Environment') {
+        stage('Environment Check') {
             steps {
-                sh 'docker version'
-                sh 'docker compose version'
+                sh '''
+                echo "========== WORKSPACE =========="
+                pwd
+
+                echo "========== DOCKER =========="
+                docker --version
+
+                echo "========== DOCKER COMPOSE =========="
+                docker compose version
+                '''
             }
         }
 
         stage('Build Backend') {
             steps {
-                sh 'docker compose build backend'
+                sh '''
+                echo "========== BUILDING BACKEND =========="
+                docker compose build backend
+                '''
             }
         }
 
-        stage('Build Frontend') {
-            steps {
-                sh 'docker compose build frontend'
-            }
-        }
+stage('Build Frontend') {
+    steps {
+        sh '''
+        echo "========== BUILDING FRONTEND =========="
+        docker compose build frontend
+        '''
+    }
+}
 
-        stage('Deploy') {
-            steps {
-                sh 'docker compose up -d'
-            }
-        }
+stage('Deploy') {
+    steps {
+        sh './platform/cicd/scripts/deploy.sh'
+    }
+}
 
-        stage('Health Check') {
-            steps {
-                sh 'curl -f http://localhost:8000/health/'
-            }
-        }
+stage('Health Check') {
+    steps {
+        sh './platform/cicd/scripts/healthcheck.sh'
+    }
+}
+
+    }
+post {
+
+    success {
+        echo '✅ Deployment Successful'
     }
 
-    post {
-        success {
-            echo 'Deployment Successful'
-        }
+    failure {
+        echo '❌ Deployment Failed'
 
-        failure {
-            echo 'Deployment Failed'
-        }
+        sh 'docker compose ps'
+
+        sh 'docker compose logs backend --tail=50'
+
+        sh 'docker compose logs frontend --tail=50'
     }
+
+    always {
+        sh 'docker image ls'
+    }
+}
+    
 }
