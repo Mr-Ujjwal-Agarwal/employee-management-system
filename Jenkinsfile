@@ -32,22 +32,9 @@ stage('Login to ECR') {
         sh './platform/cicd/scripts/ecr-login.sh'
     }
 }
-
-        stage('Build Backend') {
-            steps {
-                sh '''
-                echo "========== BUILDING BACKEND =========="
-                docker compose build backend
-                '''
-            }
-        }
-
-stage('Build Frontend') {
+stage('Build Images') {
     steps {
-        sh '''
-        echo "========== BUILDING FRONTEND =========="
-        docker compose build frontend
-        '''
+        sh './platform/cicd/scripts/build.sh'
     }
 }
 
