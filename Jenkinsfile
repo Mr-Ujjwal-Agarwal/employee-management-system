@@ -11,28 +11,44 @@ pipeline {
         }
 
         stage('Login ECR') {
-    steps {
-        withCredentials([
-            usernamePassword(
-                credentialsId: 'aws-ecr',
-                usernameVariable: 'AWS_ACCESS_KEY_ID',
-                passwordVariable: 'AWS_SECRET_ACCESS_KEY'
-            )
-        ]) {
-            sh './platform/cicd/scripts/ecr-login.sh'
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'aws-ecr',
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                    )
+                ]) {
+                    sh './platform/cicd/scripts/ecr-login.sh'
+                }
+            }
         }
-    }
-}
 
         stage('Build Images') {
             steps {
-                sh './platform/cicd/scripts/build.sh'
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'aws-ecr',
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                    )
+                ]) {
+                    sh './platform/cicd/scripts/build.sh'
+                }
             }
         }
 
         stage('Push Images') {
             steps {
-                sh './platform/cicd/scripts/push.sh'
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'aws-ecr',
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                    )
+                ]) {
+                    sh './platform/cicd/scripts/push.sh'
+                }
             }
         }
 
