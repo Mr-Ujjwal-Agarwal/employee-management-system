@@ -2,31 +2,14 @@
 
 set -euo pipefail
 
-echo "========================================="
-echo "Checking Application Health..."
-echo "========================================="
+echo "Checking backend..."
 
-MAX_RETRIES=12
-RETRY_DELAY=5
-
-for i in $(seq 1 $MAX_RETRIES)
-do
-    echo "Attempt $i/$MAX_RETRIES"
-
-    if curl -fs http://localhost:8000/health/ > /dev/null; then
-        echo
-        echo "✅ Backend Health Check Passed"
-        exit 0
-    fi
-
-    echo "Application not ready. Waiting ${RETRY_DELAY}s..."
-    sleep $RETRY_DELAY
-done
+curl --fail http://localhost:8000/health/
 
 echo
-echo "❌ Backend Health Check Failed"
+echo "Checking frontend..."
 
-docker compose ps
-docker compose logs backend --tail=50
+curl --fail http://localhost/
 
-exit 1
+echo
+echo "Health checks passed."

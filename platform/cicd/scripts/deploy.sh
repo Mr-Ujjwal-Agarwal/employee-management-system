@@ -1,12 +1,17 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
-echo "========================================="
-echo " Deploying Employee Management System"
-echo "========================================="
+echo "======================================"
+echo " Deploying Application"
+echo "======================================"
 
-docker compose up -d --build --remove-orphans
+echo "Pulling latest images..."
+docker compose pull
+
+echo
+echo "Starting containers..."
+docker compose up -d --remove-orphans
 
 echo
 echo "Deployment completed successfully."

@@ -5,8 +5,7 @@ services:
   backend:
     container_name: employee-backend
 
-    build:
-      context: ./app/backend
+    image: ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/employee-backend:${IMAGE_TAG}
 
     env_file:
       - ./app/backend/.env
@@ -25,8 +24,7 @@ services:
   frontend:
     container_name: employee-frontend
 
-    build:
-      context: ./app/frontend
+    image: ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/employee-frontend:${IMAGE_TAG}
 
     ports:
       - "80:80"

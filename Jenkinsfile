@@ -1,9 +1,6 @@
 pipeline {
-    agent any
 
-    options {
-        timestamps()
-    }
+    agent any
 
     stages {
 
@@ -13,68 +10,40 @@ pipeline {
             }
         }
 
-        stage('Environment Check') {
+        stage('Login ECR') {
             steps {
-                sh '''
-                echo "========== WORKSPACE =========="
-                pwd
-
-                echo "========== DOCKER =========="
-                docker --version
-
-                echo "========== DOCKER COMPOSE =========="
-                docker compose version
-                '''
+                sh './platform/cicd/scripts/ecr-login.sh'
             }
         }
-stage('Login to ECR') {
-    steps {
-        sh './platform/cicd/scripts/ecr-login.sh'
-    }
-}
-stage('Build Images') {
-    steps {
-        sh './platform/cicd/scripts/build.sh'
-    }
-}
-stage('Push Images') {
-    steps {
-        sh './platform/cicd/scripts/push.sh'
-    }
-}
 
-stage('Deploy') {
-    steps {
-        sh './platform/cicd/scripts/deploy.sh'
-    }
-}
+        stage('Build Images') {
+            steps {
+                sh './platform/cicd/scripts/build.sh'
+            }
+        }
 
-stage('Health Check') {
-    steps {
-        sh './platform/cicd/scripts/healthcheck.sh'
-    }
-}
+        stage('Push Images') {
+            steps {
+                sh './platform/cicd/scripts/push.sh'
+            }
+        }
 
-    }
-post {
+        stage('Deploy') {
+            steps {
+                sh './platform/cicd/scripts/deploy.sh'
+            }
+        }
 
-    success {
-        echo '✅ Deployment Successful'
+        stage('Health Check') {
+            steps {
+                sh './platform/cicd/scripts/healthcheck.sh'
+            }
+        }
     }
 
-    failure {
-        echo '❌ Deployment Failed'
-
-        sh 'docker compose ps'
-
-        sh 'docker compose logs backend --tail=50'
-
-        sh 'docker compose logs frontend --tail=50'
+    post {
+        always {
+            sh './platform/cicd/scripts/cleanup.sh'
+        }
     }
-
-    always {
-        sh 'docker image ls'
-    }
-}
-    
 }
