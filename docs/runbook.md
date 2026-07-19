@@ -1,292 +1,608 @@
 # 🚑 Operations Runbook
 
-## 1. Purpose
-
-This runbook provides standard operating procedures for responding to common incidents within the Employee Management System (EMS) environment.
-
-The objective is to reduce downtime by providing consistent troubleshooting and recovery steps for infrastructure, application, and CI-related issues.
-
----
-
-# 2. Incident Response Workflow
-
-Whenever an issue occurs:
-
-1. Receive notification (CloudWatch Alarm / Amazon SNS)
-2. Identify the affected component
-3. Verify the issue using CloudWatch metrics and logs
-4. Apply the appropriate recovery procedure
-5. Confirm the service has returned to a healthy state
-6. Document the incident and corrective actions
+> **Document Version:** Phase 3 – Enterprise CI/CD  
+> **Project:** Enterprise Employee Management System  
+> **Audience:** DevOps Engineers, System Administrators, Contributors  
+> **Prerequisites:** Application successfully deployed  
+> **Last Updated:** July 2026
 
 ---
 
-# 3. CodePipeline Failure
+# 1. Overview
+
+This runbook provides standardized recovery procedures for operational incidents affecting the Enterprise Employee Management System (EMS).
+
+It serves as the primary reference during service disruptions and production incidents by documenting repeatable recovery procedures, validation steps, escalation guidelines, and post-incident activities.
+
+This document covers:
+
+- Incident response
+- Service recovery
+- Docker failures
+- Jenkins failures
+- Amazon ECR issues
+- AWS EC2 recovery
+- Deployment rollback
+- Service validation
+- Escalation procedures
+
+---
+
+# 2. Scope
+
+This runbook applies to the current production architecture.
+
+```text
+Developer
+      │
+      ▼
+GitHub Repository
+      │
+      ▼
+Jenkins Pipeline
+      │
+      ▼
+Docker Image Build
+      │
+      ▼
+Amazon ECR
+      │
+      ▼
+AWS EC2
+      │
+      ▼
+Docker Compose
+      │
+      ▼
+Frontend + Backend Containers
+```
+
+---
+
+# 3. Incident Severity Levels
+
+| Severity | Description | Example |
+|-----------|-------------|----------|
+| Critical | Complete application outage | Both frontend and backend unavailable |
+| High | Major service disruption | Backend API unavailable |
+| Medium | Partial functionality affected | Jenkins pipeline failure |
+| Low | Minor operational issue | Log warnings, disk cleanup required |
+
+Prioritize incident response according to severity.
+
+---
+
+# 4. Initial Incident Response
+
+Before attempting recovery:
+
+- Identify the affected service.
+- Determine the scope of impact.
+- Verify whether the issue is ongoing.
+- Review recent deployments.
+- Collect logs and diagnostic information.
+- Avoid making multiple simultaneous changes.
+
+---
+
+# 5. Frontend Service Recovery
 
 ## Symptoms
 
-- Pipeline execution fails.
-- CloudWatch Alarm is triggered.
-- SNS email notification is received.
+- Website unavailable
+- Blank page
+- HTTP errors
+- Container not responding
 
-## Investigation
+### Investigation
 
-- Open AWS CodePipeline.
-- Identify the failed stage.
-- Review execution history.
-- Inspect CloudWatch Logs.
+Verify running containers.
 
-## Resolution
+```bash
+docker ps
+```
 
-- Fix the identified issue.
-- Commit the required changes.
-- Push to GitHub.
-- Verify the next pipeline execution completes successfully.
+Inspect frontend logs.
+
+```bash
+docker logs frontend
+```
+
+Inspect container configuration.
+
+```bash
+docker inspect frontend
+```
+
+### Recovery
+
+Restart frontend container.
+
+```bash
+docker compose restart frontend
+```
+
+If unsuccessful:
+
+```bash
+docker compose up -d --build frontend
+```
+
+### Validation
+
+- Frontend loads successfully.
+- Browser console contains no critical errors.
+- Backend communication succeeds.
 
 ---
 
-# 4. Frontend CodeBuild Failure
+# 6. Backend Service Recovery
 
 ## Symptoms
 
-- Frontend build stage fails.
-- CloudWatch Alarm enters ALARM state.
+- API unavailable
+- HTTP 500 errors
+- Database/API failures
+- Backend container exited
 
-## Investigation
+### Investigation
+
+Check backend logs.
+
+```bash
+docker logs backend
+```
+
+Inspect container.
+
+```bash
+docker inspect backend
+```
+
+Verify running services.
+
+```bash
+docker ps
+```
+
+### Recovery
+
+Restart backend.
+
+```bash
+docker compose restart backend
+```
+
+If required:
+
+```bash
+docker compose up -d --build backend
+```
+
+### Validation
+
+- Backend container running.
+- API returns successful responses.
+- Frontend communicates with backend correctly.
+
+---
+
+# 7. Docker Container Recovery
+
+## Symptoms
+
+- Container exited
+- Restart loop
+- Image pull failure
+- Container unavailable
+
+### Investigation
+
+```bash
+docker ps -a
+```
+
+```bash
+docker logs <container-name>
+```
+
+```bash
+docker inspect <container-name>
+```
+
+### Recovery
+
+Restart container.
+
+```bash
+docker restart <container-name>
+```
+
+Recreate services.
+
+```bash
+docker compose down
+```
+
+```bash
+docker compose up -d
+```
+
+### Validation
+
+```bash
+docker ps
+```
+
+Verify all expected containers are running.
+
+---
+
+# 8. Docker Service Recovery
+
+## Symptoms
+
+- Docker commands fail
+- Containers cannot start
+- Docker daemon unavailable
+
+### Investigation
+
+Check Docker status.
+
+```bash
+systemctl status docker
+```
+
+Review Docker logs.
+
+```bash
+journalctl -u docker
+```
+
+### Recovery
+
+Restart Docker.
+
+```bash
+sudo systemctl restart docker
+```
+
+Verify Docker.
+
+```bash
+docker ps
+```
+
+### Validation
+
+- Docker service active.
+- Containers restart successfully.
+
+---
+
+# 9. Jenkins Pipeline Recovery
+
+## Symptoms
+
+- Pipeline failure
+- Build failure
+- Deployment failure
+- Git checkout failure
+
+### Investigation
 
 Review:
 
-- Build logs
-- npm installation
-- Build errors
-- Missing dependencies
+- Pipeline console output
+- Jenkins system logs
+- Workspace status
+- Credentials
+- Docker connectivity
+- Git repository access
 
-## Resolution
+### Recovery
 
-Correct the application code or build configuration and trigger a new pipeline execution.
+- Correct pipeline configuration.
+- Resolve build errors.
+- Verify credentials.
+- Retry pipeline execution.
+
+If required, rebuild Docker images.
+
+### Validation
+
+- Pipeline completes successfully.
+- Images built successfully.
+- Deployment stage succeeds.
 
 ---
 
-# 5. Backend CodeBuild Failure
+# 10. Amazon ECR Recovery
 
 ## Symptoms
 
-- Backend build fails.
+- Docker push fails
+- Authentication errors
+- Image unavailable
 
-## Investigation
+### Investigation
 
-Check:
+Verify AWS configuration.
 
-- Python dependencies
-- requirements.txt
-- FastAPI application
-- Build logs
+```bash
+aws configure list
+```
 
-## Resolution
+Authenticate with Amazon ECR.
 
-Resolve the underlying issue and verify that the build completes successfully.
+```bash
+aws ecr get-login-password \
+| docker login \
+--username AWS \
+--password-stdin <account-id>.dkr.ecr.<region>.amazonaws.com
+```
+
+Verify repositories.
+
+```bash
+aws ecr describe-repositories
+```
+
+### Recovery
+
+- Reauthenticate with Amazon ECR.
+- Push Docker image again.
+- Verify repository contents.
+
+### Validation
+
+Latest Docker image appears in the repository.
 
 ---
 
-# 6. EC2 Instance Unhealthy
+# 11. AWS EC2 Recovery
 
 ## Symptoms
 
-- EC2 health checks fail.
-- Target Group reports unhealthy instances.
-- Auto Scaling replaces instances.
+- Application unreachable
+- SSH unavailable
+- High resource utilization
 
-## Investigation
+### Investigation
 
-Check:
+Check instance health.
 
-- EC2 Instance Status
-- System Logs
-- CloudWatch Metrics
-- Security Groups
+```bash
+uptime
+```
 
-## Resolution
+Memory.
 
-- Verify Launch Template configuration.
-- Confirm bootstrap scripts execute successfully.
-- Perform an Instance Refresh if required.
+```bash
+free -h
+```
 
----
+Disk.
 
-# 7. Application Load Balancer Issues
+```bash
+df -h
+```
 
-## Symptoms
+Processes.
 
-- Application inaccessible.
-- Target Groups unhealthy.
-- Increased HTTP 5xx responses.
+```bash
+top
+```
 
-## Investigation
+Docker.
 
-Verify:
+```bash
+systemctl status docker
+```
 
-- Target Group health
-- Listener configuration
-- Security Groups
-- Backend application status
+### Recovery
 
-## Resolution
+Restart Docker if required.
 
-Restore application health and verify that targets return to the Healthy state.
+```bash
+sudo systemctl restart docker
+```
 
----
+Restart application.
 
-# 8. Amazon RDS Issues
+```bash
+docker compose up -d
+```
 
-## Symptoms
+### Validation
 
-- Database connection failures.
-- High CPU alarms.
-- Increased response times.
-
-## Investigation
-
-Check:
-
-- Database status
-- Security Groups
-- Database connections
-- CloudWatch Metrics
-
-## Resolution
-
-- Verify connectivity.
-- Review database performance.
-- Scale database resources if necessary.
-- Restore from backup if required.
+- EC2 reachable.
+- Containers healthy.
+- Application accessible.
 
 ---
 
-# 9. CloudWatch Alarm Triggered
+# 12. Complete Deployment Recovery
 
-## Investigation
+Use this procedure if multiple services fail.
 
-Determine:
+## Step 1
 
-- Which resource triggered the alarm.
-- Current metric values.
-- Recent operational changes.
+Stop running services.
 
-## Resolution
-
-Investigate the root cause before clearing the alarm.
-
-Never suppress alarms without understanding why they were triggered.
+```bash
+docker compose down
+```
 
 ---
 
-# 10. SNS Notifications Not Received
+## Step 2
 
-## Investigation
+Pull the latest source code.
 
-Verify:
-
-- SNS Topic
-- Email subscription status
-- CloudWatch Alarm configuration
-
-## Resolution
-
-- Reconfirm email subscription.
-- Test SNS delivery.
-- Validate alarm actions.
+```bash
+git pull origin main
+```
 
 ---
 
-# 11. High CPU Utilization
+## Step 3
 
-## Symptoms
+Rebuild images.
 
-- EC2 CPU alarm triggered.
-- RDS CPU alarm triggered.
-
-## Investigation
-
-Check:
-
-- CloudWatch Dashboard
-- Running processes
-- Recent deployments
-- Traffic levels
-
-## Resolution
-
-- Allow Auto Scaling to respond if applicable.
-- Optimize the application.
-- Increase instance capacity if required.
+```bash
+docker compose build
+```
 
 ---
 
-# 12. Parameter Store Issues
+## Step 4
 
-## Symptoms
+Deploy services.
 
-- Application cannot read configuration.
-- Authentication failures.
-
-## Investigation
-
-Verify:
-
-- Parameter names
-- IAM permissions
-- Parameter values
-
-## Resolution
-
-Update Parameter Store entries and restart the affected application if necessary.
+```bash
+docker compose up -d
+```
 
 ---
 
-# 13. General Troubleshooting Checklist
+## Step 5
 
-Before escalating an issue, verify:
+Verify containers.
 
-- EC2 instance health
-- Auto Scaling Group health
-- Target Group health
-- Application Load Balancer
-- Amazon RDS
-- CloudWatch Dashboard
-- CloudWatch Logs
-- CodePipeline
-- CodeBuild
-- SNS Notifications
+```bash
+docker ps
+```
 
 ---
 
-# 14. Recovery Validation
+# 13. Deployment Rollback
 
-After resolving an incident, confirm:
+Rollback should be considered when:
 
-- Application is accessible.
-- Backend API responds successfully.
-- Target Groups are healthy.
-- Auto Scaling Groups are healthy.
-- CodePipeline completes successfully.
-- CloudWatch alarms return to the OK state.
+- Deployment fails.
+- Critical application errors occur.
+- Containers cannot start.
+- New release is unstable.
+
+Recovery procedure:
+
+1. Stop current deployment.
+2. Restore previous application version.
+3. Pull previous Docker image.
+4. Restart containers.
+5. Verify application functionality.
+6. Notify stakeholders.
+
+Rollback is complete only after successful validation.
+
+---
+
+# 14. Service Validation Checklist
+
+After every recovery verify:
+
+## Application
+
+- Frontend accessible
+- Backend responding
+- API requests successful
+
+---
+
+## Containers
+
+- Containers running
+- No restart loops
+- No failed services
+
+---
+
+## Jenkins
+
+- Latest pipeline successful
+- Build completed
+- Deployment completed
+
+---
+
+## Amazon ECR
+
+- Images available
+- Correct image version deployed
+
+---
+
+## AWS EC2
+
+- Docker service active
+- No critical system errors
+- Application reachable
 
 ---
 
 # 15. Escalation Guidelines
 
-Escalate incidents when:
+Escalate the incident when:
 
 - Multiple services fail simultaneously.
-- Amazon RDS becomes unavailable.
-- Repeated pipeline failures occur.
-- Auto Scaling cannot recover unhealthy instances.
-- Security-related incidents are detected.
+- Root cause cannot be identified.
+- Deployment repeatedly fails.
+- Docker daemon cannot be recovered.
+- EC2 instance becomes inaccessible.
+- Security incidents are suspected.
+- Data integrity may be affected.
+
+Record all recovery attempts before escalation.
 
 ---
 
-# 16. Conclusion
+# 16. Post-Incident Activities
 
-This runbook provides standardized recovery procedures for the Employee Management System.
+After resolving an incident:
 
-Following these procedures helps minimize downtime, improve operational consistency, and ensure reliable system recovery during incidents.
+- Document the root cause.
+- Record corrective actions.
+- Identify preventive improvements.
+- Update project documentation if required.
+- Review deployment procedures.
+- Share lessons learned with contributors.
+
+Every incident should result in actionable improvements whenever possible.
+
+---
+
+# 17. Best Practices
+
+Follow these recommendations during incident response.
+
+- Stay calm and investigate before making changes.
+- Modify one component at a time.
+- Collect logs before restarting services.
+- Validate every recovery step.
+- Avoid deleting resources without verification.
+- Maintain rollback capability.
+- Keep recovery procedures documented.
+- Review recurring incidents periodically.
+
+---
+
+# 18. Related Documentation
+
+- README.md
+- architecture.md
+- setup-guide.md
+- operations-guide.md
+- roadmap.md
+- troubleshooting.md
+
+---
+
+# 19. Conclusion
+
+This runbook provides standardized operational recovery procedures for the Enterprise Employee Management System.
+
+By following these documented workflows, operators can respond consistently to incidents, reduce service downtime, validate successful recoveries, and continuously improve operational reliability.
+
+Future project phases—including Terraform, Ansible, Kubernetes, GitOps, Monitoring, and DevSecOps—will extend this runbook with additional recovery procedures while preserving the same operational standards.
