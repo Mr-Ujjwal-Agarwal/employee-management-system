@@ -501,7 +501,7 @@ The following screenshots demonstrate the current state of the project after suc
 
 <p align="center">
 
-<img src="./docs/assets/dashboard.png" width="95%">
+<img src="./assets/screenshots/ems-dashboard.png" width="95%">
 
 </p>
 
@@ -513,7 +513,7 @@ The following screenshots demonstrate the current state of the project after suc
 
 <p align="center">
 
-<img src="./docs/assets/pipeline.png" width="95%">
+<img src="./assets/screenshots/jenkins-pipeline.png" width="95%">
 
 </p>
 
@@ -525,7 +525,7 @@ The following screenshots demonstrate the current state of the project after suc
 
 <p align="center">
 
-<img src="./docs/assets/blueocean.png" width="95%">
+<img src="./assets/screenshots/jenkins-blueocean-pipeline.png" width="95%">
 
 </p>
 
@@ -537,7 +537,7 @@ The following screenshots demonstrate the current state of the project after suc
 
 <p align="center">
 
-<img src="./docs/assets/ecr.png" width="95%">
+<img src="./assets/screenshots/aws-ecr.png" width="95%">
 
 </p>
 
