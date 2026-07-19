@@ -53,10 +53,18 @@ pipeline {
         }
 
         stage('Deploy') {
-            steps {
-                sh './platform/cicd/scripts/deploy.sh'
-            }
+    steps {
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'aws-ecr',
+                usernameVariable: 'AWS_ACCESS_KEY_ID',
+                passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+            )
+        ]) {
+            sh './platform/cicd/scripts/deploy.sh'
         }
+    }
+}
 
         stage('Health Check') {
             steps {
