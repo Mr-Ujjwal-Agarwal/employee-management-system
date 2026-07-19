@@ -27,6 +27,11 @@ pipeline {
                 '''
             }
         }
+stage('Login to ECR') {
+    steps {
+        sh './platform/cicd/scripts/ecr-login.sh'
+    }
+}
 
         stage('Build Backend') {
             steps {
