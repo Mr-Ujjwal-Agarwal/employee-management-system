@@ -2,14 +2,20 @@
 
 set -euo pipefail
 
+echo "======================================"
+echo " Health Check"
+echo "======================================"
+
 echo "Checking backend..."
 
-curl --fail http://localhost:8000/health/
+docker exec employee-backend \
+    curl --fail http://localhost:8000/health/
 
 echo
 echo "Checking frontend..."
 
-curl --fail http://localhost/
+docker exec employee-frontend \
+    curl --fail http://localhost/
 
 echo
-echo "Health checks passed."
+echo "✅ All health checks passed."
