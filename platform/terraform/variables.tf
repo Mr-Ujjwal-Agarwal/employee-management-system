@@ -1,18 +1,22 @@
 ############################################
-# General Configuration
+# Project Configuration
 ############################################
 
 variable "project_name" {
-  description = "Project Name"
+  description = "Project name"
   type        = string
-  default     = "employee-management-system"
+  default     = "employee-management"
 }
 
 variable "environment" {
-  description = "Deployment Environment"
+  description = "Deployment environment"
   type        = string
-  default     = "production"
+  default     = "prod"
 }
+
+############################################
+# AWS Configuration
+############################################
 
 variable "aws_region" {
   description = "AWS Region"
@@ -25,29 +29,33 @@ variable "aws_region" {
 ############################################
 
 variable "vpc_cidr" {
-  description = "VPC CIDR Block"
+  description = "VPC CIDR"
   type        = string
   default     = "10.0.0.0/16"
 }
 
 variable "public_subnet_1_cidr" {
-  type    = string
-  default = "10.0.1.0/24"
+  description = "Public Subnet 1 CIDR"
+  type        = string
+  default     = "10.0.1.0/24"
 }
 
 variable "public_subnet_2_cidr" {
-  type    = string
-  default = "10.0.2.0/24"
+  description = "Public Subnet 2 CIDR"
+  type        = string
+  default     = "10.0.2.0/24"
 }
 
 variable "private_subnet_1_cidr" {
-  type    = string
-  default = "10.0.11.0/24"
+  description = "Private Subnet 1 CIDR"
+  type        = string
+  default     = "10.0.11.0/24"
 }
 
 variable "private_subnet_2_cidr" {
-  type    = string
-  default = "10.0.12.0/24"
+  description = "Private Subnet 2 CIDR"
+  type        = string
+  default     = "10.0.12.0/24"
 }
 
 ############################################
@@ -55,13 +63,15 @@ variable "private_subnet_2_cidr" {
 ############################################
 
 variable "availability_zone_1" {
-  type    = string
-  default = "ap-south-1a"
+  description = "Primary Availability Zone"
+  type        = string
+  default     = "ap-south-1a"
 }
 
 variable "availability_zone_2" {
-  type    = string
-  default = "ap-south-1b"
+  description = "Secondary Availability Zone"
+  type        = string
+  default     = "ap-south-1b"
 }
 
 ############################################
@@ -80,27 +90,52 @@ variable "instance_type" {
 }
 
 variable "key_name" {
-  description = "EC2 Key Pair"
+  description = "EC2 Key Pair Name"
   type        = string
 }
 
 ############################################
-# Auto Scaling
+# Auto Scaling - Frontend
 ############################################
 
-variable "desired_capacity" {
-  type    = number
-  default = 2
+variable "frontend_min_size" {
+  description = "Frontend ASG Minimum Size"
+  type        = number
+  default     = 2
 }
 
-variable "min_size" {
-  type    = number
-  default = 2
+variable "frontend_desired_size" {
+  description = "Frontend ASG Desired Capacity"
+  type        = number
+  default     = 2
 }
 
-variable "max_size" {
-  type    = number
-  default = 4
+variable "frontend_max_size" {
+  description = "Frontend ASG Maximum Size"
+  type        = number
+  default     = 4
+}
+
+############################################
+# Auto Scaling - Backend
+############################################
+
+variable "backend_min_size" {
+  description = "Backend ASG Minimum Size"
+  type        = number
+  default     = 2
+}
+
+variable "backend_desired_size" {
+  description = "Backend ASG Desired Capacity"
+  type        = number
+  default     = 2
+}
+
+variable "backend_max_size" {
+  description = "Backend ASG Maximum Size"
+  type        = number
+  default     = 4
 }
 
 ############################################
@@ -108,35 +143,72 @@ variable "max_size" {
 ############################################
 
 variable "db_name" {
-  type    = string
-  default = "emsdb"
+  description = "Database Name"
+  type        = string
+  default     = "emsdb"
 }
 
 variable "db_username" {
-  type = string
+  description = "Database Username"
+  type        = string
 }
 
 variable "db_password" {
-  type      = string
-  sensitive = true
+  description = "Database Password"
+  type        = string
+  sensitive   = true
 }
 
 variable "db_instance_class" {
-  type    = string
-  default = "db.t3.micro"
+  description = "RDS Instance Class"
+  type        = string
+  default     = "db.t3.micro"
+}
+
+variable "db_allocated_storage" {
+  description = "Database Storage (GB)"
+  type        = number
+  default     = 20
 }
 
 ############################################
-# Tags
+# Load Balancer
+############################################
+
+variable "alb_idle_timeout" {
+  description = "ALB Idle Timeout"
+  type        = number
+  default     = 60
+}
+
+############################################
+# DevOps Server
+############################################
+
+variable "devops_instance_type" {
+  description = "DevOps EC2 Instance Type"
+  type        = string
+  default     = "t3.medium"
+}
+
+############################################
+# Common Tags
 ############################################
 
 variable "common_tags" {
-  description = "Common Resource Tags"
-  type        = map(string)
+  description = "Common tags applied to all AWS resources"
+
+  type = map(string)
 
   default = {
-    Project     = "Employee-Management-System"
+
+    Project = "Employee-Management-System"
+
     Environment = "Production"
-    ManagedBy   = "Terraform"
+
+    ManagedBy = "Terraform"
+
+    Owner = "Ujjwal Agarwal"
+
   }
 }

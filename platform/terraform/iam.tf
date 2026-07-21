@@ -1,10 +1,10 @@
 ############################################
-# EC2 IAM Role
+# IAM Role - Frontend EC2
 ############################################
 
-resource "aws_iam_role" "ec2_role" {
+resource "aws_iam_role" "frontend_role" {
 
-  name = "${local.name_prefix}-ec2-role"
+  name = "${local.name_prefix}-frontend-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -26,52 +26,36 @@ resource "aws_iam_role" "ec2_role" {
 }
 
 ############################################
-# Attach AmazonSSMManagedInstanceCore
+# Frontend Instance Profile
 ############################################
 
-resource "aws_iam_role_policy_attachment" "ssm" {
+resource "aws_iam_instance_profile" "frontend_profile" {
 
-  role = aws_iam_role.ec2_role.name
+  name = "${local.name_prefix}-frontend-profile"
 
+  role = aws_iam_role.frontend_role.name
+}
+
+############################################
+# Attach SSM Policy
+############################################
+
+resource "aws_iam_role_policy_attachment" "frontend_ssm" {
+
+  role       = aws_iam_role.frontend_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 
 }
 
 ############################################
-# Attach CloudWatch Agent Policy
+# IAM Role - Backend EC2
 ############################################
 
-resource "aws_iam_role_policy_attachment" "cloudwatch" {
+resource "aws_iam_role" "backend_role" {
 
-  role = aws_iam_role.ec2_role.name
+  name = "${local.name_prefix}-backend-role"
 
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-
-}
-
-############################################
-# Attach ECR Read Only
-############################################
-
-resource "aws_iam_role_policy_attachment" "ecr_readonly" {
-
-  role = aws_iam_role.ec2_role.name
-
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-
-}
-
-############################################
-# Custom Policy
-############################################
-
-resource "aws_iam_policy" "ec2_custom" {
-
-  name = "${local.name_prefix}-ec2-custom-policy"
-
-  description = "Custom policy for EC2"
-
-  policy = jsonencode({
+  assume_role_policy = jsonencode({
 
     Version = "2012-10-17"
 
@@ -81,21 +65,13 @@ resource "aws_iam_policy" "ec2_custom" {
 
         Effect = "Allow"
 
-        Action = [
+        Principal = {
 
-          "s3:*",
+          Service = "ec2.amazonaws.com"
 
-          "logs:*",
+        }
 
-          "cloudwatch:*",
-
-          "ec2:Describe*",
-
-          "elasticloadbalancing:Describe*"
-
-        ]
-
-        Resource = "*"
+        Action = "sts:AssumeRole"
 
       }
 
@@ -103,28 +79,121 @@ resource "aws_iam_policy" "ec2_custom" {
 
   })
 
-}
-
-############################################
-# Attach Custom Policy
-############################################
-
-resource "aws_iam_role_policy_attachment" "custom" {
-
-  role = aws_iam_role.ec2_role.name
-
-  policy_arn = aws_iam_policy.ec2_custom.arn
+  tags = local.common_tags
 
 }
 
 ############################################
-# IAM Instance Profile
+# Backend Instance Profile
 ############################################
 
-resource "aws_iam_instance_profile" "ec2_profile" {
+resource "aws_iam_instance_profile" "backend_profile" {
 
-  name = "${local.name_prefix}-instance-profile"
+  name = "${local.name_prefix}-backend-profile"
 
-  role = aws_iam_role.ec2_role.name
+  role = aws_iam_role.backend_role.name
+
+}
+
+############################################
+# Backend SSM
+############################################
+
+resource "aws_iam_role_policy_attachment" "backend_ssm" {
+
+  role       = aws_iam_role.backend_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+
+}
+
+############################################
+# Backend CloudWatch
+############################################
+
+resource "aws_iam_role_policy_attachment" "backend_cloudwatch" {
+
+  role = aws_iam_role.backend_role.name
+
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+
+}
+
+############################################
+# IAM Role - DevOps EC2
+############################################
+
+resource "aws_iam_role" "devops_role" {
+
+  name = "${local.name_prefix}-devops-role"
+
+  assume_role_policy = jsonencode({
+
+    Version = "2012-10-17"
+
+    Statement = [
+
+      {
+
+        Effect = "Allow"
+
+        Principal = {
+
+          Service = "ec2.amazonaws.com"
+
+        }
+
+        Action = "sts:AssumeRole"
+
+      }
+
+    ]
+
+  })
+
+  tags = local.common_tags
+
+}
+
+############################################
+# DevOps Instance Profile
+############################################
+
+resource "aws_iam_instance_profile" "devops_profile" {
+
+  name = "${local.name_prefix}-devops-profile"
+
+  role = aws_iam_role.devops_role.name
+
+}
+
+############################################
+# AWS Managed Policies
+############################################
+
+resource "aws_iam_role_policy_attachment" "devops_ssm" {
+
+  role       = aws_iam_role.devops_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+
+}
+
+resource "aws_iam_role_policy_attachment" "devops_cloudwatch" {
+
+  role       = aws_iam_role.devops_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+
+}
+
+resource "aws_iam_role_policy_attachment" "devops_ecr" {
+
+  role       = aws_iam_role.devops_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
+
+}
+
+resource "aws_iam_role_policy_attachment" "devops_s3" {
+
+  role       = aws_iam_role.devops_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 
 }

@@ -1,8 +1,9 @@
 ############################################
-# VPC
+# Virtual Private Cloud
 ############################################
 
 resource "aws_vpc" "main" {
+
   cidr_block           = var.vpc_cidr
   enable_dns_support   = true
   enable_dns_hostnames = true
@@ -20,12 +21,13 @@ resource "aws_vpc" "main" {
 ############################################
 
 resource "aws_internet_gateway" "main" {
+
   vpc_id = aws_vpc.main.id
 
   tags = merge(
     local.common_tags,
     {
-      Name = "${local.name_prefix}-igw"
+      Name = local.internet_gateway_name
     }
   )
 }
@@ -35,6 +37,7 @@ resource "aws_internet_gateway" "main" {
 ############################################
 
 resource "aws_subnet" "public_1" {
+
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.public_subnet_1_cidr
   availability_zone       = var.availability_zone_1
@@ -44,7 +47,7 @@ resource "aws_subnet" "public_1" {
     local.common_tags,
     {
       Name = local.public_subnet_1_name
-      Type = "Public"
+      Tier = "Public"
     }
   )
 }
@@ -54,6 +57,7 @@ resource "aws_subnet" "public_1" {
 ############################################
 
 resource "aws_subnet" "public_2" {
+
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.public_subnet_2_cidr
   availability_zone       = var.availability_zone_2
@@ -63,7 +67,7 @@ resource "aws_subnet" "public_2" {
     local.common_tags,
     {
       Name = local.public_subnet_2_name
-      Type = "Public"
+      Tier = "Public"
     }
   )
 }
@@ -73,6 +77,7 @@ resource "aws_subnet" "public_2" {
 ############################################
 
 resource "aws_subnet" "private_1" {
+
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_subnet_1_cidr
   availability_zone = var.availability_zone_1
@@ -81,7 +86,7 @@ resource "aws_subnet" "private_1" {
     local.common_tags,
     {
       Name = local.private_subnet_1_name
-      Type = "Private"
+      Tier = "Private"
     }
   )
 }
@@ -91,6 +96,7 @@ resource "aws_subnet" "private_1" {
 ############################################
 
 resource "aws_subnet" "private_2" {
+
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_subnet_2_cidr
   availability_zone = var.availability_zone_2
@@ -99,16 +105,17 @@ resource "aws_subnet" "private_2" {
     local.common_tags,
     {
       Name = local.private_subnet_2_name
-      Type = "Private"
+      Tier = "Private"
     }
   )
 }
 
 ############################################
-# Elastic IP
+# Elastic IP for NAT Gateway
 ############################################
 
 resource "aws_eip" "nat" {
+
   domain = "vpc"
 
   depends_on = [
@@ -118,7 +125,7 @@ resource "aws_eip" "nat" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${local.name_prefix}-nat-eip"
+      Name = "${local.nat_gateway_name}-eip"
     }
   )
 }
@@ -128,6 +135,7 @@ resource "aws_eip" "nat" {
 ############################################
 
 resource "aws_nat_gateway" "main" {
+
   allocation_id = aws_eip.nat.id
   subnet_id     = aws_subnet.public_1.id
 
@@ -138,7 +146,7 @@ resource "aws_nat_gateway" "main" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${local.name_prefix}-nat"
+      Name = local.nat_gateway_name
     }
   )
 }
@@ -148,17 +156,21 @@ resource "aws_nat_gateway" "main" {
 ############################################
 
 resource "aws_route_table" "public" {
+
   vpc_id = aws_vpc.main.id
 
   route {
+
     cidr_block = "0.0.0.0/0"
+
     gateway_id = aws_internet_gateway.main.id
+
   }
 
   tags = merge(
     local.common_tags,
     {
-      Name = "${local.name_prefix}-public-rt"
+      Name = local.public_route_table_name
     }
   )
 }
@@ -168,17 +180,21 @@ resource "aws_route_table" "public" {
 ############################################
 
 resource "aws_route_table" "private" {
+
   vpc_id = aws_vpc.main.id
 
   route {
-    cidr_block     = "0.0.0.0/0"
+
+    cidr_block = "0.0.0.0/0"
+
     nat_gateway_id = aws_nat_gateway.main.id
+
   }
 
   tags = merge(
     local.common_tags,
     {
-      Name = "${local.name_prefix}-private-rt"
+      Name = local.private_route_table_name
     }
   )
 }
@@ -188,21 +204,29 @@ resource "aws_route_table" "private" {
 ############################################
 
 resource "aws_route_table_association" "public_1" {
+
   subnet_id      = aws_subnet.public_1.id
   route_table_id = aws_route_table.public.id
+
 }
 
 resource "aws_route_table_association" "public_2" {
+
   subnet_id      = aws_subnet.public_2.id
   route_table_id = aws_route_table.public.id
+
 }
 
 resource "aws_route_table_association" "private_1" {
+
   subnet_id      = aws_subnet.private_1.id
   route_table_id = aws_route_table.private.id
+
 }
 
 resource "aws_route_table_association" "private_2" {
+
   subnet_id      = aws_subnet.private_2.id
   route_table_id = aws_route_table.private.id
+
 }

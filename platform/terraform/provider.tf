@@ -1,22 +1,21 @@
 ############################################
-# AWS Provider Configuration
+# AWS Provider
 ############################################
 
 provider "aws" {
+
   region = var.aws_region
 
   default_tags {
-    tags = {
-      Project     = var.project_name
-      Environment = var.environment
-      ManagedBy   = "Terraform"
-      Owner       = "Ujjwal Agarwal"
-    }
+
+    tags = local.common_tags
+
   }
+
 }
 
 ############################################
-# AWS Account Identity
+# Caller Identity
 ############################################
 
 data "aws_caller_identity" "current" {}
