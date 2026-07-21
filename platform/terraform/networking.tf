@@ -1,0 +1,208 @@
+############################################
+# VPC
+############################################
+
+resource "aws_vpc" "main" {
+  cidr_block           = var.vpc_cidr
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = local.vpc_name
+    }
+  )
+}
+
+############################################
+# Internet Gateway
+############################################
+
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${local.name_prefix}-igw"
+    }
+  )
+}
+
+############################################
+# Public Subnet 1
+############################################
+
+resource "aws_subnet" "public_1" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.public_subnet_1_cidr
+  availability_zone       = var.availability_zone_1
+  map_public_ip_on_launch = true
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = local.public_subnet_1_name
+      Type = "Public"
+    }
+  )
+}
+
+############################################
+# Public Subnet 2
+############################################
+
+resource "aws_subnet" "public_2" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.public_subnet_2_cidr
+  availability_zone       = var.availability_zone_2
+  map_public_ip_on_launch = true
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = local.public_subnet_2_name
+      Type = "Public"
+    }
+  )
+}
+
+############################################
+# Private Subnet 1
+############################################
+
+resource "aws_subnet" "private_1" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.private_subnet_1_cidr
+  availability_zone = var.availability_zone_1
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = local.private_subnet_1_name
+      Type = "Private"
+    }
+  )
+}
+
+############################################
+# Private Subnet 2
+############################################
+
+resource "aws_subnet" "private_2" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.private_subnet_2_cidr
+  availability_zone = var.availability_zone_2
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = local.private_subnet_2_name
+      Type = "Private"
+    }
+  )
+}
+
+############################################
+# Elastic IP
+############################################
+
+resource "aws_eip" "nat" {
+  domain = "vpc"
+
+  depends_on = [
+    aws_internet_gateway.main
+  ]
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${local.name_prefix}-nat-eip"
+    }
+  )
+}
+
+############################################
+# NAT Gateway
+############################################
+
+resource "aws_nat_gateway" "main" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.public_1.id
+
+  depends_on = [
+    aws_internet_gateway.main
+  ]
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${local.name_prefix}-nat"
+    }
+  )
+}
+
+############################################
+# Public Route Table
+############################################
+
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${local.name_prefix}-public-rt"
+    }
+  )
+}
+
+############################################
+# Private Route Table
+############################################
+
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.main.id
+  }
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${local.name_prefix}-private-rt"
+    }
+  )
+}
+
+############################################
+# Route Table Associations
+############################################
+
+resource "aws_route_table_association" "public_1" {
+  subnet_id      = aws_subnet.public_1.id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "public_2" {
+  subnet_id      = aws_subnet.public_2.id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "private_1" {
+  subnet_id      = aws_subnet.private_1.id
+  route_table_id = aws_route_table.private.id
+}
+
+resource "aws_route_table_association" "private_2" {
+  subnet_id      = aws_subnet.private_2.id
+  route_table_id = aws_route_table.private.id
+}
