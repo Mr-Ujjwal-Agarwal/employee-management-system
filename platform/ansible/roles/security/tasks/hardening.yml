@@ -1,0 +1,22 @@
+---
+- name: Set permissions on /etc/passwd
+  file:
+    path: /etc/passwd
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Set permissions on /etc/shadow
+  file:
+    path: /etc/shadow
+    owner: root
+    group: root
+    mode: '0000'
+
+- name: Disable root SSH login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PermitRootLogin'
+    line: 'PermitRootLogin no'
+    create: no
+  notify: Restart SSH

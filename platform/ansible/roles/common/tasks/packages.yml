@@ -1,0 +1,23 @@
+---
+
+- name: Update package cache
+
+  dnf:
+
+    update_cache: true
+
+- name: Upgrade installed packages
+
+  dnf:
+
+    name: "*"
+
+    state: latest
+
+- name: Install common packages
+
+  dnf:
+
+    name: "{{ common_packages }}"
+
+    state: present

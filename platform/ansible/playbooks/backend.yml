@@ -1,0 +1,13 @@
+---
+
+- hosts: backend
+
+  become: true
+
+  roles:
+
+    - docker
+
+    - cloudwatch
+
+    - backend

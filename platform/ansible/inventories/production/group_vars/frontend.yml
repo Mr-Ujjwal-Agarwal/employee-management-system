@@ -1,0 +1,5 @@
+---
+
+service_name: frontend
+
+application_port: 80

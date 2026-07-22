@@ -1,0 +1,23 @@
+---
+
+- name: Enable chronyd
+
+  service:
+
+    name: chronyd
+
+    enabled: true
+
+    state: started
+
+- name: Set vm.swappiness
+
+  sysctl:
+
+    name: vm.swappiness
+
+    value: "10"
+
+    state: present
+
+    reload: true

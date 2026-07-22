@@ -1,0 +1,5 @@
+---
+
+jenkins_port: 8080
+
+docker_compose_version: latest

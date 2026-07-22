@@ -1,0 +1,4 @@
+---
+frontend_app_dir: /opt/employee-management/frontend
+
+frontend_log_dir: /var/log/employee-management/frontend

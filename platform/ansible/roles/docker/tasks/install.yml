@@ -1,0 +1,16 @@
+---
+- name: Install Docker
+  dnf:
+    name: docker
+    state: present
+
+- name: Install Docker Compose Plugin
+  dnf:
+    name: docker-compose-plugin
+    state: present
+
+- name: Add ec2-user to docker group
+  user:
+    name: ec2-user
+    groups: docker
+    append: yes

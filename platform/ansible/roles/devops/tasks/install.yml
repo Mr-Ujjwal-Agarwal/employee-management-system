@@ -1,0 +1,30 @@
+---
+- name: Install Git
+  dnf:
+    name: git
+    state: present
+
+- name: Install Java 17
+  dnf:
+    name: java-17-amazon-corretto
+    state: present
+
+- name: Install Maven
+  dnf:
+    name: maven
+    state: present
+
+- name: Install Terraform
+  dnf:
+    name: terraform
+    state: present
+
+- name: Install Helm
+  dnf:
+    name: helm
+    state: present
+
+- name: Install kubectl
+  dnf:
+    name: kubernetes-client
+    state: present

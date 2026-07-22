@@ -1,0 +1,39 @@
+---
+
+project_name: employee-management-system
+
+environment: production
+
+aws_region: ap-south-1
+
+timezone: Asia/Kolkata
+
+docker_users:
+
+  - ec2-user
+
+packages_common:
+
+  - git
+
+  - unzip
+
+  - wget
+
+  - curl
+
+  - vim
+
+  - jq
+
+  - htop
+
+  - net-tools
+
+  - python3
+
+  - python3-pip
+
+  - tar
+
+  - zip

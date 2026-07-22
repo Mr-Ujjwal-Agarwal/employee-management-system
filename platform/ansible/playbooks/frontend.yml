@@ -1,0 +1,13 @@
+---
+
+- hosts: frontend
+
+  become: true
+
+  roles:
+
+    - docker
+
+    - cloudwatch
+
+    - frontend

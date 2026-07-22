@@ -1,0 +1,11 @@
+---
+
+- name: Ensure ec2-user exists
+
+  user:
+
+    name: ec2-user
+
+    shell: /bin/bash
+
+    state: present

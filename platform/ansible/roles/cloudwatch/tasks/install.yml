@@ -1,0 +1,5 @@
+---
+- name: Install Amazon CloudWatch Agent
+  dnf:
+    name: amazon-cloudwatch-agent
+    state: present

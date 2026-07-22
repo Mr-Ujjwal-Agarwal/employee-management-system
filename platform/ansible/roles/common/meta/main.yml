@@ -1,0 +1,13 @@
+---
+
+galaxy_info:
+
+  author: Ujjwal Agarwal
+
+  description: Common Linux baseline configuration
+
+  license: MIT
+
+  min_ansible_version: "2.16"
+
+dependencies: []

@@ -1,0 +1,11 @@
+---
+
+- name: Enable SSH service
+
+  service:
+
+    name: "{{ ssh_service_name }}"
+
+    enabled: true
+
+    state: started

@@ -1,0 +1,7 @@
+---
+
+- name: Remove unused packages
+
+  dnf:
+
+    autoremove: true
