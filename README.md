@@ -2285,21 +2285,20 @@ Your support helps improve the visibility of the project and motivates future de
 
 Junior DevOps & Cloud Engineer
 
-- 🌐 LinkedIn: https://linkedin.com/in/your-profile
-- 💻 GitHub: https://github.com/your-username
-- 📧 Email: your-email@example.com
+- 🌐 LinkedIn: https://linkedin.com/in/ujjwal-agarwal16
+- 💻 GitHub: https://github.com/Mr-Ujjwal-Agarwal
+- 📧 Email: iamujjwalagarwal99@gmail.com
 
 Feel free to connect for discussions on DevOps, Cloud Computing, Infrastructure as Code, CI/CD, and AWS.
 
-# 📚 References
+# 📚 Project Documentation
 
-The project is built using the following technologies and official documentation:
+Detailed technical documentation for the project is available in the `docs/` directory.
 
-- AWS Documentation
-- Terraform Documentation
-- Ansible Documentation
-- Docker Documentation
-- Jenkins Documentation
-- FastAPI Documentation
-- React Documentation
-- Nginx Documentation
+| Document | Description |
+|----------|-------------|
+| 📐 **architecture.md** | High-level system architecture, AWS infrastructure, deployment architecture, and request flow. |
+| 🚀 **setup-guide.md** | Complete setup instructions for local development and production deployment. |
+| ⚙️ **operations-guide.md** | Operational procedures, maintenance tasks, monitoring, backup, scaling, and troubleshooting guidance. |
+| 📖 **runbook.md** | Standard operating procedures (SOPs) for incident response, deployment verification, recovery, and production operations. |
+| 🔒 **SECURITY.md** | Security architecture, IAM practices, network security, credential management, and infrastructure security guidelines. |
