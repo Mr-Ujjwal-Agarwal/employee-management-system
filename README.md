@@ -195,7 +195,7 @@ The complete deployment pipeline combines Infrastructure as Code (Terraform), Co
 
 <p align="center">
 
-<img src="./docs/images/architecture.png" width="100%">
+<img src="./assets/diagrams/Phase-4.png" width="100%">
 
 </p>
 
@@ -2165,9 +2165,9 @@ The following screenshots demonstrate the application interface, cloud infrastru
 
 ## Application
 
-| Login | Dashboard |
-|--------|-----------|
-| ![](assets/screenshots/login.png) | ![](assets/screenshots/dashboard.png) |
+| Dashboard |
+|-----------|
+| ![](assets/screenshots/phase-1/ems-dashboard.png) |
 
 ---
 
@@ -2175,7 +2175,7 @@ The following screenshots demonstrate the application interface, cloud infrastru
 
 | AWS Architecture |
 |------------------|
-| ![](assets/screenshots/aws-architecture.png) |
+| ![](assets/diagrams/Phase-1.png) |
 
 ---
 
@@ -2183,15 +2183,15 @@ The following screenshots demonstrate the application interface, cloud infrastru
 
 | CI/CD Pipeline |
 |----------------|
-| ![](assets/screenshots/jenkins-pipeline.png) |
+| ![](assets/diagrams/Phase-3.png) |
 
 ---
 
-## Docker Containers
+## Jenkins Pipeline
 
-| Running Containers |
+| Running Pipeline |
 |--------------------|
-| ![](assets/screenshots/docker-containers.png) |
+| ![](assets/screenshots/phase-3/jenkins-pipeline.png) |
 
 ---
 
@@ -2199,7 +2199,7 @@ The following screenshots demonstrate the application interface, cloud infrastru
 
 | Infrastructure Provisioning |
 |-----------------------------|
-| ![](assets/screenshots/terraform.png) |
+| ![](assets/diagrams/Phase-4.png) |
 
 ---
 
@@ -2207,7 +2207,7 @@ The following screenshots demonstrate the application interface, cloud infrastru
 
 | Load Balancer |
 |---------------|
-| ![](assets/screenshots/alb.png) |
+| ![](assets/screenshots/phase-1/public-lb.png) |
 
 ---
 
@@ -2215,7 +2215,7 @@ The following screenshots demonstrate the application interface, cloud infrastru
 
 | Monitoring Dashboard |
 |----------------------|
-| ![](assets/screenshots/cloudwatch.png) |
+| ![](assets/screenshots/phase-1/cloudwatch-dashboard.png) |
 
 
 # 🤝 Contributing
